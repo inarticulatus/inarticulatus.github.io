@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.5.0/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.ebf1e05d9e99f754b307a6a1e31aff4f.js"
+  "/precache-manifest.d870dca8417802e7347e7d9fe861a9c8.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "volio"});
