@@ -1,0 +1,8 @@
+.footnote {
+    font-family: monospace;
+    font-size: small;
+    display: flex;  
+    justify-content: center;  
+    height: 25px;  
+    bottom: 0; 
+ }
