@@ -1,0 +1,17 @@
+<header>  
+    <nav class="navbar" role="navigation">  
+        <div class="navbar__left">  
+            <a href="/">
+                <img src="{{ $.Site.Params.icon }}">
+            </a>  
+        </div>  
+        <div class="navbar__right">
+            <div>
+                {{ range first 1 (.Pages.ByParam "nav-index")}} 
+                <!-- change the number as per the requirement -->
+                    <a href="#{{.Title}}">{{.Title}}</a>
+                {{end}}                      
+            </div>  
+        </div>  
+    </nav>  
+</header>  

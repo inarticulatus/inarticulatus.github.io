@@ -1,0 +1,34 @@
+
+.cardlayout {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 50px;
+    width: 80vw;
+}
+
+.card {
+    padding: 1rem;
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    /* border: 1px solid darkgray; */
+  }
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .cardlayout {
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .card {
+        margin: 10px;
+        width: 70vw;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        justify-items: center;
+    }
+}
+

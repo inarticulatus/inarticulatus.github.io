@@ -1,2 +1,2 @@
-# inarticulatus.github.io
-Personal portfolio website
+# inarty-ui
+Inarty-ui theme for the HUGO framework.

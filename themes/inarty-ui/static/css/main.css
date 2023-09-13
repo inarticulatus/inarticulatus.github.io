@@ -1,0 +1,32 @@
+body {  
+    background: #fff1e5;
+    color: rgb(36, 31, 31);  
+    font-size: 100%;  
+    line-height: 1.5;  
+    margin: 0 auto;  
+    font-family: 'EB Garamond','Baskervville', Georgia, 'Times New Roman', Times, serif;  
+    text-decoration: none;
+    max-height: 100vh;
+  }
+
+  #hero {
+    padding: 40vh 0 10vh 20vw;
+  }
+
+
+
+  #hero .title{
+    font-size: 4em;
+  }
+
+  #hero .section-title {
+    font-size: 2em;
+    padding-left: 0.5rem;
+    color: #721c24;
+  }
+
+  #hero .textbox {
+    font-size: 1.25em;
+    padding: 0.25rem 0.5rem;
+    margin-top: 1rem;
+  }

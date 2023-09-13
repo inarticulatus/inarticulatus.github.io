@@ -1,0 +1,9 @@
+{{ define "main" }}  
+{{- partial "hero.html" . -}}
+
+{{range where .Pages "Params.publish" true}}
+{{- partial "sectionGrid.html" . -}}
+{{end}}
+
+
+{{ end }}  

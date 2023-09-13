@@ -1,0 +1,23 @@
+<div class="section" > 
+            <div class="section-title" id="{{.Title}}">{{ .Title }}</div>
+            <div class="two-col-grid"><div class="textbox">{{.Content}}</div></div>
+            <br/>
+            <span class="cardlayout ">
+            {{ range first 10 .Pages }}
+            <div class="card">
+            <div>
+                <img src="{{.Params.logo}} " alt="Project image">
+            </div>
+            
+            <div class="subsection">
+
+            <span class="subsectionTitle">{{ .Title }}</span>
+            <div>
+                {{.Description}}
+            </div>
+        </div>    
+    </div>
+            {{end}}
+            </span>
+</div>
+

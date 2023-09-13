@@ -1,0 +1,31 @@
+body {  
+    /* background: #fff1e0; */
+    background: #ebe7e0;
+    color: rgb(36, 31, 31);  
+    font-size: 100%;  
+    line-height: 1.5;  
+    margin: 0 auto;  
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+    text-decoration: none;
+    max-height: 100vh;
+  }
+
+  main {  
+    margin: 0 200px;  
+  }
+
+  #content {  
+    margin: 2rem;
+  }
+
+  #hero {
+    font-family: "C059";
+    height: 90vh;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+  }
+
+  #hero p{
+    padding-top: 20vh;
+    margin-left: 20vw;
+  }

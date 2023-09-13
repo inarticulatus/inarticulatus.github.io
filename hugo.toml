@@ -1,0 +1,9 @@
+baseURL = 'https://inarticulatus.github.io/'
+languageCode = 'en-us'
+title = 'Portfolio'
+theme = 'inarty-ui'
+[params]
+    icon = 'images/logo.svg'
+    linkedin = 'social/linkedin/linkedin.svg'
+    github = 'social/github/github-mark.svg'
+    mail = 'social/mail/mail.svg'

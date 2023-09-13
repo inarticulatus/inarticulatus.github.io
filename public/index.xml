@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Portfolio</title>
+    <link>https://inarticulatus.github.io/</link>
+    <description>Recent content on Portfolio</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://inarticulatus.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Project 1</title>
+      <link>https://inarticulatus.github.io/projects/project_1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://inarticulatus.github.io/projects/project_1/</guid>
+      <description>Project 1 Project 1 deals with</description>
+    </item>
+    
+    <item>
+      <title>Project 2</title>
+      <link>https://inarticulatus.github.io/projects/project_2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://inarticulatus.github.io/projects/project_2/</guid>
+      <description>Project 2 </description>
+    </item>
+    
+  </channel>
+</rss>
