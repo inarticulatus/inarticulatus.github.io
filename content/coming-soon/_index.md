@@ -10,7 +10,7 @@ The site will be up shortly along this HUGO theme. I am currently in the process
 
 ### About the theme
 
-After going through the [Hugo Showcase](https://gohugo.io/showcase/) for a theme, I was inspired to create a simple yet beautiful portfolio theme that can cater to the likes of analysts, researchers, journalists etc, or someone who needs a simple, crisp blogpage. This gave birth to __inatrty-ui__. 
+After going through the [Hugo Showcase](https://gohugo.io/showcase/) for a theme, I was inspired to create a simple yet beautiful portfolio theme that can cater to the likes of analysts, researchers, journalists etc, or someone who needs a simple, crisp blogpage. This gave birth to __paper-pro__. 
 This theme takes inspiration from Financial Times print for the color pallette and the font. The FT color combination lends a certain professional, fact oriented feel to the website. 
 
 In future updates, I'll try to create BI dashboard and blog pages with similar combination.  
