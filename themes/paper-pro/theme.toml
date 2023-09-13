@@ -1,17 +1,17 @@
 # theme.toml template for a Hugo theme
 # See https://github.com/gohugoio/hugoThemes#themetoml for an example
 
-name = "Inarty Ui"
+name = "paper-pro"
 license = "MIT"
-licenselink = "https://github.com/inarticulatus/inarty-ui/blob/master/LICENSE"
+licenselink = "https://github.com/inarticulatus/paper-pro/blob/master/LICENSE"
 description = ""
-homepage = "http://inarticulatus.github.io/"
+homepage = "https://inarticulatus.github.io/"
 tags = []
 features = []
 min_version = "0.116.1"
 
 [author]
-  name = "Utkarsh Tripathi aka inarticulatus"
+  name = "Utkarsh Tripathi inarticulatus"
   homepage = "inarticulatus.github.io"
 
 # If porting an existing theme

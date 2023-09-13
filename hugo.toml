@@ -1,7 +1,7 @@
 baseURL = 'https://inarticulatus.github.io/'
 languageCode = 'en-us'
 title = 'Portfolio'
-theme = 'inarty-ui'
+theme = 'paper-pro'
 [params]
     icon = 'images/logo.svg'
     linkedin = 'social/linkedin/linkedin.svg'
