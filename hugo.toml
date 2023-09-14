@@ -5,5 +5,5 @@ theme = 'paper-pro'
 [params]
     icon = 'images/logo.svg'
     linkedin = 'social/linkedin/linkedin.svg'
-    github = 'social/github/github-mark.svg'
+    github = 'social/github/github-mark.png'
     mail = 'social/mail/mail.svg'
