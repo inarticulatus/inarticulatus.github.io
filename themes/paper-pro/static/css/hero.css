@@ -1,0 +1,37 @@
+    #hero .section {
+      padding: 5% 20% 0% 15%;
+      justify-content: center;
+      min-height: 100vh;
+    }
+  
+    #hero .section-title {
+      padding: 0 0.5rem;
+    }
+  
+    #hero .title{
+      font-size: 4em;
+    }
+  
+    #hero .flexbox {
+      padding: 0 30% 0 0;
+    }
+  
+    #hero .textbox {
+      font-size: 1.25em;
+      padding: 0.25rem 0.5rem;
+      margin-top: 1rem;
+      width: 30rem;
+    }
+    
+    @media only screen and (max-width: 768px) {
+  
+        #hero .flexbox {
+          padding: 0 10% 0 0;
+        }
+        #hero .section {
+          padding: 15% 5% 0% 5%;
+        }
+        #hero .textbox {
+          width: 100%;
+        }
+    }

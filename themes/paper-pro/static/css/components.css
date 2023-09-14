@@ -4,7 +4,7 @@
     color: #721c24;
   }
 
-  .subsectionTitle {
+  .subsection-title {
     margin-top: 10px;
     font-size: 20px;
     color:gray;
@@ -15,24 +15,22 @@
     font-size: 6em;
   }
 
-  .two-col-grid {
-    display: grid;
-    grid-template-columns: 3fr 4fr;
+  .flexbox{
+    display: flex;
+    flex-direction: column;
+    padding: 0 20% 0 0;
   }
 
-  @media only screen and (max-width: 768px) {
-    .two-col-grid {
-      /* display: fle; */
-      grid-template-columns: 4fr 1fr;
-    }
+  .page {
+    min-height: 100vh;
   }
 
   .section {
     display: flex;
     flex-direction: column;
-    /* align-items: left; */
-    background: "{{.Params.bgcolor}}";
-    padding: 0 0 25vh 20vw;
+    justify-content:space-evenly;
+    row-gap: 0px;
+    padding: 0 0 0 15%;
   }
 
   .subsection {
@@ -42,23 +40,68 @@
   .textbox {
     font-size: 1.25em;
     text-decoration: none;
-
     padding: 0 0.5rem;
-    /* margin-top: 1rem; */
+    width: 100%;
   }
 
   .vl {
     border-left: 3px solid #cdc1b7;
   }
 
-.social{
-  padding: 2rem 1rem;
-}  
-.social-logo {
-  padding: 1px 3px;
-  width: 24px;
-  filter: brightness(0) saturate(100%)  invert(36%) sepia(51%) saturate(762%) hue-rotate(137deg) brightness(91%) contrast(90%);
+  .hl {
+    border-top: 3px solid #0d7680;
+    width: 100px;
   }
+
+  .social{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0.25rem 0.5rem
+  }  
+  .social-logo {
+    padding-top: 1rem;
+    padding-right:1rem;
+    width: 36px;
+    fill: gray;
+  }
+  .social-logo:hover{
+    transition: 1s;
+  }
+
+  .github:hover {
+    fill:#3d3846;
+  }
+  .linkedin:hover {
+    fill:#2081c5;
+  }
+
+  .email:hover{
+    fill:#e01b24;
+  }
+
+
+
+  @media only screen and (max-width: 768px) {
+    .flexbox {
+      padding: 0 10% 0 0;
+    }
+    .section {
+      display: flex;
+      flex-direction: column;
+      padding: 0 5% 10% 5%;
+    }
+    .social{
+      padding: 4% 0;
+    }  
+    .social-logo {
+      padding: 1rem 0.75rem;
+    }
+  }
+
+
+
+
 
   a {
     text-decoration: none;
@@ -69,3 +112,23 @@
     text-decoration: none;
     color: #05363a;
   }
+
+  /* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #00000000; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #519096; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #0d7680; 
+}

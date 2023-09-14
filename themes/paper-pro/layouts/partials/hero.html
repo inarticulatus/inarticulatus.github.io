@@ -1,24 +1,17 @@
-<div id="hero">
-    <span class="title">
-        {{.Params.firstname }} 
-        <br/>
-        {{.Params.lastname }}
-    </span>
-    <br/>
-    <div >
-        <span  class="section-title">
-            {{.Params.jobtitle}}
-        </span>
-        <br/>
-        <div class="two-col-grid">
-            <div class="textbox vl">
-                {{.Params.intro}}
+<div id="hero" class="page">
+        <div class="section">
+            <div class="title">
+                {{.Params.firstname }}<br/>{{.Params.lastname }}
             </div>
+                <div  class="section-title">
+                 {{.Params.jobtitle}}
+                </div>
+                <div class="flexbox">
+                    <div class="textbox">
+                        {{.Params.intro}}
+                    </div>
+                    {{- partial "socials.html" . -}}
+                </div>
         </div>
     </div> 
-        <div class="social">
-            <a href="{{.Params.github}}"><img src={{ $.Site.Params.github }} alt="Github mark" class="social-logo"></a>
-            <a href="{{.Params.linkedin}}"><img src={{ $.Site.Params.linkedin }} alt="Linkedin logo" class="social-logo"></a>
-            <a href="{{.Params.mail}}"><img src={{ $.Site.Params.mail }} alt="Mail logo" class="social-logo"></a>
-        </div>
 </div>
