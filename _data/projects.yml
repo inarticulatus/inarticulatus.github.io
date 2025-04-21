@@ -1,0 +1,9 @@
+- name: "COVID-19 Energy Analysis"
+  description: "Analyzed India's energy economics shifts using Python"
+  link: "#"
+  type: "code"
+
+- name: "Omkara Surveyors Website"
+  description: "Full-stack website development"
+  link: "https://www.omkarasurveyor.com/"
+  type: "demo"
