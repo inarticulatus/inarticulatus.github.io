@@ -1,0 +1,16 @@
+title: Utkarsh Tripathi
+description: Data Science | Business Intelligence | Sustainability
+baseurl: ""
+url: "https://yourusername.github.io"
+github_username: yourusername
+linkedin_username: utkarshtripathi7
+email: utkarsh1999tripathi@gmail.com
+
+# Jekyll settings
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Custom variables
+primary_color: "#2c3e50"
+secondary_color: "#3498db"
