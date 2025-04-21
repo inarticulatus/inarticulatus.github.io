@@ -7,7 +7,7 @@ linkedin_username: utkarshtripathi7
 email: utkarsh1999tripathi@gmail.com
 
 # Jekyll settings
-theme: minima
+remote_theme: jekyll/minima
 plugins:
   - jekyll-feed
 
