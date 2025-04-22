@@ -1,0 +1,7 @@
+User-agent: *
+Sitemap: http://inarticulatus.github.io/sitemap.xml
+Disallow: /ghost/
+Disallow: /email/
+Disallow: /members/api/comments/counts/
+Disallow: /r/
+Disallow: /webmentions/receive/
