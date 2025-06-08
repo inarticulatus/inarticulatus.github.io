@@ -1,0 +1,78 @@
+---
+import "../styles/global.css"
+import Icon from './Icon.astro';
+import type { iconPaths } from './IconPaths';
+---
+<!-- Skills -->
+<div class="box-skill">
+
+    <div class="skill-item">
+        <span class="skill-icon">
+            <Icon icon="ml-logo" color="var(--accent-regular)" size="5rem" gradient />
+        </span>
+        <br/>
+        <h5>Embedded Machine Learning</h5>
+        <br/>
+        Real-time computer vision and edge AI deployments using YOLOv7, TensorFlow Lite, and ESP32/Raspberry Pi platforms.
+    </div>
+    <div class="skill-item">
+        <span class="skill-icon">
+            <Icon icon="data-logo" color="var(--accent-regular)" size="5rem" gradient />
+        </span>
+        <br/>
+        <h5>Data Engineering & BI</h5>
+        <br/>
+        Automated ETL pipelines, KPI dashboards, and forecasting models using Python, SQL, and Power BI for business insight.
+    </div>
+    <div class="skill-item">
+        <span class="skill-icon">
+            <Icon icon="simulation-logo" color="var(--accent-regular)" size="5rem" gradient />
+        </span>
+        <br/>
+        <h5>Optimization & Simulation</h5>
+        <br/>
+        Built explainable optimization toolkits using surrogate modeling, Particle Swarm Optimization, and simulation loops.
+    </div>
+    <div class="skill-item">
+        <span class="skill-icon">
+            <Icon icon="integration-logo" color="var(--accent-regular)" size="5rem" gradient />
+        </span>
+        <br/>
+        <h5>Systems Integration</h5>
+        <br/>
+        Bridging ML models with embedded systems and analytics platforms; delivering end-to-end solutions from edge to dashboard.
+    </div>
+
+</div>
+
+<style>
+    .box-skill {
+		border: 0.5px solid var(--accent-light);
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+		/* background-color: var(--gray-999_40); */
+		box-shadow: var(--shadow-sm);
+        width: 70vw;
+        display: flex;
+        align-self: center; 
+        /* justify-content: space-around;    */
+        gap:5rem;
+        }
+    
+    .skill-icon {
+        display: flex;
+        padding: 10px;
+    }
+    
+    @media screen and (max-width: 768px) {
+        .box-skill {
+            flex-direction: column;
+        }
+	}
+
+    h5 {
+        font-size: large;
+    }
+
+    
+</style>
