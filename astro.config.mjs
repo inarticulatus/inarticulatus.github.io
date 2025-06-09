@@ -3,5 +3,5 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://inarticulatus.github.io',
+    site: 'https://utkarshtripathi.com',
 });

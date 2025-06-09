@@ -1,0 +1,64 @@
+---
+// Import statement
+import Layout from '../layouts/Layout.astro';
+import "../styles/global.css";
+import Nav from '../components/Nav.astro';
+import { Content as About } from '../content/about.md';
+import potrait from "../assets/portrait.jpg"
+// Collections query
+import { getEntry, render } from 'astro:content';
+;
+---
+<Layout>
+<main>
+<section>
+    <div>
+    <!-- <img src={potrait.src}> -->
+    </div>
+    <div class="container">	
+	<About />
+	</div>
+</section>
+</main>    
+
+</Layout>
+
+<style>
+    img {
+        width: 480;
+        height: 620;
+        aspect-ratio: 4 / 5;  
+        object-fit: cover;
+        max-width: 480px;
+    }
+
+    section {
+        display: flex; 
+        justify-content: center; 
+        margin: 10vw 5vw;
+        flex-direction: row;
+        gap: 5rem;
+    }
+
+	.container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-content: center;
+		gap: 1rem;
+		margin:0 10vw;
+        font-size: var(--text-lg);
+	}
+
+    @media screen and (max-width: 1024px) {
+
+        section {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        img {
+            max-width: 80vw;
+        }
+    }
+</style>
