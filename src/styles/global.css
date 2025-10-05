@@ -1,8 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
-@theme  {
+@theme {
   --font-sans: Geist, sans-serif;
   --font-mono: Geist mono, monospace;
   --color-black: #1e1e1e;
