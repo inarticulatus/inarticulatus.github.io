@@ -1,0 +1,36 @@
+---
+const expertise = [
+  {
+    text: "Quantify and interpret short-term behavioral anomalies in national energy consumption preceding COVID-19 lockdowns.",
+    theme: "Data science for socio-technical systems",
+    title: "Behavioral Signatures in Pre-Lockdown Electricity Demand",
+  },
+  {
+    text: "Build a simple electricity demand forecasting model (e.g., GB grid 2020) and interpret its temporal drivers using SHAP or LIME.",
+    theme: "Explainable AI / Model interpretability",
+    title: "Explainability of Forecasting Models in Energy Demand",
+  },
+  {
+    text: "Formulate and simulate a toy optimization problem for balancing electricity load during off-peak and on-peak periods.",
+    theme: "Applied optimization and control",
+    title: "Optimization under Constraint: Grid Load Flattening Simulation",
+  },
+
+];
+---
+
+<div class="text-xs gap-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 p-8">
+  {
+    expertise.map((item) => (
+      <figure class="flex flex-col justify-between h-full">
+          <span class="block font-semibold mt-3 text-white underline">{item.theme}</span>
+
+          <span class="block py-2 text-white font-black uppercase not-italic">{item.title}</span>
+        <div>
+                <blockquote class="font-normal text-white">{item.text}</blockquote>          
+
+        </div>
+      </figure>
+    ))
+  }
+</div>

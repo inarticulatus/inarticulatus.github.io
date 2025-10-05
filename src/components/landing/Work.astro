@@ -1,0 +1,153 @@
+---
+import BgGrid from "../assets/BgGrid.astro";
+import { Image } from "astro:assets";
+import Trendspotter from "../../images/work/NatElec.png";
+const themes = [
+  { name: "Trendspotter", image: Trendspotter, url: "#" },
+];
+---
+
+<style>
+  .keen-slider__slide {
+    overflow: visible;
+  }
+</style>
+<section class="border-b border-white/20 divide-y divide-white/20">
+  <div class="bg-grid px-8 py-6 relative">
+    <BgGrid />
+    <h2 class="relative text-xl lg:text-5xl font-black text-black bg-white p-4 uppercase">
+      Projects
+    </h2>
+  </div>
+  <div class="p-8">
+    <p class="text-white font-black uppercase lg:text-xl">
+      A selection of applied systems and research prototypes demonstrating measurable impact and technical depth.
+      Each project blends data science, engineering, and optimization to solve problems that matter.
+    </p>
+  </div>
+  <div class="px-8 py-6 relative grid grid-cols-1 md:grid-cols-2 justify-items-center" >
+    {
+        themes.map(({ name, image, url }) => (
+          <div class="justify-content">
+            <a href={url}><Image src={image} width={800} height={800} alt={name} class="aspect-auto" /></a>
+          </div>
+        ))
+      }
+
+  </div>
+  
+  <!-- <div class="relative">
+    <div
+      class="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2 pointer-events-none z-10"
+    >
+      <button
+        id="keen-slider-previous"
+        aria-label="Previous slide"
+        class="pointer-events-auto p-2 size-8 bg-white/80 hover:bg-white text-black rounded-full shadow transition"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 256 256"
+          ><path
+            d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"
+          ></path></svg
+        >
+      </button>
+      <button
+        id="keen-slider-next"
+        aria-label="Next slide"
+        class="pointer-events-auto p-2 size-8 bg-white hover:bg-white text-black rounded-full shadow transition"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 256 256"
+          ><path
+            d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"
+          ></path></svg
+        >
+      </button>
+    </div>
+    <div id="keen-slider" class="keen-slider relative">
+      {
+        themes.map(({ name, image, url }) => (
+          <div class="relative w-full keen-slider__slide ">
+            <a href={url}><Image src={image} width={800} height={800} alt={name} class="aspect-auto" /></a>
+          </div>
+        ))
+      }
+    </div>
+  </div> -->
+</section>
+<!-- <script type="module">
+  import KeenSlider from "https://cdn.jsdelivr.net/npm/keen-slider@6.8.6/+esm";
+  window.addEventListener("DOMContentLoaded", () => {
+    const autoplay = (slider) => {
+      let timeout;
+      let mouseOver = false;
+      function clearNextTimeout() {
+        clearTimeout(timeout);
+      }
+      function nextTimeout() {
+        clearTimeout(timeout);
+        if (mouseOver) return;
+        timeout = setTimeout(() => {
+          slider.next();
+        }, 1500);
+      }
+      slider.on("created", () => {
+        slider.container.addEventListener("mouseover", () => {
+          mouseOver = true;
+          clearNextTimeout();
+        });
+        slider.container.addEventListener("mouseout", () => {
+          mouseOver = false;
+          nextTimeout();
+        });
+        nextTimeout();
+      });
+      slider.on("dragStarted", clearNextTimeout);
+      slider.on("animationEnded", nextTimeout);
+      slider.on("updated", nextTimeout);
+    };
+    const sliderEl = document.getElementById("keen-slider");
+    if (!sliderEl) {
+      console.warn("Slider element not found");
+      return;
+    }
+    const keenSlider = new KeenSlider(
+      sliderEl,
+      {
+        loop: true,
+        defaultAnimation: {
+          duration: 2000,
+        },
+        detailsChanged: (s) => {
+          s.slides.forEach((element, idx) => {
+            element.style.opacity = s.track.details.slides[idx].portion;
+          });
+        },
+        slides: {
+          origin: "center",
+          perView: 2.2,
+          spacing: 12,
+        },
+        breakpoints: {
+          "(min-width: 1024px)": {
+            slides: {
+              origin: "center",
+              perView: 3.5,
+              spacing: 0,
+            },
+          },
+        },
+      },
+      [autoplay]
+    );
+    const keenSliderPrevious = document.getElementById("keen-slider-previous");
+    const keenSliderNext = document.getElementById("keen-slider-next");
+    keenSliderPrevious?.addEventListener("click", () => keenSlider.prev());
+    keenSliderNext?.addEventListener("click", () => keenSlider.next());
+  });
+</script> -->
