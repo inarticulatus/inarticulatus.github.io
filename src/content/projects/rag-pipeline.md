@@ -3,7 +3,7 @@ title: 'Production RAG Pipeline for Document Intelligence'
 description: 'Building an enterprise-grade Retrieval-Augmented Generation system with dbt, Qdrant, and LangChain'
 pubDate: 'Dec 12 2024'
 heroImage: '../../assets/blog-placeholder-3.jpg'
-category: data-engineering
+category: data engineering
 ---
 
 ## The Problem

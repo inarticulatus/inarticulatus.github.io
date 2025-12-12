@@ -3,7 +3,7 @@ title: 'Real-time E-commerce Recommender System'
 description: 'Building a scalable recommendation engine with Lambda Architecture, Kafka, Flink, and Airflow'
 pubDate: 'Dec 12 2024'
 heroImage: '../../assets/blog-placeholder-3.jpg'
-category: data-engineering
+category: data engineering
 ---
 
 ## The Challenge
