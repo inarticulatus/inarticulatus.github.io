@@ -1,12 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 
 interface Props {
-  title: string;
-  description: string;
-  pubDate: string;
-  heroImage?: string;
-  category?: string;
+title: string;
+description: string;
+pubDate: Date;
+heroImage?: string;
+category?: string;
 }
 
 const { title, description, pubDate, heroImage, category } = Astro.props;
@@ -17,9 +18,10 @@ const { title, description, pubDate, heroImage, category } = Astro.props;
     <!-- Header -->
     <header class="mb-10">
       {category && (
-        <span class="inline-block px-3 py-1 text-xs font-mono uppercase tracking-wider bg-orange/20 text-orange rounded mb-4">
-          {category}
-        </span>
+      <span
+        class="inline-block px-3 py-1 text-xs font-mono uppercase tracking-wider bg-orange/20 text-orange rounded mb-4">
+        {category}
+      </span>
       )}
       <h1 class="text-4xl md:text-5xl font-bold text-black leading-tight mb-6">
         {title}
@@ -28,7 +30,7 @@ const { title, description, pubDate, heroImage, category } = Astro.props;
         {description}
       </p>
       <time class="text-sm text-black/50 font-mono">
-        {pubDate}
+        <FormattedDate date={pubDate} />
       </time>
     </header>
 
