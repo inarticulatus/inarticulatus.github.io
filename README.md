@@ -1,62 +1,55 @@
-# Astro Starter Kit: Blog
+# Utkarsh Tripathi — Portfolio
 
-```sh
-npm create astro@latest -- --template blog
+Personal portfolio website showcasing data engineering projects, ML research, and professional experience.
+
+**Live:** [inarticulatus.github.io](https://inarticulatus.github.io)
+
+## Tech Stack
+
+- **Framework:** [Astro](https://astro.build) v5
+- **Styling:** [Tailwind CSS](https://tailwindcss.com) v4
+- **Math Rendering:** KaTeX (via remark-math + rehype-katex)
+- **Content:** MDX for blog posts
+- **Deployment:** GitHub Pages
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── landing/       # Hero, Work, Research, Experience, Expertise
+│   └── global/        # Navigation, Footer
+├── content/projects/  # MDX blog posts
+├── layouts/           # BaseLayout, BlogLayout
+├── pages/             # Routes (index, about, projects)
+└── styles/            # global.css with Tailwind theme
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Getting Started
 
-Features:
+```bash
+# Install dependencies
+npm install
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+# Start dev server
+npm run dev
 
-## 🚀 Project Structure
+# Build for production
+npm run build
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+# Preview production build
+npm run preview
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Features
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- **Light summery theme** with cream background and coral accents
+- **Horizontal timeline** for experience section
+- **Dynamic project filtering** by category
+- **LaTeX support** for mathematical content in blog posts
+- **Responsive design** with mobile-first approach
+- **Automatic copyright year** in footer
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+## License
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+© Utkarsh Tripathi. All rights reserved.
