@@ -1,103 +1,245 @@
 @import "tailwindcss";
 
+/* =============================================================================
+   THEME CONFIGURATION - LIGHT SUMMERY THEME
+   ============================================================================= */
+
 @theme {
+  /* Typography */
   --font-sans: Geist, sans-serif;
   --font-mono: Geist mono, monospace;
-  --color-black: #1e1e1e;
-  --color-white: #e7e7d8;
-  --color-eagle: #afac95;
-  --color-orange: #ea4125;
-  --color-gray: #9b9884;
-  /* Gradient */
---background-image-grid:
-  repeating-linear-gradient(
-    to right,
-    rgba(205, 205, 205, 0.2) 0px,
-    rgba(205, 205, 205, 0.2) 1px,
-    transparent 1px,
-    transparent 6px
-  ),
-  repeating-linear-gradient(
-    to bottom,
-    rgba(205, 205, 205, 0.2) 0px,
-    rgba(205, 205, 205, 0.2) 1px,
-    transparent 1px,
-    transparent 6px
-  );
 
-  /* Keyframes */
+  /* Primary Colors - Light Summery Palette */
+  --color-black: #2d2d2d;
+  /* Dark text on light bg */
+  --color-white: #faf8f5;
+  /* Warm cream background */
+  --color-gray: #f5f3f0;
+  /* Light warm gray */
+  --color-eagle: #8b8578;
+  /* Muted olive (secondary text) */
+
+  /* Accent Colors - Warm & Summery */
+  --color-orange: #e85a4f;
+  /* Warm coral-red (primary accent) */
+  --color-cyan: #2a9d8f;
+  /* Deep teal (secondary) */
+  --color-purple: #7c6a9e;
+  /* Muted lavender */
+  --color-gold: #e9c46a;
+  /* Warm golden yellow */
+
+  /* Background Grid Pattern - Subtle for light theme */
+  --background-image-grid:
+    repeating-linear-gradient(to right,
+      rgba(139, 133, 120, 0.08) 0px,
+      rgba(139, 133, 120, 0.08) 1px,
+      transparent 1px,
+      transparent 6px),
+    repeating-linear-gradient(to bottom,
+      rgba(139, 133, 120, 0.08) 0px,
+      rgba(139, 133, 120, 0.08) 1px,
+      transparent 1px,
+      transparent 6px);
+
+  /* Animation: Marquee */
   --animate-marquee: marquee 20s linear infinite;
+
   @keyframes marquee {
-    0% {
+    from {
       transform: translateX(0%);
     }
-    100% {
+
+    to {
       transform: translateX(-100%);
     }
   }
 }
 
+/* =============================================================================
+   TYPEWRITER ANIMATION
+   ============================================================================= */
+
 @keyframes typing {
 
-  0% { content: ""; }
-  2% { content: " "; }
-  4%  { content: " d"; }
-  6%  { content: " da"; }
-  8%  { content: " dat"; }
-  10% { content: " data"; }               /* pause briefly */
-  12% { content: " data "; }
-  14% { content: " data s"; }
-  16% { content: " data sc"; }
-  18% { content: " data sci"; }
-  20% { content: " data scie"; }
-  22% { content: " data scien"; }
-  24% { content: " data scient"; }
-  26% { content: " data scienti"; }
-  28% { content: " data scientis"; }
-  30% { content: " data scientist"; }  
-  45% { content: " data scientist"; }     /* full word */
-  46% { content: " data scientis"; }
-  47% { content: " data scienti"; }
-  48% { content: " data scient"; }
-  49% { content: " data scien"; }
-  50% { content: " data scie"; }
-  51% { content: " data sci"; }
-  52% { content: " data sc"; }
-  53% { content: " data s"; }
-  54% { content: " data "; }
-  55% { content: " data"; }
-  56% { content: " dat"; }
-  57% { content: " da"; }
-  58% { content: " d"; }
-  59% { content: " "; }
-  60% { content: ""; }                                      /* pause before next word */
-  64% { content: "n"; }
-  66% { content: "n e"; }
-  68% { content: "n en"; }
-  70% { content: "n eng"; }
-  72% { content: "n engi"; }
-  74% { content: "n engin"; }
-  76% { content: "n engine"; }
-  78% { content: "n enginee"; }
-  80% { content: "n engineer"; }         /* full phrase */       /* pause */
-  89% { content: "n engineer"; }         /* full phrase */       /* pause */
-  90% { content: "n enginee"; }
-  91% { content: "n engine"; }
-  92% { content: "n engin"; }
-  93% { content: "n engi"; }
-  94% { content: "n eng"; }
-  95% { content: "n en"; }
-  96%{ content: "n e"; }
-  97%{ content: "n "; }
-  98%{ content: "n"; }
-  99%{ content: ""; }
+  /* Phase 1: Type "scientist" */
+  0% {
+    content: "";
+  }
+
+  2% {
+    content: "s";
+  }
+
+  4% {
+    content: "sc";
+  }
+
+  6% {
+    content: "sci";
+  }
+
+  8% {
+    content: "scie";
+  }
+
+  10% {
+    content: "scien";
+  }
+
+  12% {
+    content: "scient";
+  }
+
+  14% {
+    content: "scienti";
+  }
+
+  16% {
+    content: "scientis";
+  }
+
+  18% {
+    content: "scientist";
+  }
+
+  /* Phase 2: Hold "scientist" */
+  35% {
+    content: "scientist";
+  }
+
+  /* Phase 3: Erase "scientist" fully */
+  36% {
+    content: "scientis";
+  }
+
+  37% {
+    content: "scienti";
+  }
+
+  38% {
+    content: "scient";
+  }
+
+  39% {
+    content: "scien";
+  }
+
+  40% {
+    content: "scie";
+  }
+
+  41% {
+    content: "sci";
+  }
+
+  42% {
+    content: "sc";
+  }
+
+  43% {
+    content: "s";
+  }
+
+  44% {
+    content: "";
+  }
+
+  /* Brief pause */
+  46% {
+    content: "";
+  }
+
+  /* Phase 4: Type "engineer" */
+  48% {
+    content: "e";
+  }
+
+  50% {
+    content: "en";
+  }
+
+  52% {
+    content: "eng";
+  }
+
+  54% {
+    content: "engi";
+  }
+
+  56% {
+    content: "engin";
+  }
+
+  58% {
+    content: "engine";
+  }
+
+  60% {
+    content: "enginee";
+  }
+
+  62% {
+    content: "engineer";
+  }
+
+  /* Phase 5: Hold "engineer" */
+  85% {
+    content: "engineer";
+  }
+
+  /* Phase 6: Erase "engineer" fully */
+  86% {
+    content: "enginee";
+  }
+
+  87% {
+    content: "engine";
+  }
+
+  88% {
+    content: "engin";
+  }
+
+  89% {
+    content: "engi";
+  }
+
+  90% {
+    content: "eng";
+  }
+
+  91% {
+    content: "en";
+  }
+
+  92% {
+    content: "e";
+  }
+
+  93% {
+    content: "";
+  }
+
+  /* Brief pause before loop */
+  100% {
+    content: "";
+  }
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
+/* Typewriter Component */
 .typewriter {
   --caret: currentcolor;
 }
@@ -121,21 +263,40 @@
   border-right: 0;
 }
 
-
+/* Reduced Motion: Static fallback */
 @media (prefers-reduced-motion) {
   .typewriter::after {
     animation: none;
   }
-  
+
   @keyframes sequencePopup {
-    0%, 100% { content: "developer"; }
-    25% { content: "writer"; }
-    50% { content: "reader"; }
-    75% { content: "human"; }
+    45% {
+      content: "Scientist";
+    }
+
+    80% {
+      content: "Engineer";
+    }
   }
 
   .typewriter::before {
-    content: "developer";
+    content: "Scientist";
     animation: sequencePopup 12s linear infinite;
   }
+}
+
+/* =============================================================================
+   GLOBAL UTILITIES
+   ============================================================================= */
+
+/* Smooth transitions */
+a,
+button {
+  transition: all 0.2s ease;
+}
+
+/* Selection highlight */
+::selection {
+  background: #e85a4f;
+  color: #faf8f5;
 }

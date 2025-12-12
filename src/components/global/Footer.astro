@@ -1,11 +1,18 @@
 ---
-import BgGrid from "../assets/BgGrid.astro";
+const currentYear = new Date().getFullYear();
 ---
 
-<footer class="border-white/20 border-b bg-accent-500 bg-grid">
-  <div class="mx-auto p-8 items-start justify-between w-full">
-    <div class="text-white text-center items-center mx-auto">
-      <p class="font-normal text-sm"><b>Tripathi</b></p>
-    </div>
+<footer class="border-black/20 border bg-grid">
+  <div class="p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+    <!-- CTA Button -->
+    <a href="mailto:utkarsh1999tripathi@gmail.com"
+      class="uppercase font-black text-orange border border-2 border-orange px-4 py-2 hover:bg-orange hover:text-white transition-colors text-sm">
+      Contact me!
+    </a>
+
+    <!-- Copyright -->
+    <p class="uppercase font-black text-orange border border-2 border-orange/30 bg-orange/10 px-4 py-2 text-sm">
+      Tripathi &copy; {currentYear}
+    </p>
   </div>
 </footer>

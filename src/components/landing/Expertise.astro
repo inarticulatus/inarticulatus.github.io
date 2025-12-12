@@ -1,36 +1,49 @@
 ---
-const expertise = [
-  {
-    text: "Quantify and interpret short-term behavioral anomalies in national energy consumption preceding COVID-19 lockdowns.",
-    theme: "Data science for socio-technical systems",
-    title: "Behavioral Signatures in Pre-Lockdown Electricity Demand",
-  },
-  {
-    text: "Build a simple electricity demand forecasting model (e.g., GB grid 2020) and interpret its temporal drivers using SHAP or LIME.",
-    theme: "Explainable AI / Model interpretability",
-    title: "Explainability of Forecasting Models in Energy Demand",
-  },
-  {
-    text: "Formulate and simulate a toy optimization problem for balancing electricity load during off-peak and on-peak periods.",
-    theme: "Applied optimization and control",
-    title: "Optimization under Constraint: Grid Load Flattening Simulation",
-  },
+import SectionTitle from "../assets/SectionTitle.astro";
 
+const skills = [
+  {
+    category: "Core",
+    items: ["Python", "SQL", "Apache Spark", "Kafka", "Flink", "Airflow"]
+  },
+  {
+    category: "Cloud & Infrastructure",
+    items: ["AWS (S3, Redshift, Glue)", "Docker", "Kubernetes", "Terraform", "Git & CI/CD"]
+  },
+  {
+    category: "Data & Analytics",
+    items: ["Data Modeling", "dbt", "Vector DBs (Qdrant)", "Redis", "Power BI"]
+  },
+  {
+    category: "AI & LLM",
+    items: ["LangChain", "Sentence-Transformers", "FastAPI", "RAGAS Evaluation"]
+  }
 ];
 ---
 
-<div class="text-xs gap-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 p-8">
-  {
-    expertise.map((item) => (
-      <figure class="flex flex-col justify-between h-full">
-          <span class="block font-semibold mt-3 text-white underline">{item.theme}</span>
-
-          <span class="block py-2 text-white font-black uppercase not-italic">{item.title}</span>
-        <div>
-                <blockquote class="font-normal text-white">{item.text}</blockquote>          
-
-        </div>
-      </figure>
-    ))
-  }
-</div>
+<section class="border-black/20 border-b divide-y divide-black/20">
+  <SectionTitle>
+    Expertise
+  </SectionTitle>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-black/20">
+    {skills.map((skill) => (
+      <div class="p-8">
+        <!-- Category -->
+        <h3 class="text-orange font-mono text-sm uppercase tracking-wider mb-4">
+          {skill.category}
+        </h3>
+        
+        <!-- Skills list -->
+        <ul class="space-y-2">
+          {skill.items.map((item) => (
+            <li class="text-black text-sm font-medium flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-cyan rounded-full"></span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

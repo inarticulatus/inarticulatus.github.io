@@ -1,99 +1,103 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BgGrid from "../components/assets/BgGrid.astro";
-import Cta from '../components/landing/Cta.astro';
+import SectionTitle from '../components/assets/SectionTitle.astro';
 ---
-
 
 <BaseLayout>
 
-<section class="border-white/20 border-b divide-y divide-white/20">
-  <div class="p-8 relative">
+<section class="border-black/20 border-b divide-y divide-black/20">
+  <!-- Hero -->
+  <div class="p-8 relative bg-grid">
     <BgGrid />
-    <p
-      class="relative text-white font-black uppercase tracking-tight p-8 lg:text-7xl text-3xl"
-    >
-      <span class="p-8 bg-orange">
-        About Me
-        </span>
+    <h1 class="text-black tracking-tighter font-black uppercase text-3xl md:text-5xl lg:text-8xl relative">
+      <span class="px-2 bg-orange text-white">About Me</span>
+    </h1>
+  </div>
+
+  <!-- Intro Card -->
+  <div class="p-8 md:p-12">
+    <div class="flex flex-col md:flex-row gap-8 items-start">
+      <div class="flex-1">
+        <h2 class="text-2xl md:text-3xl text-black font-black uppercase leading-tight">Utkarsh Tripathi</h2>
+        <p class="text-eagle mt-1 font-medium">Data Engineer · Data Scientist · ML Practitioner</p>
+        
+        <!-- Contact Buttons -->
+        <div class="mt-4 flex flex-wrap gap-2">
+          <a href="mailto:utkarsh1999tripathi@gmail.com" class="text-xs px-3 py-1.5 border border-black/20 hover:bg-orange hover:border-orange hover:text-white transition-colors">Email</a>
+          <a href="https://www.linkedin.com/in/utkarshtripathi7" class="text-xs px-3 py-1.5 border border-black/20 hover:bg-orange hover:border-orange hover:text-white transition-colors">LinkedIn</a>
+          <a href="/cv/Utkarsh-Tripathi-Resume.pdf" class="text-xs px-3 py-1.5 border border-cyan/50 text-cyan hover:bg-cyan hover:border-cyan hover:text-white transition-colors">Resume</a>
+        </div>
+        
+        <!-- Availability -->
+        <p class="text-sm text-black/70 mt-4">
+          <strong class="text-black">Open to:</strong> Data Engineering, ML Engineering, and Analytics roles focused on scalable systems.
+        </p>
+        <p class="text-sm mt-2">
+          <span class="bg-orange text-white px-2 py-0.5 font-semibold">Available Immediately</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bio -->
+  <div class="p-8 md:p-12">
+    <p class="text-black text-lg leading-relaxed">
+      I build <strong>scalable data pipelines</strong> and <strong>ML systems</strong> that turn raw data into business value. 
+      With experience spanning data engineering, analytics, and machine learning, I focus on creating reliable, 
+      production-ready solutions — from ETL workflows and real-time streaming to model deployment and monitoring.
     </p>
   </div>
-  <!-- <div class="p-18">
-    <p class="text-white lg:text-2xl uppercase">
-      I'm <span class="underline decoration-8 decoration-orange font-black">Utkarsh Tripathi.</span>
-      <br><br>
-    I work at the intersection of <b>data science, robotics, and system design</b>.  
-    Instead of being tied to one domain, I move across layers. Sometimes I’m training models, sometimes I’m writing embedded code, and sometimes I’m building dashboards that help people see clearly what their data is trying to say and yet other times, I am creating a sensor kit to help businesses. 
-    What ties it all together is this: I build systems that run reliably, solve real problems, and make sense end to end.
-    </p>
-  </div> -->
 
+  <!-- Skills Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-black/20">
+    <!-- Core Strengths -->
+    <div class="p-8">
+      <h3 class="text-orange font-mono text-sm uppercase tracking-wider mb-4">Core Strengths</h3>
+      <ul class="space-y-3 text-black text-sm">
+        <li class="flex items-start gap-3">
+          <span class="w-1.5 h-1.5 bg-cyan rounded-full mt-1.5 flex-shrink-0"></span>
+          <span>End-to-end data pipelines: ingestion → transformation → analytics</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-1.5 h-1.5 bg-cyan rounded-full mt-1.5 flex-shrink-0"></span>
+          <span>Production ML: feature engineering, model training, deployment</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-1.5 h-1.5 bg-cyan rounded-full mt-1.5 flex-shrink-0"></span>
+          <span>Data quality: testing, monitoring, and observability</span>
+        </li>
+      </ul>
+    </div>
 
-<!-- <section class="bg-eagle text-white p-8 sm:p-10 font-semibold"> -->
-<header class="flex items-start gap-4 p-18">
-<!-- <img
-src="/your-photo.jpg"
-alt="[Your Name] photo"
-class="w-20 h-20 rounded-full object-cover ring-2 ring-indigo-500/30"
-/> -->
-<div>
-<h1 class="text-3xl text-white font-black uppercase leading-tight">Utkarsh Tripathi</h1>
-<p class="text-sm text-white mt-1">Data Scientist · ML Engineer · Problem Solver</p>
-<div class="mt-3 flex flex-wrap gap-2 text-white font-semibold">
-<a href="mailto:utkarsh1999tripathi@gmail.com" class="text-xs px-3 py-1 bg-eagle border hover:bg-white hover:text-black">utkarsh1999tripathi@gmail.com</a>
-<a href="https://www.linkedin.com/in/utkarshtripathi7" class="text-xs px-3 py-1 bg-eagle border hover:bg-white hover:text-black">LinkedIn</a>
-<a href="/cv/Utkarsh-Tripathi-resume.pdf" class="text-xs px-3 py-1 bg-eagle border hover:bg-white hover:text-black">View Resume</a>
-</div>
+    <!-- Impact -->
+    <div class="p-8">
+      <h3 class="text-orange font-mono text-sm uppercase tracking-wider mb-4">Impact</h3>
+      <ul class="space-y-3 text-black text-sm">
+        <li class="flex items-start gap-3">
+          <span class="w-1.5 h-1.5 bg-cyan rounded-full mt-1.5 flex-shrink-0"></span>
+          <span>Built forecasting pipelines improving planning accuracy by 18%</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-1.5 h-1.5 bg-cyan rounded-full mt-1.5 flex-shrink-0"></span>
+          <span>Designed ETL workflows processing millions of records daily</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-1.5 h-1.5 bg-cyan rounded-full mt-1.5 flex-shrink-0"></span>
+          <span>Delivered dashboards used by C-level stakeholders</span>
+        </li>
+      </ul>
+    </div>
 
-<div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-<div class="text-sm text-white">
-<strong>Open to:</strong> roles in ML engineering, data science, and analytics that focus on impact and scalable systems.
-</div>
-</div>
-
-<p class="text-sm text-white font-semibold">Available to interview: <span class="bg-orange">&nbsp; Immediately &nbsp;</span></p>
-
-</div>
-
-</header>
-
-
-<div class="mt-2 py-8 px-18 prose prose-sm max-w-none font-semibold text-white text-xl">
-<p>
-I build reliable, production-ready machine learning systems that translate business goals into measurable outcomes. With a strong foundation in statistics and software engineering, I move quickly from problem framing to data pipelines, model development, and deployment, always prioritizing interpretability and long-term maintainability.
-</p>
-</div>
-
-
-<div class="mx-2 grid grid-cols-1 sm:grid-cols-1 gap-4 px-18 py-8">
-<div class="space-y-3">
-<h3 class="text-xl font-black text-white">Key strengths</h3>
-<ul class="list-disc list-inside text-lg text-white font-normal">
-<li>End-to-end ML: problem scoping → feature engineering → modeling → deployment</li>
-<li>Production-ready code: clean, tested, and automatable CI/CD workflows</li>
-<li>Cross-functional communicator: translate technical tradeoffs for business stakeholders</li>
-</ul>
-</div>
-
-
-<div class="space-y-3">
-<h3 class="text-xl font-black text-white">Impact highlights</h3>
-<ul class="list-disc list-inside text-lg text-white font-normal">
-<li>Reduced churn by 12% through a targeted propensity model deployed to production</li>
-<li>Built a forecasting pipeline that improved planning accuracy by 18%</li>
-<li>Delivered interpretable dashboards used by C-level stakeholders to prioritize features</li>
-</ul>
-</div>
-
-<div class="space-y-3">
-<h3 class="text-xl font-black text-white">Tech & tools</h3>
-<p class="text-lg text-white mt-2">Python · Pandas · scikit-learn · PyTorch · SQL · Airflow · Docker · AWS · FastAPI · Git</p>
-</div>
-</div>
-<!-- <div class="bg-grid p-2"></div> -->
+    <!-- Tech Stack -->
+    <div class="p-8">
+      <h3 class="text-orange font-mono text-sm uppercase tracking-wider mb-4">Tech Stack</h3>
+      <div class="flex flex-wrap gap-2">
+        {['Python', 'SQL', 'PySpark', 'Airflow', 'dbt', 'Docker', 'AWS', 'Kafka', 'PostgreSQL', 'Power BI'].map(tech => (
+          <span class="text-xs px-2 py-1 bg-black/5 text-black/80 rounded">{tech}</span>
+        ))}
+      </div>
+    </div>
+  </div>
 </section>
-
-<Cta />
-
 </BaseLayout>
-

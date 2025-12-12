@@ -1,0 +1,127 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BgGrid from "../../components/assets/BgGrid.astro";
+import FormattedDate from '../../components/FormattedDate.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTA from '../../components/landing/CTA.astro';
+
+const posts = await getCollection('projects');
+const categories = Array.from(
+  new Set(
+    posts
+      .map((a) => a.data.category)
+      .filter(Boolean)
+      .map((c) => c.toLowerCase())
+  )
+);
+---
+
+<BaseLayout>
+  <section class="border-black/20 border-b divide-y divide-black/20">
+    <!-- Hero -->
+    <div class="p-8 relative bg-grid">
+      <BgGrid />
+      <h1 class="text-black tracking-tighter font-black uppercase text-3xl md:text-5xl lg:text-8xl relative">
+        <span class="px-2 bg-orange text-white">My Works</span>
+      </h1>
+    </div>
+
+    <!-- Intro -->
+    <div class="p-8">
+      <p class="text-black font-black uppercase lg:text-xl">
+        A collection of data engineering projects, ML systems, and research explorations.
+      </p>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="p-8">
+      <ul id="category-filter" class="flex items-center gap-3 flex-wrap">
+        <li>
+          <button data-category="all" class="category-btn text-xs px-3 py-1.5 font-semibold border border-black/20 text-black hover:bg-orange hover:border-orange hover:text-white transition-colors">
+            ALL
+          </button>
+        </li>
+        {categories.map((category) => (
+          <li>
+            <button
+              data-category={category}
+              class="category-btn text-xs px-3 py-1.5 font-semibold border border-black/20 text-black hover:bg-orange hover:border-orange hover:text-white transition-colors"
+            >
+              {category.toUpperCase()}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Project Grid -->
+    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2">
+      {posts.map((post, index) => (
+        <a
+          href={`/projects/${post.id}/`}
+          class="project-card p-8 border-b border-black/10 md:border-b md:odd:border-r hover:bg-orange/5 transition-colors block"
+          data-category={post.data.category?.toLowerCase() || ''}
+        >
+          <!-- Category -->
+          <p class="text-cyan text-xs font-mono mb-2 uppercase">
+            {post.data.category || 'Project'}
+          </p>
+          
+          <!-- Title -->
+          <h4 class="font-black text-lg text-black uppercase mb-2">{post.data.title}</h4>
+          
+          <!-- Description -->
+          <p class="text-black/70 text-sm mb-3">{post.data.description}</p>
+          
+          <!-- Date -->
+          <p class="text-black/50 text-xs font-mono"><FormattedDate date={post.data.pubDate} /></p>
+        </a>
+      ))}
+    </div>
+
+    <p id="no-projects" class="hidden text-orange text-center py-8">No projects found in this category.</p>
+
+    <!-- Filter Script -->
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const buttons = document.querySelectorAll('.category-btn');
+        const cards = document.querySelectorAll('.project-card');
+        const noProjects = document.getElementById('no-projects');
+
+        function filterProjects(selected) {
+          let visibleCount = 0;
+          cards.forEach(card => {
+            const category = card.dataset.category;
+            const show = selected === 'all' || category === selected;
+            card.style.display = show ? '' : 'none';
+            if (show) visibleCount++;
+          });
+
+          buttons.forEach(btn => {
+            const active = btn.dataset.category === selected;
+            btn.classList.toggle('bg-orange', active);
+            btn.classList.toggle('border-orange', active);
+            btn.classList.toggle('text-white', active);
+          });
+
+          noProjects.classList.toggle('hidden', visibleCount > 0);
+
+          const newUrl = new URL(window.location);
+          if (selected === 'all') newUrl.searchParams.delete('category');
+          else newUrl.searchParams.set('category', selected);
+          history.replaceState({}, '', newUrl);
+        }
+
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => filterProjects(btn.dataset.category));
+        });
+
+        const params = new URLSearchParams(window.location.search);
+        const initial = params.get('category')?.toLowerCase() || 'all';
+        filterProjects(initial);
+      });
+    </script>
+  </section>
+
+</BaseLayout>
