@@ -3,7 +3,9 @@ title: 'ML From Scratch: Gradient Descent to Gradient Boosting'
 description: 'Implementing core ML algorithms from first principles using only NumPy'
 pubDate: 'Dec 12 2024'
 heroImage: '../../assets/blog-placeholder-3.jpg'
-category: research
+category: 
+    - research
+    - ML
 ---
 
 ## Why Build ML From Scratch?

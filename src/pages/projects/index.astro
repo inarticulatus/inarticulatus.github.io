@@ -8,12 +8,12 @@ import CTA from '../../components/landing/CTA.astro';
 
 const posts = await getCollection('projects');
 const categories = Array.from(
-  new Set(
-    posts
-      .map((a) => a.data.category)
-      .filter(Boolean)
-      .map((c) => c.toLowerCase())
-  )
+new Set(
+posts
+.flatMap((a) => Array.isArray(a.data.category) ? a.data.category : [a.data.category])
+.filter(Boolean)
+.map((c) => c.toLowerCase())
+)
 );
 ---
 
@@ -38,19 +38,18 @@ const categories = Array.from(
     <div class="p-8">
       <ul id="category-filter" class="flex items-center gap-3 flex-wrap">
         <li>
-          <button data-category="all" class="category-btn text-xs px-3 py-1.5 font-semibold border border-black/20 text-black hover:bg-orange hover:border-orange hover:text-white transition-colors">
+          <button data-category="all"
+            class="category-btn text-xs px-3 py-1.5 font-semibold border border-black/20 text-black hover:bg-orange hover:border-orange hover:text-white transition-colors">
             ALL
           </button>
         </li>
         {categories.map((category) => (
-          <li>
-            <button
-              data-category={category}
-              class="category-btn text-xs px-3 py-1.5 font-semibold border border-black/20 text-black hover:bg-orange hover:border-orange hover:text-white transition-colors"
-            >
-              {category.toUpperCase()}
-            </button>
-          </li>
+        <li>
+          <button data-category={category}
+            class="category-btn text-xs px-3 py-1.5 font-semibold border border-black/20 text-black hover:bg-orange hover:border-orange hover:text-white transition-colors">
+            {category.toUpperCase()}
+          </button>
+        </li>
         ))}
       </ul>
     </div>
@@ -58,25 +57,27 @@ const categories = Array.from(
     <!-- Project Grid -->
     <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2">
       {posts.map((post, index) => (
-        <a
-          href={`/projects/${post.id}/`}
-          class="project-card p-8 border-b border-black/10 md:border-b md:odd:border-r hover:bg-orange/5 transition-colors block"
-          data-category={post.data.category?.toLowerCase() || ''}
+      <a href={`/projects/${post.id}/`}
+        class="project-card p-8 border-b border-black/10 md:border-b md:odd:border-r hover:bg-orange/5 transition-colors block"
+        data-category={(Array.isArray(post.data.category) ? post.data.category.map(c=> c.toLowerCase()).join(',')
+        : (post.data.category?.toLowerCase() || ''))}
         >
-          <!-- Category -->
-          <p class="text-cyan text-xs font-mono mb-2 uppercase">
-            {post.data.category || 'Project'}
-          </p>
-          
-          <!-- Title -->
-          <h4 class="font-black text-lg text-black uppercase mb-2">{post.data.title}</h4>
-          
-          <!-- Description -->
-          <p class="text-black/70 text-sm mb-3">{post.data.description}</p>
-          
-          <!-- Date -->
-          <p class="text-black/50 text-xs font-mono"><FormattedDate date={post.data.pubDate} /></p>
-        </a>
+        <!-- Category -->
+        <p class="text-cyan text-xs font-mono mb-2 uppercase">
+          {Array.isArray(post.data.category) ? post.data.category.join(', ') : (post.data.category || 'Project')}
+        </p>
+
+        <!-- Title -->
+        <h4 class="font-black text-lg text-black uppercase mb-2">{post.data.title}</h4>
+
+        <!-- Description -->
+        <p class="text-black/70 text-sm mb-3">{post.data.description}</p>
+
+        <!-- Date -->
+        <p class="text-black/50 text-xs font-mono">
+          <FormattedDate date={post.data.pubDate} />
+        </p>
+      </a>
       ))}
     </div>
 
@@ -92,8 +93,8 @@ const categories = Array.from(
         function filterProjects(selected) {
           let visibleCount = 0;
           cards.forEach(card => {
-            const category = card.dataset.category;
-            const show = selected === 'all' || category === selected;
+            const categories = card.dataset.category.split(',');
+            const show = selected === 'all' || categories.includes(selected);
             card.style.display = show ? '' : 'none';
             if (show) visibleCount++;
           });

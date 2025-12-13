@@ -5,12 +5,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const posts = await getCollection('projects');
 const categories = Array.from(
-  new Set(
-    posts
-      .map((a) => a.data.category)
-      .filter(Boolean)
-      .map((c) => c.toLowerCase())
-  )
+new Set(
+posts
+.flatMap((a) => Array.isArray(a.data.category) ? a.data.category : [a.data.category])
+.filter(Boolean)
+.map((c) => c.toLowerCase())
+)
 );
 ---
 

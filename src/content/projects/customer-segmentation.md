@@ -3,7 +3,9 @@ title: "The Cost of a Minute: How Delivery Delays Define Customer Value"
 description: "A deep dive into e-commerce data using K-Means clustering to uncover the hidden relationship between delivery performance and customer retention."
 pubDate: 'Dec 12 2024'
 heroImage: '../../assets/blog-placeholder-3.jpg'
-category: data science
+category:
+    - data science
+    - projects
 ---
 
 # The Pulse of Delivery

@@ -3,7 +3,9 @@ title: 'Statistical Experimentation: A/B Testing From First Principles'
 description: 'Building a complete experimentation framework — from hypothesis testing to Bayesian inference'
 pubDate: 'Dec 12 2024'
 heroImage: '../../assets/blog-placeholder-3.jpg'
-category: research
+category: 
+    - research
+    - Statistics
 ---
 
 ## The Goal

@@ -3,7 +3,9 @@ title: 'Dimensionality Reduction: From PCA to t-SNE'
 description: 'Understanding the mathematics of reducing high-dimensional data — from eigendecomposition to manifold learning'
 pubDate: 'Dec 12 2024'
 heroImage: '../../assets/blog-placeholder-3.jpg'
-category: research
+category: 
+    - research
+    - ML
 ---
 
 ## The Curse of Dimensionality

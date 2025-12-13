@@ -3,7 +3,10 @@ import SectionTitle from "../assets/SectionTitle.astro";
 import { getCollection } from "astro:content";
 
 const posts = await getCollection('projects', ({ data }) => {
-return data.category == 'data-engineering'
+const categories = Array.isArray(data.category)
+? data.category.map(c => c.toLowerCase())
+: [data.category.toLowerCase()];
+return categories.includes('project') || categories.includes('projects');
 });
 const limitedEntries = posts.slice(0, 2);
 ---
