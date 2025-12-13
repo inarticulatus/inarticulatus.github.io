@@ -8,7 +8,7 @@ const categories = Array.isArray(data.category)
 : [data.category.toLowerCase()];
 return categories.includes('project') || categories.includes('projects');
 });
-const limitedEntries = posts.slice(0, 2);
+const limitedEntries = posts.slice(0, 3);
 ---
 
 <section class="border-b border-black/20 divide-y divide-black/20">
@@ -22,12 +22,17 @@ const limitedEntries = posts.slice(0, 2);
   </div>
 
   <!-- Project cards in horizontal row -->
-  <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-black/20">
-    {limitedEntries.map((post) => (
-    <a href={`/projects/${post.id}/`} class="p-8 hover:bg-white/5 transition-colors">
+  <div class="grid grid-cols-1 md:grid-cols-2">
+    {limitedEntries.map((post) => {
+    const categories = Array.isArray(post.data.category) ? post.data.category : [post.data.category];
+    const displayCategory = categories.find(c => !['project', 'projects', 'research'].includes(c.toLowerCase())) ||
+    categories[0];
+    return (
+    <a href={`/projects/${post.id}/`}
+      class="p-8 border-b border-black/10 md:border-b md:odd:border-r hover:bg-orange/5 transition-colors block">
       <!-- Category label -->
-      <p class="text-cyan text-sm font-mono mb-3 underline underline-offset-4">
-        Data Engineering
+      <p class="text-cyan text-sm font-mono mb-3 underline underline-offset-4 uppercase">
+        {displayCategory}
       </p>
 
       <!-- Title -->
@@ -40,6 +45,6 @@ const limitedEntries = posts.slice(0, 2);
         {post.data.description}
       </p>
     </a>
-    ))}
+    )})}
   </div>
 </section>

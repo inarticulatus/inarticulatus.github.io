@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BgGrid from "../components/assets/BgGrid.astro";
 import SectionTitle from '../components/assets/SectionTitle.astro';
+
+const techStack = ['Python', 'SQL', 'PySpark', 'Airflow', 'dbt', 'Docker', 'AWS', 'Kafka', 'PostgreSQL', 'Power BI'];
 ---
 
 <BaseLayout>
@@ -31,8 +33,6 @@ import SectionTitle from '../components/assets/SectionTitle.astro';
             <a href="/cv/Utkarsh-Tripathi-Resume.pdf"
               class="text-xs px-3 py-1.5 border border-cyan/50 text-cyan hover:bg-cyan hover:border-cyan hover:text-white transition-colors">Resume</a>
           </div>
-
-          <!-- Availability -->
           <p class="text-sm text-black/70 mt-4">
             <strong class="text-black">Open to:</strong> Data Engineering, ML Engineering, and Analytics roles focused
             on scalable systems.
@@ -98,8 +98,7 @@ import SectionTitle from '../components/assets/SectionTitle.astro';
       <div class="p-8">
         <h3 class="text-orange font-mono text-sm uppercase tracking-wider mb-4">Tech Stack</h3>
         <div class="flex flex-wrap gap-2">
-          {['Python', 'SQL', 'PySpark', 'Airflow', 'dbt', 'Docker', 'AWS', 'Kafka', 'PostgreSQL', 'Power BI'].map(tech
-          => (
+          {techStack.map((tech) => (
           <span class="text-xs px-2 py-1 bg-black/5 text-black/80 rounded">{tech}</span>
           ))}
         </div>
