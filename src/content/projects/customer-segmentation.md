@@ -76,4 +76,4 @@ This project went beyond a simple coding exercise. It demonstrated that in quick
 
 The "Delay-Affected" cluster represents a massive opportunity. If the business can fix its operational bottlenecks for these specific users, there is a clear path to migrating them into the "High-Value" tier.
 
-**Check out the full analysis and code in the [main project notebook](./index.qmd).**
+**Check out the full analysis and code in the [main project notebook](https://plot-masters.github.io/customer-segmentation/).**
