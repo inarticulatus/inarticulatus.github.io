@@ -1,3 +1,3 @@
-export const SITE_TITLE = 'Utkarsh Tripathi — Verifiable LLM Output & AI Evaluation';
+export const SITE_TITLE = 'Utkarsh Tripathi — I make AI show its work';
 export const SITE_DESCRIPTION =
-	'Utkarsh Tripathi — founder & CTO of Craton Labs. I make LLM output in regulated financial workflows verifiable and measurable: citation-backed RAG, evaluation harnesses measuring claim-level grounding and unsupported-claim rate, and audit trails reviewers accept. Data engineering and ML across BFSI.';
+	'LLM output that can be checked: every claim traced to its source, measured for grounding and unsupported statements, and logged so a reviewer or auditor can follow the reasoning. Founder and CTO of Craton Labs, a BFSI tech-compliance company. Data engineering and ML across banking and insurance.';
