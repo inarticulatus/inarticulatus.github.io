@@ -1,3 +1,3 @@
 export const SITE_TITLE = 'Utkarsh Tripathi — I make AI show its work';
 export const SITE_DESCRIPTION =
-	'LLM output that can be checked: every claim traced to its source, measured for grounding and unsupported statements, and logged so a reviewer or auditor can follow the reasoning. Founder and CTO of Craton Labs, a BFSI tech-compliance company. Data engineering and ML across banking and insurance.';
+	'LLM output that can be checked: every claim traced to its source, measured for grounding and unsupported statements, and logged so a reviewer or auditor can follow the reasoning. Founder and CTO of MantaSol, a BFSI tech-compliance company. Data engineering and ML across banking and insurance.';
