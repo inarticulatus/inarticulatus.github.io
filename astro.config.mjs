@@ -13,7 +13,14 @@ export default defineConfig({
   site: 'https://utkarshtripathi.com',
   base: '/',
   // trailingSlash: "always",
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    sitemap({
+      // Old slug redirect stub: keep it out of the sitemap so only the
+      // canonical /projects/mantasol/ URL is advertised to crawlers.
+      filter: (page) => !page.includes('/projects/craton-labs/'),
+    }),
+  ],
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex],
