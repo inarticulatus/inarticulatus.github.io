@@ -1,3 +1,3 @@
-export const SITE_TITLE = 'Utkarsh Tripathi — Portfolio';
+export const SITE_TITLE = 'Utkarsh Tripathi — Verifiable LLM Output & AI Evaluation';
 export const SITE_DESCRIPTION =
-	'Portfolio of Utkarsh Tripathi — data engineering projects, ML research, and professional experience.';
+	'Utkarsh Tripathi — founder & CTO of Craton Labs. I make LLM output in regulated financial workflows verifiable and measurable: citation-backed RAG, evaluation harnesses measuring claim-level grounding and unsupported-claim rate, and audit trails reviewers accept. Data engineering and ML across BFSI.';

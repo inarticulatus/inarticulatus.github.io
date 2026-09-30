@@ -1,15 +1,37 @@
 ---
 import "../styles/global.css";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 ---
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="author" content="Utkarsh Tripathi" />
-<meta name="keywords" content="Data Engineer, Data Science, ML, Python, Portfolio" />
+<meta name="keywords" content="LLM Evaluation, RAG Evaluation, AI Assurance, AI Governance, Verifiable LLM Output, AI Compliance, Financial Services, Data Engineer, Machine Learning, Python, Portfolio" />
+
+<!-- Title & description (overridable per page) -->
+<title>{Astro.props.title ? `${Astro.props.title} — Utkarsh Tripathi` : SITE_TITLE}</title>
+<meta name="description" content={Astro.props.description ?? SITE_DESCRIPTION} />
+<link rel="canonical" href={canonical} />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Utkarsh Tripathi" />
+<meta property="og:title" content={Astro.props.title ? `${Astro.props.title} — Utkarsh Tripathi` : SITE_TITLE} />
+<meta property="og:description" content={Astro.props.description ?? SITE_DESCRIPTION} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={new URL("/favicons/favicon.svg", Astro.site ?? Astro.url)} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={Astro.props.title ? `${Astro.props.title} — Utkarsh Tripathi` : SITE_TITLE} />
+<meta name="twitter:description" content={Astro.props.description ?? SITE_DESCRIPTION} />
 
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+<link rel="sitemap" href="/sitemap-index.xml" />
 <meta name="theme-color" content="#1a1a2e">
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
