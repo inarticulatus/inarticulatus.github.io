@@ -1,13 +1,15 @@
 ---
 title: 'Document In, Cited Output Out: A Pipeline Where Every Cell Links to Its Source'
 description: 'An extraction pipeline for regulated documents where every value in the output grid carries a citation back to the document that produced it — and a verification layer that decides whether a value is allowed to stand'
-pubDate: 'Oct 02 2026'
+pubDate: 'Oct 01 2026'
 heroImage: '../../assets/blog-placeholder-2.jpg'
 category:
     - projects
     - AI engineering
     - data engineering
 ---
+
+Built with BFSI documents in mind: regulatory circulars, policy wordings and compliance filings, where a reviewer has to be able to sign off every figure.
 
 ## The Problem: A Grid of Numbers Nobody Can Check
 
@@ -21,9 +23,9 @@ provenance question is lost.
 
 The specific failure I kept designing against: an extraction pipeline that is
 *accurate on average* and completely silent about which rows are wrong. A 96% accurate
-grid is not the same artefact as a grid where 96% of rows cite a verifiable source
-and the remaining 4% are flagged before anyone relies on them. The second one can be
-signed off. The first one cannot.
+grid (illustrative figures) is not the same artefact as a grid where 96% of rows cite
+a verifiable source and the remaining 4% are flagged before anyone relies on them.
+The second one can be signed off. The first one cannot.
 
 ## The Constraint That Drove Everything
 
@@ -40,7 +42,7 @@ whose output depends on uncontrolled model state.
 
 **3. Tenant isolation has to be structural.** Not enforced in application code, which
 is one forgotten `WHERE` clause away from a cross-tenant leak. Structural means the
-storage and compute boundaries themselves carry the tenant.
+database itself enforces the tenant boundary on every row.
 
 ## The Design
 
@@ -54,6 +56,28 @@ source text that produced it.
 That inversion is the whole design. It means the citation cannot be lost downstream,
 because the citation and the value are the same object. A row cannot exist without
 its source attached, because there is no representation of a row that omits one.
+
+### The cited-value record
+
+The unit that everything is built around. A row in the grid is a projection of one
+of these; the record is the source of truth:
+
+```
+cited_value
+  value          the extracted value, typed (string | number | date | enum)
+  source_span    character offsets into the document: [start, end]
+  source_text    the exact substring, stored rather than re-derived
+  document_id    which document this came from
+  page           page number, so a reviewer can navigate to it
+  field_key      which field of the schema this answers
+  run_fingerprint  ties the value to the inputs and config that produced it
+  verification   Tier 1 verdict: pass | flag, with the rule that produced it
+```
+
+Two details are load-bearing. `source_text` is stored rather than re-extracted on
+read, so what the reviewer sees is what the rule checked — not a second pass that
+might differ. And `verification` travels with the value, so a flagged value cannot
+be rendered as a clean cell by a downstream consumer that forgets to check.
 
 ### Fingerprint-locked reproducibility
 
@@ -80,6 +104,10 @@ Tenancy is enforced at the row level, with the tenant key carried through every
 stage. The consequence that matters: a query that forgets to filter by tenant returns
 nothing rather than another tenant's rows. Failing closed is the only acceptable
 default for this data.
+
+I test this rather than assume it. Row-level security is verified by attempting reads
+as a second tenant against the first tenant's rows and asserting an empty result, so
+a policy regression fails a test instead of passing review.
 
 ## Verification
 
@@ -123,9 +151,9 @@ Worth being explicit, because these define where the system is not useful yet:
 1. **Tier 1 is mechanical.** It verifies that a value matches its cited span. It
    does not verify that the span is the *right* span.
 2. **No numeric results published**, for the reason above.
-3. **The "planner" exists ahead of the plan.** The design anticipates tiers that are
-   not built. Nothing in this write-up should be read as a description of a
-   completed system beyond Tier 1.
+3. **Design ahead of build.** The design anticipates verification tiers beyond
+   Tier 1; those are roadmap, not capability. Nothing in this write-up should be
+   read as a description of a completed system beyond Tier 1.
 
 ## Why This Design
 
@@ -139,3 +167,29 @@ policy; tenant isolation in the storage boundary is a property.
 The goal is not that the pipeline produces a grid. It is that a reviewer can
 establish, for any given cell, exactly where it came from — without trusting the
 system that produced it.
+
+## Working With Me
+
+This is MantaSol work, and the engagements are scoped as fixed pieces rather than
+open-ended retainers.
+
+**Single-system audit — the entry point.** You send one document set or one LLM
+feature. I establish what "supported" means for that system, run the evaluation,
+and hand back a severity-ranked findings list with the evidence behind each finding.
+Small enough to approve without procurement.
+
+**Evaluation layer build.** The cited extraction pipeline, or an evaluation harness
+for an existing system: claim-level grounding, unsupported-claim rate, citation
+coverage, traceability to source and version, adversarial and prompt-injection
+testing. Built to run against your data, with the harness documented so your team
+owns it afterwards.
+
+**Ongoing assurance — the retainer.** A monthly pass over new material or changed
+systems, on the same measures, so the evidence a reviewer needs is current rather
+than reconstructed under deadline.
+
+**Advisory, documentation and technical testing. Not a legal opinion, and not a
+conformity assessment, certification or attestation under any regulatory regime.**
+I produce the evidence; your compliance function decides what it means.
+
+Email: [utkarsh1999tripathi@gmail.com](mailto:utkarsh1999tripathi@gmail.com)
