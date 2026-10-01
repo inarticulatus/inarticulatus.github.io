@@ -8,7 +8,11 @@ const categories = Array.isArray(data.category)
 : [data.category.toLowerCase()];
 return categories.includes('project') || categories.includes('projects');
 });
-const limitedEntries = posts.slice(0, 3);
+// Lead with the BFSI case studies, then the strongest engineering write-ups.
+const FEATURED = ['cited-extraction-pipeline', 'llm-claim-grounding'];
+const featuredEntries = FEATURED.map(id => posts.find(p => p.id === id)).filter(Boolean);
+const rest = posts.filter(p => !FEATURED.includes(p.id));
+const limitedEntries = [...featuredEntries, ...rest].slice(0, 3);
 ---
 
 <section class="border-b border-black/20 divide-y divide-black/20">
@@ -17,7 +21,8 @@ const limitedEntries = posts.slice(0, 3);
   </SectionTitle>
   <div class="p-8">
     <p class="text-black/80 font-black uppercase lg:text-xl">
-      End-to-end data systems built for scale; <em>from real-time pipelines to ML-powered applications.</em>
+      Data engineering and applied ML for banks, insurers and fintechs. <em>Evaluation
+      and assurance on top, so the output holds up to a reviewer.</em>
     </p>
   </div>
 
@@ -46,5 +51,17 @@ const limitedEntries = posts.slice(0, 3);
       </p>
     </a>
     )})}
+  </div>
+
+  <div class="p-8 border-t border-black/10">
+    <a href="/about/" class="text-cyan text-sm font-mono uppercase underline underline-offset-4">
+      Working with me &rarr;
+    </a>
+    <p class="text-black/70 text-sm mt-2">
+      Single-system evaluation, an evaluation harness build, or a monthly assurance
+      pass. Advisory, documentation and technical testing &mdash; not a legal opinion,
+      and not a conformity assessment, certification or attestation under any
+      regulatory regime.
+    </p>
   </div>
 </section>

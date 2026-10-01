@@ -8,6 +8,13 @@ category:
     - projects
 ---
 
+**Scope: this is a self-directed build on synthetic data.** No production traffic and
+no real user behaviour is involved. The catalogue and clickstream volumes below are
+generated to exercise the architecture at a realistic scale, so treat the numbers as
+design targets the system was built to meet rather than measured production results.
+No accuracy or uplift figure is published, because none was validated against real
+outcomes.
+
 ## The Challenge
 
 How do you recommend products to millions of users in real-time while processing terabytes of clickstream data daily? This project tackles exactly that — building a production-grade recommendation system that handles both historical batch processing and real-time personalization.
@@ -26,8 +33,8 @@ I implemented a classic **Two-Stage** approach used by companies like YouTube an
 
 ### Stage 1: Candidate Retrieval
 - **Two-Tower Neural Network**: Separate embeddings for users and items
-- **Vector Database (Milvus)**: Serves 1M+ item embeddings with sub-10ms latency
-- **Output**: ~100 candidate items from 1M+ catalog
+- **Vector Database (Milvus)**: Designed to serve 1M+ item embeddings with sub-10ms latency
+- **Output**: ~100 candidate items from a 1M+ catalogue
 
 ### Stage 2: Ranking
 - **DeepFM**: Deep Factorization Machines combining wide (memorization) and deep (generalization) learning

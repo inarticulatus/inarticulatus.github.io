@@ -4,6 +4,7 @@ description: 'Claim-level grounding, unsupported-claim rate, and adversarial tes
 pubDate: 'Oct 01 2026'
 heroImage: '../../assets/blog-placeholder-1.jpg'
 category:
+    - projects
     - AI engineering
     - LLM evaluation
 ---
