@@ -192,4 +192,4 @@ than reconstructed under deadline.
 conformity assessment, certification or attestation under any regulatory regime.**
 I produce the evidence; your compliance function decides what it means.
 
-Email: [utkarsh1999tripathi@gmail.com](mailto:utkarsh1999tripathi@gmail.com)
+Email: [utkarsh@craton-labs.com](mailto:utkarsh@craton-labs.com)

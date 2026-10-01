@@ -62,133 +62,49 @@
 
 @keyframes typing {
 
-  /* Phase 1: Type "scientist" */
+  /* Phase 1: Type "engineer" */
   0% {
     content: "";
   }
 
   2% {
-    content: "s";
-  }
-
-  4% {
-    content: "sc";
-  }
-
-  6% {
-    content: "sci";
-  }
-
-  8% {
-    content: "scie";
-  }
-
-  10% {
-    content: "scien";
-  }
-
-  12% {
-    content: "scient";
-  }
-
-  14% {
-    content: "scienti";
-  }
-
-  16% {
-    content: "scientis";
-  }
-
-  18% {
-    content: "scientist";
-  }
-
-  /* Phase 2: Hold "scientist" */
-  35% {
-    content: "scientist";
-  }
-
-  /* Phase 3: Erase "scientist" fully */
-  36% {
-    content: "scientis";
-  }
-
-  37% {
-    content: "scienti";
-  }
-
-  38% {
-    content: "scient";
-  }
-
-  39% {
-    content: "scien";
-  }
-
-  40% {
-    content: "scie";
-  }
-
-  41% {
-    content: "sci";
-  }
-
-  42% {
-    content: "sc";
-  }
-
-  43% {
-    content: "s";
-  }
-
-  44% {
-    content: "";
-  }
-
-  /* Brief pause */
-  46% {
-    content: "";
-  }
-
-  /* Phase 4: Type "engineer" */
-  48% {
     content: "e";
   }
 
-  50% {
+  4% {
     content: "en";
   }
 
-  52% {
+  6% {
     content: "eng";
   }
 
-  54% {
+  8% {
     content: "engi";
   }
 
-  56% {
+  10% {
     content: "engin";
   }
 
-  58% {
+  12% {
     content: "engine";
   }
 
-  60% {
+  14% {
     content: "enginee";
   }
 
-  62% {
+  16% {
     content: "engineer";
   }
 
-  /* Phase 5: Hold "engineer" */
+  /* Phase 2: Hold "engineer" */
   85% {
     content: "engineer";
   }
 
-  /* Phase 6: Erase "engineer" fully */
+  /* Phase 3: Erase "engineer" fully */
   86% {
     content: "enginee";
   }
@@ -217,7 +133,8 @@
     content: "e";
   }
 
-  93% {
+  94%,
+  100% {
     content: "";
   }
 
@@ -271,7 +188,7 @@
 
   @keyframes sequencePopup {
     45% {
-      content: "Scientist";
+      content: "Engineer";
     }
 
     80% {

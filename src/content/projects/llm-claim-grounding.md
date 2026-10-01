@@ -98,7 +98,7 @@ same conclusion on, reported alongside the metric rather than buried. A groundin
 rate of 0.92 means nothing without knowing the judge agrees with a human at what
 rate on this kind of material.
 
-> **To be completed:** the specific judge, calibration set size and agreement rate
+> **Not published:** the specific judge, calibration set size and agreement rate
 > for this setup are not published here, because I do not have independently
 > verified figures for them. A judge-agreement number I cannot defend would weaken
 > exactly the claim this page is making — that the measurement is auditable.
@@ -199,4 +199,4 @@ than reconstructed under deadline.
 conformity assessment, certification or attestation under any regulatory regime.**
 I produce the evidence; your compliance function decides what it means.
 
-Email: [utkarsh1999tripathi@gmail.com](mailto:utkarsh1999tripathi@gmail.com)
+Email: [utkarsh@craton-labs.com](mailto:utkarsh@craton-labs.com)

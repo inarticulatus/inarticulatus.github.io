@@ -8,6 +8,12 @@ category:
     - software engineering
 ---
 
+**Scope: this is a design and prototype write-up.** The system below was designed
+and built as a proof of concept to test the store-and-forward approach under real
+connectivity constraints. It was not deployed as production railway
+infrastructure, and the ground-station network described is part of the design, not
+an installation I operated.
+
 ## The Problem: 740km of Darkness
 
 Indian Railways runs the Konkan route: 740km through the Western Ghats, 91 tunnels, between Mumbai and Mangalore. LTE does not exist for stretches lasting hours.
