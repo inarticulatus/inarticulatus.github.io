@@ -170,7 +170,7 @@ system that produced it.
 
 ## Working With Me
 
-This is MantaSol work, and the engagements are scoped as fixed pieces rather than
+This is Craton Labs work (legally Manta Solutions Private Limited), and the engagements are scoped as fixed pieces rather than
 open-ended retainers.
 
 **Single-system audit — the entry point.** You send one document set or one LLM

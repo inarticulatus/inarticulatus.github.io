@@ -17,8 +17,9 @@ export default defineConfig({
     mdx(),
     sitemap({
       // Old slug redirect stub: keep it out of the sitemap so only the
-      // canonical /projects/mantasol/ URL is advertised to crawlers.
-      filter: (page) => !page.includes('/projects/craton-labs/'),
+      // /projects/mantasol/ is a legacy redirect to the canonical
+      // /projects/craton-labs/ URL and must not be advertised to crawlers.
+      filter: (page) => !page.includes('/projects/mantasol/'),
     }),
   ],
   markdown: {

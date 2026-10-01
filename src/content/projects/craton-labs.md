@@ -19,7 +19,7 @@ Every RAG tutorial shows the same thing: ingest some PDFs, embed them, query wit
 
 A generic RAG implementation has no good answers to any of these. That's not a gap you patch with a feature. It's an architectural constraint that has to be built from day one.
 
-This post is about the RAG system I built for MantaSol — a compliance-ready AI engine for regulated professional services firms. The retrieval architecture matters, but it's not the differentiator. The differentiator is everything around it.
+This post is about the RAG system I built for Craton Labs (legally Manta Solutions Private Limited) — a compliance-ready AI engine for regulated professional services firms. The retrieval architecture matters, but it's not the differentiator. The differentiator is everything around it.
 
 ## Architecture Overview
 
