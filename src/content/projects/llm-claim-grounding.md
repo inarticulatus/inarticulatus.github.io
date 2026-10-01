@@ -8,6 +8,10 @@ category:
     - LLM evaluation
 ---
 
+Built with BFSI documents in mind: regulatory circulars, policy wordings and compliance
+filings, where a reviewer has to be able to sign off every figure and every sentence
+that asserts one.
+
 ## The Measurement That Gets Skipped
 
 Ask whether an LLM output is reliable and you usually get a confidence score, a
