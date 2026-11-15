@@ -1,0 +1,46 @@
+---
+import BgGrid from "../../components/assets/BgGrid.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const trackers = [
+  {
+    href: "/learn/frontier-ai/",
+    title: "Frontier AI & Systems Engineering",
+    kind: "4-week study tracker",
+    blurb: "A week-by-week plan with daily checklists and progress saved in your browser.",
+  },
+  {
+    href: "/learn/rl-environments/",
+    title: "RL Environment Engineering Workbook",
+    kind: "Hands-on workbook",
+    blurb: "Build and harden RL training environments, with code blocks and a per-section checklist.",
+  },
+];
+---
+
+<BaseLayout>
+  <section class="border-black/20 border-b divide-y divide-black/20">
+    <div class="p-8 relative bg-grid">
+      <BgGrid />
+      <h1 class="text-black tracking-tighter font-black uppercase text-3xl md:text-5xl lg:text-8xl relative">
+        <span class="px-2 bg-orange text-white">Learn</span>
+      </h1>
+    </div>
+    <div class="p-8">
+      <p class="text-black font-black uppercase lg:text-xl">
+        Study trackers and workbooks I use myself. Progress is stored locally in your browser.
+      </p>
+    </div>
+    <ul class="divide-y divide-black/20">
+      {trackers.map((t) => (
+        <li>
+          <a href={t.href} class="block p-8 hover:bg-orange/10 duration-200">
+            <p class="text-orange font-black uppercase text-sm">{t.kind}</p>
+            <h2 class="text-black font-black uppercase text-2xl md:text-3xl tracking-tight">{t.title}</h2>
+            <p class="mt-2 text-black/70">{t.blurb}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
