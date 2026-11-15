@@ -13,7 +13,7 @@ import BgGrid from "../assets/BgGrid.astro";
       <br>
       I'm <span class="bg-orange px-4 text-white">Utkarsh Tripathi</span>
       <br>
-      <span class="text-orange">Data</span> <span class="typewriter text-orange"></span>
+      <span class="text-orange">Data</span> <span class="typewriter text-orange" data-words='["engineer","scientist"]'>engineer</span>
     </h1>
   </div>
   <div class="px-8 pb-8 space-y-4 max-w-3xl">
@@ -36,5 +36,50 @@ import BgGrid from "../assets/BgGrid.astro";
       I favour well-defined repeatable workflows over open-ended agents, because auditability depends on
       the path being specified rather than improvised.
     </p>
+    <p class="text-black/70 text-sm lg:text-base leading-relaxed">
+      <strong class="text-black">Current focus:</strong> AI sandboxing, RLHF and post-training, and AI
+      performance optimization. <a href="#focus" class="text-cyan underline underline-offset-4">See the details</a>.
+    </p>
   </div>
 </section>
+
+<script>
+  // Types each word, holds, erases, then moves on. The server-rendered word is the
+  // fallback for no-JS and reduced-motion users, so nothing is empty or shifts.
+  const el = document.querySelector<HTMLElement>(".typewriter");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (el && !reduce) {
+    const words: string[] = JSON.parse(el.dataset.words ?? "[]");
+    const TYPE_MS = 90;
+    const ERASE_MS = 45;
+    const HOLD_MS = 2200;
+    const GAP_MS = 350;
+    let w = 0;
+    let i = el.textContent!.length;
+
+    const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+    const run = async () => {
+      if (words.length < 2) return;
+      await wait(HOLD_MS);
+      for (;;) {
+        el.classList.add("typing");
+        while (i > 0) {
+          el.textContent = words[w].slice(0, --i);
+          await wait(ERASE_MS);
+        }
+        await wait(GAP_MS);
+        w = (w + 1) % words.length;
+        while (i < words[w].length) {
+          el.textContent = words[w].slice(0, ++i);
+          await wait(TYPE_MS);
+        }
+        el.classList.remove("typing");
+        await wait(HOLD_MS);
+      }
+    };
+
+    run();
+  }
+</script>

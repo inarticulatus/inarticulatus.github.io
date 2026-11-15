@@ -57,95 +57,10 @@
 }
 
 /* =============================================================================
-   TYPEWRITER ANIMATION
+   TYPEWRITER (text is driven by the script in Hero.astro; CSS only draws the caret)
    ============================================================================= */
 
-@keyframes typing {
-
-  /* Phase 1: Type "engineer" */
-  0% {
-    content: "";
-  }
-
-  2% {
-    content: "e";
-  }
-
-  4% {
-    content: "en";
-  }
-
-  6% {
-    content: "eng";
-  }
-
-  8% {
-    content: "engi";
-  }
-
-  10% {
-    content: "engin";
-  }
-
-  12% {
-    content: "engine";
-  }
-
-  14% {
-    content: "enginee";
-  }
-
-  16% {
-    content: "engineer";
-  }
-
-  /* Phase 2: Hold "engineer" */
-  85% {
-    content: "engineer";
-  }
-
-  /* Phase 3: Erase "engineer" fully */
-  86% {
-    content: "enginee";
-  }
-
-  87% {
-    content: "engine";
-  }
-
-  88% {
-    content: "engin";
-  }
-
-  89% {
-    content: "engi";
-  }
-
-  90% {
-    content: "eng";
-  }
-
-  91% {
-    content: "en";
-  }
-
-  92% {
-    content: "e";
-  }
-
-  94%,
-  100% {
-    content: "";
-  }
-
-  /* Brief pause before loop */
-  100% {
-    content: "";
-  }
-}
-
 @keyframes blink {
-
   0%,
   100% {
     opacity: 1;
@@ -156,49 +71,22 @@
   }
 }
 
-/* Typewriter Component */
-.typewriter {
-  --caret: currentcolor;
-}
-
-.typewriter::before {
-  content: "";
-  animation: typing 10s infinite;
-}
-
 .typewriter::after {
   content: "";
-  border-right: 1px solid var(--caret);
-  animation: blink 0.5s linear infinite;
+  border-right: 0.08em solid currentcolor;
+  margin-left: 0.04em;
+  animation: blink 1s steps(1) infinite;
 }
 
-.typewriter.thick::after {
-  border-right: 1ch solid var(--caret);
+.typewriter.typing::after {
+  animation: none;
+  opacity: 1;
 }
 
-.typewriter.nocaret::after {
-  border-right: 0;
-}
-
-/* Reduced Motion: Static fallback */
-@media (prefers-reduced-motion) {
+@media (prefers-reduced-motion: reduce) {
   .typewriter::after {
     animation: none;
-  }
-
-  @keyframes sequencePopup {
-    45% {
-      content: "Engineer";
-    }
-
-    80% {
-      content: "Engineer";
-    }
-  }
-
-  .typewriter::before {
-    content: "Scientist";
-    animation: sequencePopup 12s linear infinite;
+    border-right: 0;
   }
 }
 
@@ -216,4 +104,4 @@ button {
 ::selection {
   background: #e85a4f;
   color: #faf8f5;
-}
+}
