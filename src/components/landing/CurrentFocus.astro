@@ -6,21 +6,21 @@ const focus = [
   {
     label: "AI sandboxing",
     title: "Safe execution for coding agents",
-    body: "Air-gapped containers, anti-tamper verifiers, seccomp and cgroup limits, and pass-to-pass / fail-to-pass tests that catch reward hacking.",
+    body: "Containers and verifiers that coding agents can't escape or game.",
     href: "/learn/rl-environments/",
     cta: "RL environment workbook",
   },
   {
     label: "RLHF & post-training",
     title: "Reward signals you can trust",
-    body: "PPO, GRPO and DPO from first principles, verifiable rewards, and diagnosing KL spikes and reward hacking.",
+    body: "PPO, GRPO and DPO, and verifiable rewards that resist hacking.",
     href: "/learn/frontier-ai/",
     cta: "Frontier AI study tracker",
   },
   {
     label: "AI optimization",
     title: "Faster, cheaper inference and training",
-    body: "GPU kernels in Triton and CUDA, roofline analysis, KV-cache and ZeRO memory math, and serving large models efficiently.",
+    body: "GPU kernels, memory math and efficient serving of large models.",
     href: "/learn/frontier-ai/",
     cta: "Frontier AI study tracker",
   },
@@ -31,12 +31,6 @@ const focus = [
   <SectionTitle>
     Current Focus
   </SectionTitle>
-  <div class="p-8">
-    <p class="text-black/80 font-black uppercase lg:text-xl">
-      Going deeper on the systems underneath trustworthy AI: how agents are contained, trained and made fast.
-    </p>
-  </div>
-
   <div class="grid grid-cols-1 md:grid-cols-3">
     {focus.map((item) => (
       <a
@@ -53,10 +47,7 @@ const focus = [
 
   <div class="p-8">
     <a href="/learn/" class="text-cyan text-sm font-mono uppercase underline underline-offset-4">
-      See how I'm studying it &rarr;
+      Follow along: my open study trackers &rarr;
     </a>
-    <p class="text-black/70 text-sm mt-2">
-      Two open study trackers with a day-by-day plan, reference sheets and self-checks.
-    </p>
   </div>
 </section>

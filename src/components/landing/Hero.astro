@@ -6,40 +6,31 @@ import BgGrid from "../assets/BgGrid.astro";
 <section class="border-black/20 border-b">
   <div class="p-8 relative">
     <BgGrid />
-    <!-- <Banner /> -->
     <h1
       class="text-black/70 tracking-tighter font-black uppercase text-3xl md:text-5xl lg:text-8xl relative leading-[1.2]">
-      Hello!
+      <span class="bg-orange px-4 text-white">Utkarsh Tripathi</span>
       <br>
-      I'm <span class="bg-orange px-4 text-white">Utkarsh Tripathi</span>
-      <br>
-      <span class="text-orange">Data</span> <span class="typewriter text-orange" data-words='["engineer","scientist"]'>engineer</span>
+      I make AI show its work
     </h1>
   </div>
-  <div class="px-8 pb-8 space-y-4 max-w-3xl">
-    <p class="text-black/80 font-black uppercase lg:text-3xl">
-      I make AI<br>
-      show its work<br>
-      <span class="text-base lg:text-xl normal-case font-bold text-black/60">
-        Data engineering and applied ML for banks, insurers and fintechs.
-      </span>
+  <div class="px-8 pb-8 space-y-6">
+    <p class="text-black/60 font-bold lg:text-xl">
+      Founder &amp; CTO, Craton Labs &middot; verifiable AI for banks, insurers and fintechs
     </p>
-    <p class="text-black/70 text-sm lg:text-lg leading-relaxed">
-      LLM output that can be checked: every claim traced to its source, measured for grounding and
-      unsupported statements, and logged so a reviewer or auditor can follow the reasoning. Built for
-      regulated financial workflows, where a confident wrong answer is the expensive failure.
+    <p class="font-black uppercase text-xl md:text-3xl lg:text-5xl tracking-tight leading-tight">
+      <span class="block text-sm lg:text-base font-mono font-medium text-black/50 tracking-normal mb-1">Now going deep on</span>
+      <span class="typewriter text-orange" data-words='["AI sandboxing","RLHF","AI optimization"]'>AI sandboxing</span>
     </p>
-    <p class="text-black/70 text-sm lg:text-base leading-relaxed">
-      Founder &amp; CTO of <strong class="text-black">Craton Labs</strong> (Manta Solutions Private Limited), a BFSI tech-compliance company
-      focused on the safe use of AI agents and LLMs in financial services. Before that: data engineering
-      and ML across banking, insurance and edge systems — pipelines, streaming, and analytics at scale.
-      I favour well-defined repeatable workflows over open-ended agents, because auditability depends on
-      the path being specified rather than improvised.
-    </p>
-    <p class="text-black/70 text-sm lg:text-base leading-relaxed">
-      <strong class="text-black">Current focus:</strong> AI sandboxing, RLHF and post-training, and AI
-      performance optimization. <a href="#focus" class="text-cyan underline underline-offset-4">See the details</a>.
-    </p>
+    <div class="flex flex-wrap gap-3">
+      <a href="#focus"
+        class="uppercase font-black text-sm px-4 py-2 bg-orange text-white border-2 border-orange hover:bg-white hover:text-orange">
+        Current focus &darr;
+      </a>
+      <a href="/projects/"
+        class="uppercase font-black text-sm px-4 py-2 border-2 border-black/80 text-black hover:bg-black hover:text-white">
+        Case studies &rarr;
+      </a>
+    </div>
   </div>
 </section>
 
