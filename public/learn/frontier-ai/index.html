@@ -21,53 +21,55 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
     <style>
         :root {
-            /* Default Warm Stone / Paper Light Theme */
-            --bg-page: #F8F7F4;
-            --bg-surface: #FFFFFF;
-            --bg-subtle: #F1EFEA;
-            --bg-hover: #EAE7DF;
-            --bg-done: #EBF3EE;
-            --bg-active-row: #FDF8F2;
-            --text-main: #1C1E21;
-            --text-secondary: #4E535A;
-            --text-muted: #7B818A;
-            --border-color: #E2E0D8;
-            --border-strong: #C6C3B8;
-            --accent-sage: #3D6B58;
-            --accent-sage-bg: #E3EFEA;
-            --accent-ochre: #B86B35;
-            --accent-ochre-bg: #F9ECE2;
-            --accent-teal: #2B5B6C;
-            --accent-teal-bg: #E4EFF3;
-            --accent-danger: #A63A32;
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-            --radius: 4px;
+            /* Site palette (utkarshtripathi.com): warm cream, charcoal, coral, teal */
+            --bg-page: #faf8f5;
+            --bg-surface: #fdfcfa;
+            --bg-subtle: #f5f3f0;
+            --bg-hover: #f9eee9;
+            --bg-done: #eaf5f3;
+            --bg-active-row: #fdf1ee;
+            --text-main: #2d2d2d;
+            --text-secondary: #57534d;
+            --text-muted: #8b8578;
+            --border-color: #e4e0d9;
+            --border-strong: #2d2d2d;
+            --accent-sage: #2a9d8f;
+            --accent-sage-bg: #e3f2ef;
+            --accent-ochre: #e85a4f;
+            --accent-ochre-bg: #fbe8e5;
+            --accent-teal: #2a9d8f;
+            --accent-teal-bg: #e3f2ef;
+            --accent-danger: #c0392b;
+            --grid-line: rgba(139, 133, 120, 0.08);
+            --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            --radius: 0px;
         }
 
         html.dark {
-            /* Contrasted Dark Slate Theme */
-            --bg-page: #141619;
-            --bg-surface: #1C1F24;
-            --bg-subtle: #23272E;
-            --bg-hover: #282D35;
-            --bg-done: #182620;
-            --bg-active-row: #26211B;
-            --text-main: #ECEEEF;
-            --text-secondary: #A6ACB4;
-            --text-muted: #6E7681;
-            --border-color: #2A2E35;
-            --border-strong: #3E444E;
-            --accent-sage: #56947A;
-            --accent-sage-bg: #1E332A;
-            --accent-ochre: #D4844A;
-            --accent-ochre-bg: #332419;
-            --accent-teal: #5294AB;
-            --accent-teal-bg: #1B2E36;
-            --accent-danger: #D1584E;
+            --bg-page: #1d1c1a;
+            --bg-surface: #232220;
+            --bg-subtle: #2a2926;
+            --bg-hover: #33292a;
+            --bg-done: #1c2d2a;
+            --bg-active-row: #33231f;
+            --text-main: #f2efe9;
+            --text-secondary: #bdb7ad;
+            --text-muted: #8b8578;
+            --border-color: #393733;
+            --border-strong: #f2efe9;
+            --accent-sage: #45b8a9;
+            --accent-sage-bg: #1e3532;
+            --accent-ochre: #f07267;
+            --accent-ochre-bg: #3a2421;
+            --accent-teal: #45b8a9;
+            --accent-teal-bg: #1e3532;
+            --accent-danger: #e5675a;
+            --grid-line: rgba(242, 239, 233, 0.05);
         }
 
         * {
@@ -88,7 +90,7 @@
 
         /* Layout Containers */
         .app-shell {
-            max-width: 1520px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 0 20px 64px;
         }
@@ -110,7 +112,7 @@
         }
 
         .header-inner {
-            max-width: 1520px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 10px 20px;
             display: flex;
@@ -273,7 +275,7 @@
             align-items: center;
         }
 
-        @media (max-width: 1120px) {
+        @media (max-width: 1279px) {
             .summary-banner {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -893,7 +895,7 @@
             font-size: 11px;
         }
         .site-bar-inner {
-            max-width: 1520px; margin: 0 auto; padding: 6px 20px;
+            max-width: 1280px; margin: 0 auto; padding: 6px 20px;
             display: flex; justify-content: space-between; align-items: center; gap: 12px;
         }
         .site-bar a { color: var(--text-secondary); text-decoration: none; letter-spacing: 0.02em; }
@@ -980,6 +982,123 @@
             html.dark { color-scheme: light; }
         }
 
+
+        /* ================= Site theme layer ================= */
+        body { font-size: 14px; }
+        .site-nav { border-bottom: 1px solid var(--border-color); background: var(--bg-page); }
+        .site-nav-inner {
+            max-width: 1280px; margin: 0 auto; padding: 18px 20px;
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px;
+        }
+        .site-name {
+            font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; font-size: 18px;
+            color: var(--text-main); text-decoration: none;
+        }
+        .site-links { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+        .site-links a {
+            font-weight: 900; text-transform: uppercase; font-size: 13px; color: var(--text-main);
+            text-decoration: none; text-underline-offset: 6px;
+        }
+        .site-links a:hover, .site-links a.current {
+            text-decoration: underline; text-decoration-thickness: 4px; text-decoration-color: var(--accent-ochre);
+        }
+
+        .page-hero {
+            border-bottom: 1px solid var(--border-color);
+            background-image:
+                repeating-linear-gradient(to right, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 6px),
+                repeating-linear-gradient(to bottom, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 6px);
+        }
+        .page-hero-inner { max-width: 1280px; margin: 0 auto; padding: 28px 20px 24px; }
+        .kicker {
+            font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em;
+            color: var(--accent-teal); text-decoration: underline; text-underline-offset: 4px;
+        }
+        .hero-title {
+            margin-top: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.04em;
+            font-size: clamp(30px, 6vw, 72px); line-height: 1.05; color: var(--text-main);
+        }
+        .hero-mark { background: var(--accent-ochre); color: #fff; padding: 0 0.15em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+        .hero-sub { margin-top: 12px; font-weight: 600; color: var(--text-secondary); font-size: 15px; }
+
+        .sticky-header { border-bottom: 1px solid var(--border-strong); }
+        .tab-btn { font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.02em; }
+        .tab-btn.active { background-color: var(--accent-ochre); color: #fff; box-shadow: none; }
+        .tab-btn.active .tab-count { background-color: rgba(255,255,255,0.22); color: #fff; }
+        .nav-tabs, .pill-group { background-color: transparent; }
+        .pill-btn { border: 1px solid transparent; }
+        .pill-btn.active { background-color: var(--accent-ochre); color: #fff; }
+        .pill-btn:hover:not(.active) { border-color: var(--border-color); }
+        .timer-readout { border-right-color: var(--border-color); }
+
+        .tools-menu { position: relative; }
+        .tools-summary {
+            list-style: none; display: inline-flex; align-items: center; gap: 6px;
+            border: 1px solid var(--border-color); background: var(--bg-surface);
+        }
+        .tools-summary::-webkit-details-marker { display: none; }
+        .tools-summary::after { content: "\25BE"; font-size: 10px; }
+        .tools-menu[open] .tools-summary { background: var(--text-main); color: var(--bg-page); }
+        .tools-panel {
+            position: absolute; right: 0; top: calc(100% + 6px); z-index: 60; min-width: 240px;
+            background: var(--bg-surface); border: 1px solid var(--border-strong);
+            display: flex; flex-direction: column; padding: 4px;
+        }
+        .menu-item {
+            text-align: left; background: none; border: none; cursor: pointer;
+            padding: 9px 12px; font-family: var(--font-sans); font-size: 13px; color: var(--text-main);
+        }
+        .menu-item:hover { background: var(--bg-hover); }
+        .menu-item.danger-text { color: var(--accent-danger); border-top: 1px solid var(--border-color); margin-top: 4px; }
+
+        .summary-banner { border-color: var(--border-color); }
+        .metric-label { text-transform: uppercase; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+        .metric-top { gap: 8px; }
+        .summary-banner > *, .header-controls > *, .filter-group > * { min-width: 0; }
+        .metric-val { white-space: nowrap; }
+        @media (min-width: 1280px) {
+            .summary-banner { grid-template-columns: 1.2fr repeat(4, 1fr) 1.5fr; }
+        }
+        @media (max-width: 640px) {
+            .summary-banner { grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+            .summary-banner > .metric-item:first-child, .summary-banner > .next-up-box { grid-column: 1 / -1; }
+            .nav-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+            .tab-btn { flex: 0 0 auto; }
+            .pill-group { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+            .pill-btn { white-space: nowrap; }
+            .filter-bar .filter-group { width: 100%; }
+            .header-controls { flex-wrap: nowrap; }
+            .header-controls .control-cluster { flex: 1 1 auto; min-width: 0; }
+            .timer-readout { min-width: 56px; padding: 5px 6px; }
+            .btn-tool { padding: 6px 7px; }
+        }
+        .metric-link { cursor: pointer; padding: 4px; margin: -4px; }
+        .metric-link:hover .metric-label { color: var(--accent-ochre); }
+        .bar-track { border-radius: 0; height: 8px; }
+        .next-up-box { border-left-color: var(--accent-ochre); }
+        .next-up-btn { color: var(--text-main); }
+        .next-up-btn:hover { color: var(--accent-ochre); }
+
+        .week-tag { background-color: var(--text-main); color: var(--bg-page); }
+        .week-name { font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; }
+        .section-title, .ref-card-title { font-family: var(--font-sans); font-weight: 900; letter-spacing: -0.01em; }
+        .section-title-bar { background-color: var(--bg-page); border-color: var(--border-color); }
+        .ref-card-head { background-color: var(--bg-page); }
+        .ref-card-tag { background-color: transparent; border: 1px solid var(--accent-teal); }
+        .code-block-wrap { border-left-color: var(--accent-ochre); }
+        .day-badge { font-family: var(--font-sans); font-weight: 900; text-transform: uppercase; }
+        .quick-row-btn { color: var(--accent-teal); }
+        table.data-table thead th { background-color: var(--bg-page); color: var(--text-main); }
+        @media (min-width: 1140px) {
+            table.data-table thead th { box-shadow: inset 0 -1px 0 var(--border-strong); }
+        }
+        @media (max-width: 640px) {
+            .site-nav-inner, .page-hero-inner { padding-left: 12px; padding-right: 12px; }
+            .site-nav-inner { padding-top: 12px; padding-bottom: 12px; }
+            .tools-panel { right: 0; left: auto; min-width: min(260px, calc(100vw - 24px)); }
+        }
+        @media print { .site-nav, .page-hero .kicker { display: none !important; } }
+
         .hidden {
             display: none !important;
         }
@@ -988,57 +1107,66 @@
 <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <div class="site-bar">
-        <div class="site-bar-inner">
-            <a href="/learn/">&larr; All study trackers</a>
-            <a href="/">utkarshtripathi.com</a>
+    <!-- Site navigation (matches utkarshtripathi.com) -->
+    <nav class="site-nav" aria-label="Site">
+        <div class="site-nav-inner">
+            <a href="/" class="site-name">Utkarsh Tripathi</a>
+            <div class="site-links">
+                <a href="/learn/" class="current">Learn</a>
+                <a href="/projects/">Projects &amp; Research</a>
+                <a href="/about/">About</a>
+            </div>
         </div>
-    </div>
+    </nav>
 
-    <!-- STICKY HEADER & NAVIGATION -->
+    <!-- Page hero -->
+    <section class="page-hero">
+        <div class="page-hero-inner">
+            <a href="/learn/" class="kicker">&larr; Learn &middot; 4-week study tracker</a>
+            <h1 class="hero-title">Frontier AI <span class="hero-mark">&amp; Systems</span></h1>
+            <p class="hero-sub">24 study days &middot; 3 tracks &middot; 5 hours a day &middot; a closed-book gate every Sunday</p>
+        </div>
+    </section>
+
+    <!-- STICKY TOOLBAR -->
     <header class="sticky-header" id="stickyHeader">
         <div class="header-inner">
-            <!-- Brand Title -->
-            <div class="brand-block">
-                <span class="brand-badge">4-WEEK SPEC</span>
-                <h1 class="brand-title">Frontier AI & Systems Study Tracker</h1>
-            </div>
-
-            <!-- Main View Navigation Tabs -->
             <nav class="nav-tabs" aria-label="Main Tabs" role="tablist">
                 <button type="button" onclick="switchTab('schedule')" id="tabBtn-schedule" role="tab" aria-controls="panel-schedule" class="tab-btn active">
-                    1. 24-Day Schedule <span id="tabBadge-schedule" class="tab-count">0/96</span>
+                    Schedule <span id="tabBadge-schedule" class="tab-count">0/96</span>
                 </button>
                 <button type="button" onclick="switchTab('resources')" id="tabBtn-resources" role="tab" aria-controls="panel-resources" class="tab-btn">
-                    2. Books, Papers & Gates <span id="tabBadge-resources" class="tab-count">0/12</span>
+                    Books, Papers &amp; Gates <span id="tabBadge-resources" class="tab-count">0/12</span>
                 </button>
                 <button type="button" onclick="switchTab('reference')" id="tabBtn-reference" role="tab" aria-controls="panel-reference" class="tab-btn">
-                    3. Systems Math & Sandbox Reference
+                    Reference Sheet
                 </button>
             </nav>
 
-            <!-- Study Timer & Utility Actions -->
             <div class="header-controls">
-                <!-- Pomodoro / Block Timer -->
-                <div class="control-cluster" title="Study Block Timer">
-                    <span id="timerDisplay" class="timer-readout">00:00</span>
-                    <button type="button" onclick="startStudyTimer(25)" class="btn-tool">25m</button>
-                    <button type="button" onclick="startStudyTimer(90)" class="btn-tool">90m</button>
-                    <button type="button" onclick="startStudyTimer(120)" class="btn-tool">120m</button>
+                <!-- Study block timer -->
+                <div class="control-cluster" role="group" aria-label="Study block timer">
+                    <span id="timerDisplay" class="timer-readout" aria-live="off">00:00</span>
+                    <button type="button" onclick="startStudyTimer(25)" class="btn-tool" title="Start a 25-minute block">25m</button>
+                    <button type="button" onclick="startStudyTimer(90)" class="btn-tool" title="Start a 90-minute block">90m</button>
+                    <button type="button" onclick="startStudyTimer(120)" class="btn-tool" title="Start a 120-minute block">120m</button>
                     <button type="button" onclick="pauseResumeTimer()" id="timerToggleBtn" class="btn-tool">Pause</button>
-                    <button type="button" onclick="clearStudyTimer()" class="btn-tool">Reset</button>
+                    <button type="button" onclick="clearStudyTimer()" class="btn-tool" title="Reset timer" aria-label="Reset timer">&#8634;</button>
                 </div>
 
-                <!-- Data Export / Theme -->
-                <div class="control-cluster">
-                    <button type="button" onclick="copyScheduleTSV()" class="btn-tool" title="Copy Tab-Separated Values for Google Sheets">Copy TSV</button>
-                    <button type="button" onclick="downloadScheduleCSV()" class="btn-tool" title="Download CSV Spreadsheet">CSV</button>
-                    <button type="button" onclick="exportBackupJSON()" class="btn-tool" title="Download JSON Backup">JSON↓</button>
-                    <button type="button" onclick="document.getElementById('importFileInput').click()" class="btn-tool" title="Restore JSON Backup">JSON↑</button>
-                    <input type="file" id="importFileInput" accept=".json" class="hidden" aria-label="Restore JSON backup" onchange="importBackupJSON(event)">
-                    <button type="button" onclick="handleResetProgress()" id="resetProgressBtn" class="btn-tool danger-text">Clear</button>
-                    <button type="button" onclick="toggleColorTheme()" id="themeSwitchBtn" class="btn-tool">Dark Mode</button>
-                </div>
+                <!-- Data tools menu -->
+                <details class="tools-menu" id="toolsMenu">
+                    <summary class="btn-tool tools-summary">Data &amp; settings</summary>
+                    <div class="tools-panel">
+                        <button type="button" onclick="copyScheduleTSV()" class="menu-item">Copy schedule for Sheets (TSV)</button>
+                        <button type="button" onclick="downloadScheduleCSV()" class="menu-item">Download CSV</button>
+                        <button type="button" onclick="exportBackupJSON()" class="menu-item">Back up progress (.json)</button>
+                        <button type="button" onclick="document.getElementById('importFileInput').click()" class="menu-item">Restore backup&hellip;</button>
+                        <input type="file" id="importFileInput" accept=".json" class="hidden" aria-label="Restore JSON backup" onchange="importBackupJSON(event)">
+                        <button type="button" onclick="toggleColorTheme()" id="themeSwitchBtn" class="menu-item">Dark Mode</button>
+                        <button type="button" onclick="handleResetProgress()" id="resetProgressBtn" class="menu-item danger-text">Clear all progress</button>
+                    </div>
+                </details>
             </div>
         </div>
     </header>
@@ -1053,28 +1181,28 @@
                 </div>
                 <div class="bar-track"><div id="metricTotalBar" class="bar-fill" style="width: 0%"></div></div>
             </div>
-            <div class="metric-item">
+            <div class="metric-item metric-link" role="button" tabindex="0" title="Show only week 1" onclick="focusWeek('W1')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();focusWeek('W1');}">
                 <div class="metric-top">
                     <span class="metric-label">W1 · GPU Kernels</span>
                     <span id="metricW1Text" class="metric-val">0 / 24</span>
                 </div>
                 <div class="bar-track"><div id="metricW1Bar" class="bar-fill" style="width: 0%"></div></div>
             </div>
-            <div class="metric-item">
+            <div class="metric-item metric-link" role="button" tabindex="0" title="Show only week 2" onclick="focusWeek('W2')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();focusWeek('W2');}">
                 <div class="metric-top">
                     <span class="metric-label">W2 · RLHF & RLVR</span>
                     <span id="metricW2Text" class="metric-val">0 / 24</span>
                 </div>
                 <div class="bar-track"><div id="metricW2Bar" class="bar-fill" style="width: 0%"></div></div>
             </div>
-            <div class="metric-item">
+            <div class="metric-item metric-link" role="button" tabindex="0" title="Show only week 3" onclick="focusWeek('W3')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();focusWeek('W3');}">
                 <div class="metric-top">
                     <span class="metric-label">W3 · Sandbox & Sys</span>
                     <span id="metricW3Text" class="metric-val">0 / 24</span>
                 </div>
                 <div class="bar-track"><div id="metricW3Bar" class="bar-fill" style="width: 0%"></div></div>
             </div>
-            <div class="metric-item">
+            <div class="metric-item metric-link" role="button" tabindex="0" title="Show only week 4" onclick="focusWeek('W4')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();focusWeek('W4');}">
                 <div class="metric-top">
                     <span class="metric-label">W4 · Mocks & Loop</span>
                     <span id="metricW4Text" class="metric-val">0 / 24</span>
@@ -1953,6 +2081,23 @@ Deny: socket(AF_INET/AF_INET6), connect, ptrace, mount, umount2, pivot_root,
             saveUiPrefs();
         }
 
+        function focusWeek(wk) {
+            switchTab("schedule");
+            setStatusFilter("ALL");
+            setWeekFilter(filterWeek === wk ? "ALL" : wk);
+            document.getElementById("panel-schedule").scrollIntoView({ block: "start" });
+        }
+
+        // Close the Data & settings menu on outside click or Escape
+        document.addEventListener("click", (e) => {
+            const m = document.getElementById("toolsMenu");
+            if (m && m.open && !m.contains(e.target)) m.open = false;
+        });
+        document.addEventListener("keydown", (e) => {
+            const m = document.getElementById("toolsMenu");
+            if (e.key === "Escape" && m && m.open) { m.open = false; m.querySelector("summary").focus(); }
+        });
+
         function clearFilters() {
             document.getElementById("scheduleSearch").value = "";
             setStatusFilter("ALL");
@@ -2037,19 +2182,19 @@ Deny: socket(AF_INET/AF_INET6), connect, ptrace, mount, umount2, pivot_root,
             const btn = document.getElementById("resetProgressBtn");
             if (!resetArmed) {
                 resetArmed = true;
-                btn.textContent = "Confirm Clear?";
+                btn.textContent = "Click again to erase all progress";
                 btn.style.backgroundColor = "var(--accent-danger)";
                 btn.style.color = "#FFFFFF";
                 resetTimeout = setTimeout(() => {
                     resetArmed = false;
-                    btn.textContent = "Clear";
+                    btn.textContent = "Clear all progress";
                     btn.style.backgroundColor = "";
                     btn.style.color = "";
                 }, 3500);
             } else {
                 clearTimeout(resetTimeout);
                 resetArmed = false;
-                btn.textContent = "Clear";
+                btn.textContent = "Clear all progress";
                 btn.style.backgroundColor = "";
                 btn.style.color = "";
                 appState.checks = {};

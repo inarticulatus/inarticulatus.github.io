@@ -3,34 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The OpenTrainer RL Environment Engineering Workbook</title>
+  <title>RL Environment Engineering Workbook</title>
   <meta name="description" content="A 7-day hands-on workbook for building and hardening RL coding-agent environments: air-gapped Docker, anti-tamper verifiers, AppSec tests, safety sinks and trajectory diagnosis.">
-  <meta name="theme-color" content="#1c2124">
+  <meta name="theme-color" content="#faf8f5">
+  <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
+          // Site palette (utkarshtripathi.com): cream, charcoal, coral, teal
           colors: {
-            charcoal: '#1c2124',
-            charcoalLight: '#262d31',
-            stoneBg: '#f4f3ef',
-            stoneAlt: '#e6e4dd',
-            stoneBorder: '#cbc8be',
-            sage: '#4a6b5d',
-            sageDark: '#385347',
-            ochre: '#c88a32',
-            ochreLight: '#f6ede0',
-            tealMuted: '#2e5a6b',
-            tealLight: '#e3edf1',
-            crimson: '#9e3a34'
+            charcoal: '#2d2d2d',
+            charcoalLight: '#3d3b38',
+            stoneBg: '#faf8f5',
+            stoneAlt: '#f5f3f0',
+            stoneBorder: '#d9d4cc',
+            sage: '#2a9d8f',
+            sageDark: '#22867a',
+            ochre: '#e85a4f',
+            ochreLight: '#fbe8e5',
+            tealMuted: '#1f7a6f',
+            tealLight: '#e3f2ef',
+            crimson: '#c0392b',
+            eagle: '#8b8578'
           },
           fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            mono: ['IBM Plex Mono', 'monospace'],
+            sans: ['Geist', 'system-ui', 'sans-serif'],
+            mono: ['Geist Mono', 'ui-monospace', 'monospace'],
+          },
+          borderRadius: {
+            DEFAULT: '0px', sm: '0px', md: '0px', lg: '0px'
           }
         }
       }
@@ -43,30 +49,39 @@
       background-image: none !important;
     }
     body {
-      background-color: #f4f3ef;
-      color: #1c2124;
-      font-family: 'Inter', sans-serif;
+      background-color: #faf8f5;
+      color: #2d2d2d;
+      font-family: 'Geist', sans-serif;
     }
     pre, code {
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: 'Geist Mono', monospace;
     }
+    .bg-grid {
+      background-image:
+        repeating-linear-gradient(to right, rgba(139,133,120,0.08) 0, rgba(139,133,120,0.08) 1px, transparent 1px, transparent 6px),
+        repeating-linear-gradient(to bottom, rgba(139,133,120,0.08) 0, rgba(139,133,120,0.08) 1px, transparent 1px, transparent 6px) !important;
+    }
+    #main-view :not(pre) > code { overflow-wrap: anywhere; }
+    #main-view h2 { font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.1; }
+    .site-link { font-weight: 900; text-transform: uppercase; font-size: 13px; text-underline-offset: 6px; }
+    .site-link:hover, .site-link.current { text-decoration: underline; text-decoration-thickness: 4px; text-decoration-color: #e85a4f; }
     /* Custom flat scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #e6e4dd;
+      background: #f5f3f0;
     }
     ::-webkit-scrollbar-thumb {
-      background: #4a6b5d;
+      background: #8b8578;
     }
     .code-block-body {
       max-height: 520px;
       overflow-y: auto;
     }
     input[type="checkbox"] {
-      accent-color: #4a6b5d;
+      accent-color: #2a9d8f;
     }
     html { scroll-behavior: smooth; }
     @media (prefers-reduced-motion: reduce) {
@@ -74,14 +89,14 @@
       * { transition: none !important; }
     }
     :focus-visible {
-      outline: 2px solid #c88a32;
+      outline: 2px solid #e85a4f;
       outline-offset: 2px;
     }
     textarea:focus-visible, select:focus-visible { outline-offset: 0; }
     label:has(input[type="checkbox"]) input[type="checkbox"] { width: 1.1rem; height: 1.1rem; }
     .skip-link {
       position: absolute; left: 8px; top: -48px; z-index: 100;
-      background: #1c2124; color: #f4f3ef; padding: 8px 12px; border-radius: 4px; font-size: 13px;
+      background: #2d2d2d; color: #faf8f5; padding: 8px 12px; font-size: 13px;
     }
     .skip-link:focus { top: 8px; }
     @media print {
@@ -93,140 +108,110 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col lg:flex-row selection:bg-sage selection:text-stoneBg">
+<body class="min-h-screen selection:bg-ochre selection:text-white">
   <a class="skip-link" href="#main-view">Skip to content</a>
 
   <!-- Toast Notification Banner -->
-  <div id="toast" role="status" aria-live="polite" class="fixed bottom-5 right-5 z-50 hidden bg-charcoal text-stoneBg border-2 border-sage px-4 py-2.5 rounded text-xs font-mono uppercase tracking-wider">
+  <div id="toast" role="status" aria-live="polite" class="fixed bottom-5 right-5 z-50 hidden bg-charcoal text-stoneBg px-4 py-2.5 text-xs font-mono uppercase tracking-wider">
     Copied to clipboard
   </div>
 
-  <!-- Mobile Top Header -->
-  <header class="lg:hidden flex items-center justify-between bg-charcoal text-stoneBg px-4 py-3 border-b-2 border-stoneBorder sticky top-0 z-30">
-    <div class="flex items-center gap-2.5">
-      <svg class="w-6 h-6 text-ochre" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-        <polyline points="2 17 12 22 22 17"></polyline>
-        <polyline points="2 12 12 17 22 12"></polyline>
-      </svg>
-      <div>
-        <a href="/learn/" class="text-xs font-mono uppercase tracking-widest text-ochre hover:underline">&larr; Learn // OpenTrainer</a>
-        <div class="font-bold text-sm tracking-tight">RL Environment Workbook</div>
+  <!-- Site navigation (matches utkarshtripathi.com) -->
+  <nav aria-label="Site" class="border-b border-charcoal/20 bg-stoneBg">
+    <div class="flex flex-wrap items-center justify-between gap-x-5 gap-y-2 px-5 lg:px-8 py-4">
+      <a href="/" class="font-black uppercase tracking-tight text-lg text-charcoal">Utkarsh Tripathi</a>
+      <div class="flex flex-wrap gap-x-5 gap-y-1">
+        <a href="/learn/" class="site-link current">Learn</a>
+        <a href="/projects/" class="site-link">Projects &amp; Research</a>
+        <a href="/about/" class="site-link">About</a>
       </div>
     </div>
-    <button id="mobile-menu-btn" aria-label="Open modules menu" aria-controls="sidebar" aria-expanded="false" onclick="toggleMobileSidebar()" class="p-2 border border-stoneBorder rounded text-stoneBg hover:bg-charcoalLight">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+  </nav>
+
+  <!-- Mobile module bar -->
+  <header class="lg:hidden flex items-center justify-between gap-3 bg-stoneBg text-charcoal px-4 py-2.5 border-b border-charcoal sticky top-0 z-30">
+    <div class="min-w-0">
+      <a href="/learn/" class="text-[11px] font-mono uppercase tracking-wider text-sage underline underline-offset-4">&larr; Learn</a>
+      <div id="mobile-module-title" class="font-black uppercase text-sm tracking-tight truncate">RL Environment Workbook</div>
+    </div>
+    <button id="mobile-menu-btn" aria-label="Open modules menu" aria-controls="sidebar" aria-expanded="false" onclick="toggleMobileSidebar()" class="shrink-0 flex items-center gap-2 px-3 py-2 border border-charcoal text-xs font-mono uppercase hover:bg-charcoal hover:text-stoneBg">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
       </svg>
+      Days
     </button>
   </header>
 
-  <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 z-30 bg-charcoal/60 hidden lg:hidden"></div>
+  <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 z-30 bg-charcoal/50 hidden lg:hidden"></div>
 
-  <!-- Left Persistent Sidebar Navigation -->
-  <aside id="sidebar" aria-label="Workbook modules" class="fixed inset-y-0 left-0 z-40 w-80 bg-charcoal text-stoneBg border-r-2 border-stoneBorder flex flex-col transform -translate-x-full lg:translate-x-0 lg:static lg:h-screen lg:sticky lg:top-0 transition-transform duration-150">
-    <div class="flex items-center justify-between px-5 py-2 border-b border-charcoalLight text-[11px] font-mono uppercase tracking-wider">
-      <a href="/learn/" class="text-stoneAlt hover:text-white">&larr; All trackers</a>
-      <a href="/" class="text-stoneAlt hover:text-white">utkarshtripathi.com</a>
-    </div>
+  <div class="lg:flex">
+  <!-- Sidebar: modules, progress and tools -->
+  <aside id="sidebar" aria-label="Workbook modules" class="fixed inset-y-0 left-0 z-40 w-80 bg-stoneBg text-charcoal border-r border-charcoal/20 flex flex-col transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:shrink-0 transition-transform duration-150">
     <!-- Brand Header -->
-    <div class="p-5 border-b border-charcoalLight">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <!-- Geometric Vector Emblem -->
-          <svg class="w-8 h-8 text-ochre shrink-0" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.75">
-            <rect x="4" y="4" width="24" height="24" rx="2" />
-            <line x1="4" y1="12" x2="28" y2="12" />
-            <line x1="12" y1="12" x2="12" y2="28" />
-            <circle cx="20" cy="20" r="4" />
-          </svg>
-          <div>
-            <span class="text-[11px] font-mono uppercase tracking-widest text-ochre block">SPEC-REV 2026.11</span>
-            <h1 class="font-bold text-base leading-tight text-stoneBg">OpenTrainer RL Env</h1>
-          </div>
+    <div class="p-5 border-b border-charcoal/20 bg-grid">
+      <div class="flex items-start justify-between gap-2">
+        <div>
+          <a href="/learn/" class="text-[11px] font-mono uppercase tracking-wider text-sage underline underline-offset-4">&larr; Learn &middot; 7-day workbook</a>
+          <h1 class="mt-2 font-black uppercase text-2xl leading-none tracking-tight">RL Environment <span class="bg-ochre text-white px-1">Engineering</span></h1>
         </div>
-        <button aria-label="Close modules menu" onclick="toggleMobileSidebar()" class="lg:hidden text-stoneAlt hover:text-white p-1">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        <button aria-label="Close modules menu" onclick="toggleMobileSidebar()" class="lg:hidden text-charcoal/70 hover:text-charcoal p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
-      <p class="mt-2.5 text-xs text-stoneAlt leading-relaxed">
-        Zero-decision 7-day engineering course for <span class="text-white font-medium">RL Environment Engineer – AI Safety (Coding Agents)</span>.
+      <p class="mt-3 text-xs text-charcoal/70 leading-relaxed">
+        Build <span class="font-mono text-charcoal">ArtifactVault</span>, a hardened RL environment for coding agents, in 7 days.
       </p>
 
       <!-- Progress Bar -->
-      <div class="mt-4 pt-3 border-t border-charcoalLight">
+      <div class="mt-4">
         <div class="flex justify-between items-center text-xs font-mono mb-1.5">
-          <span class="text-stoneAlt">COMPLETION</span>
-          <span id="overall-progress-text" class="text-ochre font-semibold">0% (0/36)</span>
+          <span class="uppercase text-charcoal/60">Completion</span>
+          <span id="overall-progress-text" class="font-semibold">0% (0/36)</span>
         </div>
-        <div class="w-full h-2.5 bg-charcoalLight rounded overflow-hidden border border-stoneBorder/40">
+        <div class="w-full h-2 bg-stoneAlt border border-charcoal/20 overflow-hidden">
           <div id="overall-progress-bar" class="h-full bg-sage transition-all duration-200" style="width: 0%"></div>
         </div>
       </div>
     </div>
 
     <!-- Navigation Tabs -->
-    <nav class="flex-1 overflow-y-auto py-3 px-3 space-y-1" id="nav-list" aria-label="Days">
+    <nav class="flex-1 overflow-y-auto py-2" id="nav-list" aria-label="Days">
       <!-- Dynamically populated by JS -->
     </nav>
 
     <!-- Bottom Utility Controls -->
-    <div class="p-4 border-t border-charcoalLight bg-charcoal space-y-2">
-      <button onclick="toggleReferenceDrawer()" class="w-full flex items-center justify-between px-3 py-2 text-xs font-mono uppercase tracking-wider bg-charcoalLight hover:bg-tealMuted text-stoneBg border border-stoneBorder/40 rounded transition-colors">
-        <span class="flex items-center gap-2">
-          <svg class="w-4 h-4 text-ochre" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
-            <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-          </svg>
-          Reference Vault &amp; Hints
-        </span>
-        <span>[OPEN]</span>
+    <div class="p-4 border-t border-charcoal/20 space-y-2">
+      <button onclick="toggleReferenceDrawer()" class="w-full flex items-center justify-between px-3 py-2 text-xs font-mono uppercase tracking-wider border border-charcoal hover:bg-charcoal hover:text-stoneBg transition-colors">
+        <span>All reference solutions</span>
+        <span aria-hidden="true">&rarr;</span>
       </button>
-
-      <div class="grid grid-cols-2 gap-2">
-        <button onclick="exportBackupJSON()" title="Download all progress and notes as JSON" class="px-2.5 py-2 text-xs font-mono bg-charcoalLight hover:bg-tealMuted text-stoneBg rounded border border-stoneBorder/30 transition-colors">Backup .JSON</button>
-        <button onclick="document.getElementById('import-file').click()" title="Restore a JSON backup" class="px-2.5 py-2 text-xs font-mono bg-charcoalLight hover:bg-tealMuted text-stoneBg rounded border border-stoneBorder/30 transition-colors">Restore .JSON</button>
-        <input type="file" id="import-file" accept=".json" class="hidden" aria-label="Restore JSON backup" onchange="importBackupJSON(event)">
-      </div>
-      <div class="grid grid-cols-2 gap-2">
-        <button onclick="exportPortfolioMarkdown()" class="flex items-center justify-center gap-1.5 px-2.5 py-2 text-xs font-mono bg-sage hover:bg-sageDark text-white rounded border border-sage">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-          </svg>
-          Export .MD
-        </button>
-        <button onclick="resetProgressModal()" class="flex items-center justify-center gap-1.5 px-2.5 py-2 text-xs font-mono bg-charcoalLight hover:bg-crimson text-stoneAlt hover:text-white rounded border border-stoneBorder/30 transition-colors">
-          Reset State
-        </button>
-      </div>
+      <details class="group">
+        <summary class="cursor-pointer list-none flex items-center justify-between px-3 py-2 text-xs font-mono uppercase tracking-wider border border-charcoal/20 hover:border-charcoal">
+          <span>Data &amp; export</span><span class="group-open:rotate-180 transition-transform" aria-hidden="true">&#9662;</span>
+        </summary>
+        <div class="mt-2 grid grid-cols-2 gap-2">
+          <button onclick="exportPortfolioMarkdown()" class="px-2.5 py-2 text-xs font-mono bg-sage hover:bg-sageDark text-white">Export notes .md</button>
+          <button onclick="exportBackupJSON()" title="Download all progress and notes as JSON" class="px-2.5 py-2 text-xs font-mono border border-charcoal/20 hover:border-charcoal">Backup .json</button>
+          <button onclick="document.getElementById('import-file').click()" title="Restore a JSON backup" class="px-2.5 py-2 text-xs font-mono border border-charcoal/20 hover:border-charcoal">Restore .json</button>
+          <input type="file" id="import-file" accept=".json" class="hidden" aria-label="Restore JSON backup" onchange="importBackupJSON(event)">
+          <button onclick="resetProgressModal()" class="px-2.5 py-2 text-xs font-mono border border-crimson/40 text-crimson hover:bg-crimson hover:text-white transition-colors">Reset all</button>
+        </div>
+      </details>
     </div>
   </aside>
 
   <!-- Main Content Area -->
   <div class="flex-1 flex flex-col min-w-0">
-    <!-- Top Desktop Status Bar -->
-    <div class="hidden lg:flex items-center justify-between px-8 py-3.5 bg-stoneAlt border-b-2 border-stoneBorder">
-      <div class="flex items-center gap-4 text-xs font-mono">
-        <span class="px-2 py-0.5 bg-charcoal text-stoneBg rounded">TARGET REPO: artifact-vault/</span>
-        <span class="text-charcoal/80">ROLE: RL ENVIRONMENT ENGINEER – AI SAFETY (CODING AGENTS)</span>
-      </div>
-      <div class="flex items-center gap-3">
-        <span class="text-xs font-mono text-charcoal/70">LOCALSTORAGE PERSISTENCE: <strong class="text-sage">ACTIVE</strong></span>
-        <button onclick="switchTab('day7')" class="px-3 py-1 text-xs font-mono bg-tealMuted text-white rounded hover:opacity-90">
-          Launch Timed Mock Simulator
-        </button>
-      </div>
-    </div>
-
     <!-- Dynamic View Container -->
     <main class="flex-1 p-5 sm:p-8 lg:p-10 max-w-6xl w-full mx-auto space-y-8" id="main-view">
       <!-- Populated by JavaScript based on active tab -->
     </main>
 
-    <!-- Footer -->
-    <footer class="px-8 py-5 border-t-2 border-stoneBorder bg-stoneAlt text-xs font-mono text-charcoal/70 flex flex-col sm:flex-row justify-between items-center gap-2">
-      <div>THE OPENTRAINER RL ENVIRONMENT ENGINEERING WORKBOOK // ZERO-DECISION EDITION</div>
-      <div>BUILT FOR DETERMINISTIC OFFLINE VERIFICATION &amp; AI SAFETY</div>
+    <footer class="px-5 lg:px-8 py-5 border-t border-charcoal/20 bg-grid text-xs font-mono uppercase text-charcoal/60 flex flex-col sm:flex-row justify-between items-center gap-2">
+      <span>Progress is saved in this browser only &middot; back it up from Data &amp; export</span>
+      <a href="/learn/" class="text-sage underline underline-offset-4">All study trackers</a>
     </footer>
+  </div>
   </div>
 
   <!-- Slide-Over Drawer: Reference Solutions & Hints -->
@@ -372,8 +357,8 @@
     ];
 
     const CODE_SNIPPETS = {
-      setup_bash: `mkdir -p ~/opentrainer-bootcamp/artifact-vault/{src,tests_visible,tests_hidden,grading,trajectories}
-cd ~/opentrainer-bootcamp/artifact-vault`,
+      setup_bash: `mkdir -p ~/rl-env-workbook/artifact-vault/{src,tests_visible,tests_hidden,grading,trajectories}
+cd ~/rl-env-workbook/artifact-vault`,
 
       requirements_txt: `fastapi==0.115.0
 uvicorn==0.30.6
@@ -450,8 +435,8 @@ USER agent
 # Sanitize any accidental .git history and create a single clean baseline commit
 RUN rm -rf .git \\
     && git init \\
-    && git config user.name "OpenTrainer Baseline" \\
-    && git config user.email "baseline@opentrainer.local" \\
+    && git config user.name "Baseline" \\
+    && git config user.email "baseline@example.invalid" \\
     && git add . \\
     && git commit -m "Initial baseline commit" \\
     && git reflog expire --expire=now --all \\
@@ -1232,7 +1217,7 @@ Your objective is to remediate these issues while preserving all legitimate func
 
     const CHECKLIST_ITEMS = {
       day0: [
-        { id: "c_d0_1", label: "Created ~/opentrainer-bootcamp/artifact-vault directory structure" },
+        { id: "c_d0_1", label: "Created ~/rl-env-workbook/artifact-vault directory structure" },
         { id: "c_d0_2", label: "Created pinned requirements.txt (fastapi, uvicorn, httpx, pytest, pytest-timeout)" },
         { id: "c_d0_3", label: "Reviewed all 13 target files in the interactive directory tree explorer" }
       ],
@@ -1351,7 +1336,8 @@ Your objective is to remediate these issues while preserving all legitimate func
     // STATE MANAGEMENT & LOCALSTORAGE PERSISTENCE
     // =========================================================================
 
-    const STORAGE_KEY = "opentrainer_rl_workbook_v1";
+    const STORAGE_KEY = "rl_env_workbook_v1";
+    const LEGACY_STORAGE_KEY = "opentrainer_rl_workbook_v1"; // earlier name; migrated on load
 
     let appState = {
       activeTab: "day0",
@@ -1380,7 +1366,14 @@ Your objective is to remediate these issues while preserving all legitimate func
 
     function loadState() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
+        let raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          raw = localStorage.getItem(LEGACY_STORAGE_KEY);
+          if (raw) {
+            localStorage.setItem(STORAGE_KEY, raw);
+            localStorage.removeItem(LEGACY_STORAGE_KEY);
+          }
+        }
         if (raw) {
           const parsed = JSON.parse(raw);
           appState = {
@@ -1460,32 +1453,18 @@ Your objective is to remediate these issues while preserving all legitimate func
           <button
             onclick="switchTab('${mod.id}')"
             ${isActive ? 'aria-current="page"' : ''}
-            class="w-full text-left px-3.5 py-2.5 rounded border transition-colors flex items-start justify-between gap-2 ${
-              isActive
-                ? 'bg-sage text-white border-ochre'
-                : 'bg-charcoal text-stoneBg border-transparent hover:bg-charcoalLight hover:border-stoneBorder/30'
+            class="w-full text-left px-5 py-2.5 border-l-4 transition-colors flex items-start justify-between gap-3 ${
+              isActive ? 'border-ochre bg-ochre/10' : 'border-transparent hover:bg-ochre/5'
             }"
           >
             <div class="min-w-0">
-              <div class="flex items-center gap-2">
-                <span class="text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded ${
-                  isActive ? 'bg-charcoal text-ochre' : 'bg-charcoalLight text-stoneAlt'
-                }">${mod.code}</span>
-                <span class="font-semibold text-xs truncate">${mod.title}</span>
-              </div>
-              <div class="text-[11px] ${isActive ? 'text-stoneAlt' : 'text-stoneAlt/70'} truncate mt-1 pl-0.5">
-                ${mod.subtitle}
-              </div>
+              <div class="text-[10px] font-mono uppercase tracking-wider ${isActive ? 'text-ochre' : 'text-charcoal/50'}">${mod.code}</div>
+              <div class="font-black uppercase text-[13px] leading-tight tracking-tight truncate">${mod.title}</div>
+              <div class="text-[11px] text-charcoal/60 truncate mt-0.5">${mod.subtitle}</div>
             </div>
-            <span class="text-[11px] font-mono shrink-0 px-1.5 py-0.5 rounded ${
-              isComplete
-                ? 'bg-ochre text-charcoal font-bold'
-                : isActive
-                ? 'bg-charcoal/50 text-stoneBg'
-                : 'text-stoneAlt/70'
-            }">
-              ${done}/${total}
-            </span>
+            <span class="text-[11px] font-mono shrink-0 mt-3 px-1.5 py-0.5 ${
+              isComplete ? 'bg-sage text-white' : 'text-charcoal/50'
+            }">${isComplete ? '&#10003; ' : ''}${done}/${total}</span>
           </button>
         `;
       }).join("");
@@ -1503,7 +1482,17 @@ Your objective is to remediate these issues while preserving all legitimate func
         try { history.pushState(null, "", "#" + tabId); } catch (e) {}
       }
       const mod = NAVIGATION_MODULES.find(m => m.id === tabId);
-      document.title = `${mod.code} · ${mod.title} — OpenTrainer RL Workbook`;
+      document.title = `${mod.code} · ${mod.title} — RL Environment Workbook`;
+      syncMobileTitle();
+    }
+
+    function syncMobileTitle() {
+      const mod = NAVIGATION_MODULES.find(m => m.id === appState.activeTab);
+      const el = document.getElementById("mobile-module-title");
+      if (mod && el) {
+        const { done, total } = getDayCompletion(mod.id);
+        el.textContent = `${mod.code} · ${mod.title} (${done}/${total})`;
+      }
     }
 
     function isSidebarOpen() {
@@ -1814,40 +1803,40 @@ Your objective is to remediate these issues while preserving all legitimate func
       const selectedFile = FILE_TREE_DATA[appState.selectedFileIndex] || FILE_TREE_DATA[0];
       return `
         <!-- Hero Banner -->
-        <section class="border-2 border-charcoal rounded bg-charcoal text-stoneBg p-6 sm:p-8">
-          <div class="flex flex-wrap items-center gap-2 text-xs font-mono text-ochre uppercase tracking-widest mb-2">
+        <section class="border border-charcoal/20 bg-grid p-6 sm:p-8">
+          <div class="flex flex-wrap items-center gap-2 text-xs font-mono text-sage uppercase tracking-wider mb-3">
             <span>ZERO-DECISION ENGINEERING COURSE</span>
             <span>//</span>
             <span>CAPSTONE PACKAGE: ARTIFACTVAULT</span>
           </div>
-          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-            The OpenTrainer RL Environment Engineering Workbook
+          <h2 class="text-3xl sm:text-5xl text-charcoal">
+            The RL Environment Engineering Workbook
           </h2>
-          <p class="mt-3 text-sm text-stoneAlt leading-relaxed max-w-3xl">
-            This workbook eliminates every decision barrier. You will not waste time deciding what framework to use, what microservice to build, or what vulnerabilities to inject. Over 7 days, you will construct a complete, production-grade AI Safety RL Environment Package called <code class="text-ochre font-mono">ArtifactVault</code>—an internal enterprise service used by autonomous coding agents to store, fetch, and audit build artifacts.
+          <p class="mt-3 text-sm text-charcoal/70 leading-relaxed max-w-3xl">
+            This workbook eliminates every decision barrier. You will not waste time deciding what framework to use, what microservice to build, or what vulnerabilities to inject. Over 7 days, you will construct a complete, production-grade AI Safety RL Environment Package called <code class="bg-ochre text-white font-mono px-1">ArtifactVault</code>—an internal enterprise service used by autonomous coding agents to store, fetch, and audit build artifacts.
           </p>
 
           <!-- 3-Part AI Interview Delivery Rubric -->
-          <div class="mt-6 pt-6 border-t border-charcoalLight grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="p-4 rounded bg-charcoalLight border border-stoneBorder/20">
+          <div class="mt-6 pt-6 border-t border-charcoal/20 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-4 rounded bg-stoneBg border border-charcoal/20">
               <div class="text-xs font-mono text-ochre font-bold">PART 01 // MECHANISM</div>
-              <div class="text-sm font-bold text-white mt-1">Direct Core Principle</div>
-              <p class="text-xs text-stoneAlt mt-1.5 leading-relaxed">
+              <div class="text-sm font-bold text-charcoal mt-1">Direct Core Principle</div>
+              <p class="text-xs text-charcoal/70 mt-1.5 leading-relaxed">
                 Lead immediately with the technical primitive (e.g., air-gapped wheelhouse, canonical path resolution, or barrier synchronization) rather than vague platitudes.
               </p>
             </div>
-            <div class="p-4 rounded bg-charcoalLight border border-stoneBorder/20">
-              <div class="text-xs font-mono text-sage font-bold bg-stoneBg px-1.5 py-0.5 inline-block rounded">PART 02 // IMPLEMENTATION</div>
-              <div class="text-sm font-bold text-white mt-1">Exact Code &amp; Flags</div>
-              <p class="text-xs text-stoneAlt mt-1.5 leading-relaxed">
-                Cite exact Docker flags (<code class="text-ochre">--network=none</code>), pytest fixtures (<code class="text-ochre">dynamic_canary</code>), and Python primitives (<code class="text-ochre">threading.Barrier(2)</code>) from <code class="text-ochre">ArtifactVault</code>.
+            <div class="p-4 rounded bg-stoneBg border border-charcoal/20">
+              <div class="text-xs font-mono text-sage font-bold">PART 02 // IMPLEMENTATION</div>
+              <div class="text-sm font-bold text-charcoal mt-1">Exact Code &amp; Flags</div>
+              <p class="text-xs text-charcoal/70 mt-1.5 leading-relaxed">
+                Cite exact Docker flags (<code class="text-ochre font-mono">--network=none</code>), pytest fixtures (<code class="text-ochre font-mono">dynamic_canary</code>), and Python primitives (<code class="text-ochre font-mono">threading.Barrier(2)</code>) from <code class="text-ochre font-mono">ArtifactVault</code>.
               </p>
             </div>
-            <div class="p-4 rounded bg-charcoalLight border border-stoneBorder/20">
+            <div class="p-4 rounded bg-stoneBg border border-charcoal/20">
               <div class="text-xs font-mono text-ochre font-bold">PART 03 // ADVERSARIAL EDGE CASE</div>
-              <div class="text-sm font-bold text-white mt-1">Anti-Reward Hacking</div>
-              <p class="text-xs text-stoneAlt mt-1.5 leading-relaxed">
-                Explain how a frontier coding agent will try to cheat (e.g., <code class="text-ochre">sitecustomize.py</code>, <code class="text-ochre">....//</code>, symlink escape, or 0ms retry loop) and how your verifier blocks it.
+              <div class="text-sm font-bold text-charcoal mt-1">Anti-Reward Hacking</div>
+              <p class="text-xs text-charcoal/70 mt-1.5 leading-relaxed">
+                Explain how a frontier coding agent will try to cheat (e.g., <code class="text-ochre font-mono">sitecustomize.py</code>, <code class="text-ochre font-mono">....//</code>, symlink escape, or 0ms retry loop) and how your verifier blocks it.
               </p>
             </div>
           </div>
@@ -2332,7 +2321,7 @@ Your objective is to remediate these issues while preserving all legitimate func
         <section class="space-y-3 bg-stoneAlt/50 p-5 border-2 border-stoneBorder rounded">
           <h3 class="text-sm font-mono uppercase tracking-wider font-bold text-charcoal">5.1 Core Theory: Catching Unsafe Shortcuts with Instrumented Sinks</h3>
           <p class="text-sm text-charcoal/90 leading-relaxed">
-            Why is this role titled <strong>AI Safety (Coding Agents)</strong> rather than general QA? Because when RL coding agents are given a throughput goal or a failing test, they frequently take unsafe operational shortcuts:
+            Why is this <strong>AI safety</strong> work rather than general QA? Because when RL coding agents are given a throughput goal or a failing test, they frequently take unsafe operational shortcuts:
           </p>
           <ul class="list-disc list-inside space-y-1.5 text-xs sm:text-sm text-charcoal/90">
             <li><strong>Shortcut 1 (Shallow Redaction / Secret Leak):</strong> Redacting top-level keys while leaving nested dictionaries, lists of dicts, or environment diagnostic dumps (<code class="font-mono">VAULT_MASTER_KEY</code>) exposed in outbound payloads.</li>
@@ -2804,7 +2793,7 @@ Your objective is to remediate these issues while preserving all legitimate func
     function exportPortfolioMarkdown() {
       const { total, done, pct } = getTotalChecklistCount();
       let lines = [
-        "# OpenTrainer RL Environment Engineering Study Portfolio",
+        "# RL Environment Engineering Study Portfolio",
         `Generated: ${new Date().toISOString()}`,
         `Overall Course Completion: ${pct}% (${done}/${total} verification gates & lab items completed)`,
         "",
@@ -2838,7 +2827,7 @@ Your objective is to remediate these issues while preserving all legitimate func
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "opentrainer-rl-environment-portfolio.md";
+      a.download = "rl-environment-portfolio.md";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -2851,7 +2840,7 @@ Your objective is to remediate these issues while preserving all legitimate func
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "opentrainer-rl-workbook-backup.json";
+      a.download = "rl-environment-workbook-backup.json";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -2903,6 +2892,7 @@ Your objective is to remediate these issues while preserving all legitimate func
 
     function confirmResetState() {
       localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
       appState.completedChecks = {};
       appState.drillNotes = { day1: "", day2: "", day3: "", day4: "", day5: "" };
       appState.quizAnswers = {
@@ -2997,6 +2987,7 @@ Your objective is to remediate these issues while preserving all legitimate func
         if (disp) disp.textContent = formatSeconds(Math.max(0, activeTimers[tid].remaining));
       });
       renderSidebarNav();
+      syncMobileTitle();
       if (sameTab) {
         window.scrollTo({ top: prevScroll, behavior: "auto" });
       }
@@ -3024,7 +3015,7 @@ Your objective is to remediate these issues while preserving all legitimate func
       updateOverallProgressUI();
       renderMainView();
       const mod = NAVIGATION_MODULES.find(m => m.id === appState.activeTab);
-      if (mod) document.title = `${mod.code} · ${mod.title} — OpenTrainer RL Workbook`;
+      if (mod) document.title = `${mod.code} · ${mod.title} — RL Environment Workbook`;
       try { history.replaceState(null, "", "#" + appState.activeTab); } catch (e) {}
     });
   </script>
