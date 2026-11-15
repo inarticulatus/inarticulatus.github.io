@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Patterns — Spaced-Repetition Study Tracker</title>
+    <meta name="description" content="An 8-week, pattern-first DSA tracker: 17 patterns, 136 problems, honest attempt grading, spaced reviews and interleaved mocks. Progress is saved in your browser.">
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        // Apply saved (or system) theme before first paint.
+        (function () {
+            try {
+                var raw = localStorage.getItem("dsa_patterns_tracker_v1");
+                var t = raw ? JSON.parse(raw).theme : null;
+                if (t !== "dark" && t !== "light") {
+                    t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+                }
+                if (t === "dark") document.documentElement.classList.add("dark");
+            } catch (e) {}
+        })();
+    </script>
+    <style>
+        :root {
+            /* Site palette (utkarshtripathi.com) */
+            --bg-page: #faf8f5;
+            --bg-surface: #fdfcfa;
+            --bg-subtle: #f5f3f0;
+            --bg-hover: #f9eee9;
+            --text-main: #2d2d2d;
+            --text-secondary: #57534d;
+            --text-muted: #8b8578;
+            --border: #e4e0d9;
+            --border-strong: #2d2d2d;
+            --coral: #e85a4f;
+            --coral-bg: #fbe8e5;
+            --teal: #2a9d8f;
+            --teal-bg: #e3f2ef;
+            --gold: #b8860b;
+            --gold-bg: #fbf3dc;
+            --danger: #c0392b;
+            --grid-line: rgba(139, 133, 120, 0.08);
+            --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+        html.dark {
+            --bg-page: #1d1c1a;
+            --bg-surface: #232220;
+            --bg-subtle: #2a2926;
+            --bg-hover: #33292a;
+            --text-main: #f2efe9;
+            --text-secondary: #bdb7ad;
+            --text-muted: #8b8578;
+            --border: #393733;
+            --border-strong: #f2efe9;
+            --coral: #f07267;
+            --coral-bg: #3a2421;
+            --teal: #45b8a9;
+            --teal-bg: #1e3532;
+            --gold: #e2b84a;
+            --gold-bg: #3a3220;
+            --danger: #e5675a;
+            --grid-line: rgba(242, 239, 233, 0.05);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+        body {
+            background: var(--bg-page); color: var(--text-main);
+            font-family: var(--font-sans); font-size: 14px; line-height: 1.5;
+            -webkit-font-smoothing: antialiased; min-height: 100vh;
+            padding-bottom: 96px;
+        }
+        a { color: inherit; }
+        button { font-family: inherit; }
+        :focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
+        .hidden { display: none !important; }
+        .mono { font-family: var(--font-mono); }
+        .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+        @media (max-width: 640px) { .wrap { padding: 0 12px; } }
+
+        .skip-link {
+            position: absolute; left: 8px; top: -48px; z-index: 200;
+            background: var(--text-main); color: var(--bg-page); padding: 8px 12px; font-size: 13px;
+        }
+        .skip-link:focus { top: 8px; }
+
+        /* Site nav */
+        .site-nav { border-bottom: 1px solid var(--border); }
+        .site-nav .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding-top: 18px; padding-bottom: 18px; }
+        .site-name { font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; font-size: 18px; text-decoration: none; }
+        .site-links { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+        .site-links a { font-weight: 900; text-transform: uppercase; font-size: 13px; text-decoration: none; text-underline-offset: 6px; }
+        .site-links a:hover, .site-links a.current { text-decoration: underline; text-decoration-thickness: 4px; text-decoration-color: var(--coral); }
+
+        /* Hero */
+        .bg-grid {
+            background-image:
+                repeating-linear-gradient(to right, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 6px),
+                repeating-linear-gradient(to bottom, var(--grid-line) 0, var(--grid-line) 1px, transparent 1px, transparent 6px);
+        }
+        .page-hero { border-bottom: 1px solid var(--border); }
+        .page-hero .wrap { padding-top: 28px; padding-bottom: 24px; }
+        .kicker { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--teal); text-underline-offset: 4px; }
+        .hero-title { margin-top: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.04em; font-size: clamp(30px, 6vw, 72px); line-height: 1.05; }
+        .mark { background: var(--coral); color: #fff; padding: 0 0.15em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+        .hero-sub { margin-top: 12px; font-weight: 600; color: var(--text-secondary); font-size: 15px; }
+
+        /* Toolbar */
+        .toolbar { position: sticky; top: 0; z-index: 50; background: var(--bg-page); border-bottom: 1px solid var(--border-strong); }
+        .toolbar .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding-top: 10px; padding-bottom: 10px; }
+        .tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+        .tab {
+            border: 1px solid transparent; background: none; cursor: pointer; white-space: nowrap;
+            padding: 7px 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; color: var(--text-secondary);
+            display: inline-flex; gap: 6px; align-items: center;
+        }
+        .tab:hover { color: var(--text-main); border-color: var(--border); }
+        .tab.active { background: var(--coral); color: #fff; }
+        .tab .count { font-family: var(--font-mono); font-size: 11px; padding: 0 5px; background: var(--bg-subtle); color: var(--text-muted); }
+        .tab.active .count { background: rgba(255,255,255,0.22); color: #fff; }
+
+        .menu { position: relative; }
+        .menu summary {
+            list-style: none; cursor: pointer; font-family: var(--font-mono); font-size: 12px;
+            padding: 7px 10px; border: 1px solid var(--border); background: var(--bg-surface); white-space: nowrap;
+        }
+        .menu summary::-webkit-details-marker { display: none; }
+        .menu summary::after { content: " \25BE"; font-size: 10px; }
+        .menu[open] summary { background: var(--text-main); color: var(--bg-page); }
+        .menu-panel {
+            position: absolute; right: 0; top: calc(100% + 6px); z-index: 60; min-width: min(260px, calc(100vw - 24px));
+            background: var(--bg-surface); border: 1px solid var(--border-strong); padding: 4px; display: flex; flex-direction: column;
+        }
+        .menu-item { text-align: left; background: none; border: none; cursor: pointer; padding: 9px 12px; font-size: 13px; color: var(--text-main); }
+        .menu-item:hover { background: var(--bg-hover); }
+        .menu-item.danger { color: var(--danger); border-top: 1px solid var(--border); margin-top: 4px; }
+        .menu-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 12px; font-size: 13px; }
+        .menu-row select { font-family: var(--font-mono); font-size: 12px; padding: 3px 6px; background: var(--bg-page); color: var(--text-main); border: 1px solid var(--border); }
+
+        /* Generic blocks */
+        main { padding-top: 20px; }
+        .panel { border: 1px solid var(--border); background: var(--bg-surface); }
+        .panel + .panel, .section + .section { margin-top: 20px; }
+        .panel-head {
+            display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 12px;
+            padding: 12px 16px; border-bottom: 1px solid var(--border);
+        }
+        .panel-title { font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; font-size: 15px; }
+        .panel-sub { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+        .panel-body { padding: 14px 16px; }
+        .empty { padding: 20px 16px; color: var(--text-muted); font-size: 13px; }
+        .grid-2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
+        @media (max-width: 980px) { .grid-2 { grid-template-columns: 1fr; } }
+
+        /* Stats */
+        .stats { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--border); background: var(--bg-surface); margin-bottom: 20px; }
+        .stat { padding: 14px 16px; border-right: 1px solid var(--border); min-width: 0; }
+        .stat:last-child { border-right: none; }
+        .stat-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-muted); }
+        .stat-value { font-weight: 900; font-size: 26px; letter-spacing: -0.02em; line-height: 1.2; }
+        .stat-value small { font-size: 13px; font-weight: 600; color: var(--text-muted); letter-spacing: 0; }
+        .stat-value.coral { color: var(--coral); }
+        @media (max-width: 760px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .stat { border-bottom: 1px solid var(--border); }
+            .stat:nth-child(2n) { border-right: none; }
+            .stat:last-child { grid-column: 1 / -1; border-bottom: none; }
+        }
+
+        .bar { height: 8px; background: var(--bg-subtle); border: 1px solid var(--border); overflow: hidden; }
+        .bar > span { display: block; height: 100%; background: var(--teal); transition: width 0.25s; }
+        .bar.coral > span { background: var(--coral); }
+
+        /* Problem rows */
+        .prob {
+            display: grid; grid-template-columns: 74px minmax(0, 1fr) auto auto auto; gap: 6px 14px; align-items: center;
+            padding: 10px 16px; border-bottom: 1px solid var(--border);
+        }
+        .prob:last-child { border-bottom: none; }
+        .prob:hover { background: var(--bg-hover); }
+        .prob.is-active { box-shadow: inset 4px 0 0 var(--coral); background: var(--coral-bg); }
+        .prob-num { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+        .prob-main { min-width: 0; }
+        .prob-title { font-weight: 600; text-decoration: none; }
+        .prob-title:hover { color: var(--coral); text-decoration: underline; }
+        .prob-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-top: 2px; display: flex; flex-wrap: wrap; gap: 4px 12px; }
+        .note-input {
+            width: 100%; margin-top: 6px; font-family: var(--font-mono); font-size: 12px; padding: 5px 8px;
+            background: var(--bg-page); color: var(--text-main); border: 1px solid var(--border); outline: none;
+        }
+        .note-input:focus { border-color: var(--teal); }
+        .prob-right { display: flex; gap: 8px; align-items: center; justify-content: flex-end; }
+        .prob.compact { grid-template-columns: 52px minmax(0, 1fr); }
+        .prob.compact .chips, .prob.compact .prob-right { grid-column: 2; justify-content: flex-start; }
+        @media (max-width: 760px) {
+            .prob { grid-template-columns: 52px minmax(0, 1fr); }
+            .prob .chips, .prob .prob-right { grid-column: 2; justify-content: flex-start; }
+        }
+
+        .chip {
+            display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+            padding: 2px 7px; border: 1px solid var(--border); white-space: nowrap;
+        }
+        .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+        .d-E { color: var(--teal); border-color: var(--teal); }
+        .d-M { color: var(--gold); border-color: var(--gold); }
+        .d-H { color: var(--coral); border-color: var(--coral); }
+        .s-new { color: var(--text-muted); }
+        .s-learning { background: var(--gold-bg); color: var(--gold); border-color: transparent; }
+        .s-solved { background: var(--teal-bg); color: var(--teal); border-color: transparent; }
+        .s-mastered { background: var(--teal); color: #fff; border-color: var(--teal); }
+        .s-due { background: var(--coral-bg); color: var(--coral); border-color: transparent; }
+
+        .btn {
+            cursor: pointer; font-family: var(--font-mono); font-size: 12px; padding: 6px 10px; white-space: nowrap;
+            border: 1px solid var(--border-strong); background: var(--bg-surface); color: var(--text-main);
+        }
+        .btn:hover { background: var(--text-main); color: var(--bg-page); }
+        .btn.primary { background: var(--coral); border-color: var(--coral); color: #fff; }
+        .btn.primary:hover { filter: brightness(0.92); }
+        .btn.ghost { border-color: var(--border); }
+        .btn.ghost:hover { border-color: var(--border-strong); background: var(--bg-surface); color: var(--text-main); }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Filters */
+        .filters { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; padding: 12px 16px; border: 1px solid var(--border); background: var(--bg-surface); margin-bottom: 20px; }
+        .filter-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-right: 4px; }
+        .pills { display: inline-flex; border: 1px solid var(--border); max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+        .pill { cursor: pointer; border: none; background: none; padding: 5px 10px; font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); white-space: nowrap; }
+        .pill.active { background: var(--coral); color: #fff; }
+        .search { flex: 1 1 220px; min-width: 0; font-size: 13px; padding: 7px 10px; background: var(--bg-page); color: var(--text-main); border: 1px solid var(--border); outline: none; }
+        .search:focus { border-color: var(--teal); }
+
+        /* Pattern groups */
+        .group-head {
+            width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 160px auto; gap: 14px; align-items: center;
+            padding: 12px 16px; border: none; border-bottom: 1px solid var(--border); background: var(--bg-page); cursor: pointer; text-align: left; color: var(--text-main);
+        }
+        .group-head:hover { background: var(--bg-hover); }
+        .group-name { font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; }
+        .group-week { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-left: 8px; font-weight: 400; text-transform: none; }
+        .group-count { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+        .group-head .caret { font-size: 11px; transition: transform 0.15s; display: inline-block; }
+        .group-head[aria-expanded="true"] .caret { transform: rotate(90deg); }
+        @media (max-width: 640px) { .group-head { grid-template-columns: minmax(0, 1fr) auto; } .group-head .bar { display: none; } }
+
+        /* Pattern cards */
+        .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(520px, 100%), 1fr)); gap: 20px; }
+        .pcard { border: 1px solid var(--border); background: var(--bg-surface); display: flex; flex-direction: column; }
+        .pcard-head { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+        .pcard-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+        .cue-list { list-style: none; display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: var(--text-secondary); }
+        .cue-list li::before { content: "\2192  "; color: var(--coral); font-family: var(--font-mono); }
+        .h-mini { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-muted); margin-bottom: 4px; }
+        pre.code {
+            position: relative; background: #2d2d2d; color: #f2efe9; padding: 12px 14px; font-family: var(--font-mono);
+            font-size: 12px; line-height: 1.55; overflow-x: auto; border-left: 3px solid var(--coral);
+            padding-top: 34px;
+        }
+        pre.code .copy {
+            position: absolute; top: 6px; right: 6px; font-family: var(--font-mono); font-size: 10.5px; padding: 2px 7px;
+            background: #3d3b38; color: #f2efe9; border: 1px solid #57534d; cursor: pointer;
+        }
+        .pcard-foot { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 12px; align-items: center; }
+        .pcard-foot .bar { flex: 1; }
+
+        /* Plan */
+        table.plan { width: 100%; border-collapse: collapse; }
+        table.plan th, table.plan td { text-align: left; vertical-align: top; padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 13px; }
+        table.plan th { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+        table.plan tr.current td { background: var(--coral-bg); }
+        table.plan tr.current td:first-child { box-shadow: inset 4px 0 0 var(--coral); }
+        .week-cell { font-weight: 900; text-transform: uppercase; white-space: nowrap; }
+        .scroll-x { overflow-x: auto; }
+        .prose { font-size: 14px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 10px; max-width: 80ch; }
+        .prose strong { color: var(--text-main); }
+        .prose a { color: var(--teal); text-underline-offset: 3px; }
+        .rhythm { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0; border: 1px solid var(--border); }
+        .rhythm div { padding: 10px; border-right: 1px solid var(--border); font-size: 12px; }
+        .rhythm div:last-child { border-right: none; }
+        .rhythm b { display: block; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; }
+        @media (max-width: 760px) { .rhythm { grid-template-columns: 1fr; } .rhythm div { border-right: none; border-bottom: 1px solid var(--border); } }
+
+        /* Attempt bar */
+        .attempt-bar {
+            position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
+            background: var(--text-main); color: var(--bg-page); border-top: 3px solid var(--coral);
+        }
+        .attempt-bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding-top: 12px; padding-bottom: 12px; }
+        .ab-info { flex: 1 1 260px; min-width: 0; }
+        .ab-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; opacity: 0.7; }
+        .ab-title { font-weight: 900; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ab-clock { font-family: var(--font-mono); font-size: 22px; font-weight: 700; min-width: 140px; }
+        .ab-clock.over { color: var(--coral); }
+        .ab-clock small { font-size: 12px; opacity: 0.7; font-weight: 400; }
+        .ab-grades { display: flex; flex-wrap: wrap; gap: 6px; }
+        .ab-grades button { cursor: pointer; font-family: var(--font-mono); font-size: 12px; padding: 7px 10px; border: 1px solid rgba(255,255,255,0.35); background: transparent; color: inherit; }
+        html.dark .ab-grades button { border-color: rgba(0,0,0,0.35); }
+        .ab-grades button:hover { background: var(--bg-page); color: var(--text-main); }
+        .ab-grades .g-good { background: var(--teal); border-color: var(--teal); color: #fff; }
+        .ab-hint { flex-basis: 100%; font-size: 12px; opacity: 0.75; }
+        body.attempting { padding-bottom: 200px; }
+        @media (max-width: 640px) {
+            .attempt-bar .wrap { gap: 8px 12px; padding-top: 10px; padding-bottom: 10px; }
+            .ab-info { flex: 1 1 0; }
+            .ab-clock { font-size: 18px; min-width: 0; }
+            .ab-grades { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; width: 100%; }
+            .ab-grades button { padding: 8px 9px; flex: 0 0 auto; }
+            .ab-hint { display: none; }
+            body.attempting { padding-bottom: 150px; }
+        }
+
+        .toast {
+            position: fixed; bottom: 20px; right: 20px; z-index: 100; background: var(--text-main); color: var(--bg-page);
+            font-family: var(--font-mono); font-size: 12px; padding: 10px 16px; opacity: 0; transform: translateY(8px);
+            pointer-events: none; transition: opacity 0.2s, transform 0.2s;
+        }
+        .toast.show { opacity: 1; transform: none; }
+        body.attempting .toast { bottom: 110px; }
+
+        footer.foot { margin-top: 40px; border-top: 1px solid var(--border); }
+        footer.foot .wrap { padding-top: 18px; padding-bottom: 18px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; color: var(--text-muted); }
+        footer.foot a { color: var(--teal); text-underline-offset: 4px; }
+
+        @media print {
+            .site-nav, .toolbar, .attempt-bar, .toast, .btn, .filters { display: none !important; }
+            body { padding-bottom: 0; }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <nav class="site-nav" aria-label="Site">
+        <div class="wrap">
+            <a href="/" class="site-name">Utkarsh Tripathi</a>
+            <div class="site-links">
+                <a href="/learn/" class="current">Learn</a>
+                <a href="/projects/">Projects &amp; Research</a>
+                <a href="/about/">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-hero bg-grid">
+        <div class="wrap">
+            <a href="/learn/" class="kicker">&larr; Learn &middot; 8-week DSA tracker</a>
+            <h1 class="hero-title">DSA <span class="mark">Patterns</span></h1>
+            <p class="hero-sub" id="heroSub">17 patterns &middot; 136 problems &middot; 8 weeks &middot; spaced reviews and interleaved mocks built in</p>
+        </div>
+    </section>
+
+    <header class="toolbar">
+        <div class="wrap">
+            <nav class="tabs" role="tablist" aria-label="Views">
+                <button class="tab" role="tab" data-tab="today" id="tab-today">Today <span class="count" id="count-today">0</span></button>
+                <button class="tab" role="tab" data-tab="problems" id="tab-problems">Problems <span class="count" id="count-problems">0/0</span></button>
+                <button class="tab" role="tab" data-tab="patterns" id="tab-patterns">Patterns</button>
+                <button class="tab" role="tab" data-tab="plan" id="tab-plan">Plan &amp; method</button>
+            </nav>
+            <details class="menu" id="settingsMenu">
+                <summary>Data &amp; settings</summary>
+                <div class="menu-panel">
+                    <label class="menu-row">New problems per day
+                        <select id="dailyNewSelect" aria-label="New problems per day">
+                            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+                        </select>
+                    </label>
+                    <button class="menu-item" id="themeBtn" type="button">Dark mode</button>
+                    <button class="menu-item" type="button" data-action="export-csv">Download progress (.csv)</button>
+                    <button class="menu-item" type="button" data-action="backup">Back up progress (.json)</button>
+                    <button class="menu-item" type="button" data-action="restore">Restore backup&hellip;</button>
+                    <input type="file" id="restoreInput" accept=".json" class="hidden" aria-label="Restore JSON backup">
+                    <button class="menu-item danger" type="button" id="resetBtn">Clear all progress</button>
+                </div>
+            </details>
+        </div>
+    </header>
+
+    <main id="main" class="wrap" tabindex="-1">
+        <section id="view-today" role="tabpanel" aria-labelledby="tab-today"></section>
+        <section id="view-problems" role="tabpanel" aria-labelledby="tab-problems" class="hidden"></section>
+        <section id="view-patterns" role="tabpanel" aria-labelledby="tab-patterns" class="hidden"></section>
+        <section id="view-plan" role="tabpanel" aria-labelledby="tab-plan" class="hidden"></section>
+    </main>
+
+    <footer class="foot">
+        <div class="wrap">
+            <span>Progress is saved in this browser only &middot; back it up from Data &amp; settings</span>
+            <a href="/learn/">All study trackers</a>
+        </div>
+    </footer>
+
+    <!-- Active attempt bar -->
+    <div class="attempt-bar hidden" id="attemptBar" role="region" aria-label="Current attempt">
+        <div class="wrap">
+            <div class="ab-info">
+                <div class="ab-label" id="abLabel">Solving from scratch</div>
+                <div class="ab-title" id="abTitle"></div>
+            </div>
+            <div class="ab-clock" id="abClock">00:00 <small>/ 25:00</small></div>
+            <div class="ab-grades" role="group" aria-label="Grade this attempt">
+                <button type="button" data-grade="again" title="You needed to read the solution">Saw solution</button>
+                <button type="button" data-grade="hard" title="You solved it with hints or a nudge">Needed hints</button>
+                <button type="button" data-grade="good" class="g-good" title="You wrote a working solution yourself">Solved solo</button>
+                <button type="button" data-grade="easy" title="Solo, within the target time, felt easy">Easy</button>
+                <button type="button" data-grade="cancel" title="Discard this attempt">Cancel</button>
+            </div>
+            <div class="ab-hint">Grade honestly: "Solved solo" means you wrote a working solution without hints. The grade sets when this problem comes back for review.</div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+    // =========================================================================
+    // 1. CONTENT: PATTERNS AND PROBLEMS
+    // =========================================================================
+
+    const TARGET_MIN = { E: 15, M: 25, H: 40 };
+
+    const PATTERNS = [
+        {
+            id: "hashing", name: "Arrays & Hashing", week: 1,
+            cues: ["Need to find pairs, duplicates or counts fast", "Order doesn't matter, membership does", "Brute force is a nested loop over the same array"],
+            complexity: "O(n) time, O(n) space: trade memory for a single pass.",
+            template: `seen = {}
+for i, x in enumerate(nums):
+    if target - x in seen:          # look up the complement
+        return [seen[target - x], i]
+    seen[x] = i                     # record after checking`
+        },
+        {
+            id: "two-pointers", name: "Two Pointers", week: 1,
+            cues: ["Input is sorted, or sorting is cheap", "Looking for a pair or triple with a target sum", "Palindromes or comparing from both ends"],
+            complexity: "O(n) after an O(n log n) sort, O(1) extra space.",
+            template: `l, r = 0, len(a) - 1
+while l < r:
+    s = a[l] + a[r]
+    if s == target:
+        return [l, r]
+    if s < target:
+        l += 1          # need a bigger sum
+    else:
+        r -= 1          # need a smaller sum`
+        },
+        {
+            id: "sliding-window", name: "Sliding Window", week: 1,
+            cues: ["Longest / shortest contiguous subarray or substring", "A constraint on what the window may contain", "Fixed-size window maximum or average"],
+            complexity: "O(n): each index enters and leaves the window once.",
+            template: `count, l, best = {}, 0, 0
+for r, ch in enumerate(s):
+    count[ch] = count.get(ch, 0) + 1
+    while window_is_invalid(count):   # shrink from the left
+        count[s[l]] -= 1
+        l += 1
+    best = max(best, r - l + 1)`
+        },
+        {
+            id: "stack", name: "Stack & Monotonic Stack", week: 2,
+            cues: ["Matching brackets or nested structure", "Next greater / smaller element", "Spans or areas bounded by the nearest smaller value"],
+            complexity: "O(n): each element is pushed and popped at most once.",
+            template: `res, stack = [0] * len(t), []   # stack holds indices
+for i, x in enumerate(t):
+    while stack and t[stack[-1]] < x:
+        j = stack.pop()
+        res[j] = i - j               # days until warmer
+    stack.append(i)`
+        },
+        {
+            id: "binary-search", name: "Binary Search", week: 2,
+            cues: ["Sorted or rotated-sorted input", "Search the answer space: smallest value that works", "A monotonic yes/no feasibility check exists"],
+            complexity: "O(log n) per search, or O(n log range) when searching the answer.",
+            template: `lo, hi = low_bound, high_bound
+while lo < hi:
+    mid = (lo + hi) // 2
+    if feasible(mid):
+        hi = mid          # mid works; try smaller
+    else:
+        lo = mid + 1
+return lo                 # smallest feasible value`
+        },
+        {
+            id: "linked-list", name: "Linked List", week: 2,
+            cues: ["Pointer rewiring without extra memory", "Cycle or middle detection: fast and slow pointers", "Merging sorted sequences"],
+            complexity: "O(n) time, O(1) space for in-place rewiring.",
+            template: `prev, cur = None, head
+while cur:
+    nxt = cur.next
+    cur.next = prev        # reverse one link
+    prev, cur = cur, nxt
+return prev                # new head`
+        },
+        {
+            id: "trees", name: "Trees (DFS & BFS)", week: 3,
+            cues: ["Answer depends on the answers of subtrees (DFS)", "Level-by-level questions (BFS)", "BST ordering lets you prune or traverse in order"],
+            complexity: "O(n) time, O(h) stack for DFS or O(width) queue for BFS.",
+            template: `def dfs(node):
+    if not node:
+        return 0
+    left, right = dfs(node.left), dfs(node.right)
+    # update a global answer here if the path can bend
+    return 1 + max(left, right)
+
+q = deque([root])          # BFS, one level per loop
+while q:
+    for _ in range(len(q)):
+        node = q.popleft()
+        q.extend(c for c in (node.left, node.right) if c)`
+        },
+        {
+            id: "tries", name: "Tries", week: 3,
+            cues: ["Many lookups by prefix", "Searching a grid or stream for a set of words", "Wildcard character matching"],
+            complexity: "O(L) per insert or search for a word of length L.",
+            template: `class TrieNode:
+    def __init__(self):
+        self.children, self.end = {}, False
+
+def insert(root, word):
+    node = root
+    for ch in word:
+        node = node.children.setdefault(ch, TrieNode())
+    node.end = True`
+        },
+        {
+            id: "heap", name: "Heap / Priority Queue", week: 3,
+            cues: ["Top-k, k-th largest or k closest", "Repeatedly take the min or max as data changes", "Merging k sorted streams; running median"],
+            complexity: "O(n log k) for top-k with a size-k heap.",
+            template: `heap = []
+for x in nums:
+    heapq.heappush(heap, x)
+    if len(heap) > k:
+        heapq.heappop(heap)   # drop the smallest
+return heap[0]                # k-th largest`
+        },
+        {
+            id: "backtracking", name: "Backtracking", week: 4,
+            cues: ["Generate all subsets, permutations or combinations", "Constraint satisfaction: place, check, undo", "Input is small (n ≤ ~20)"],
+            complexity: "Exponential, e.g. O(n · 2^n) for subsets; prune early.",
+            template: `res, path = [], []
+def backtrack(start):
+    res.append(path[:])            # record a copy
+    for i in range(start, len(nums)):
+        path.append(nums[i])       # choose
+        backtrack(i + 1)           # explore
+        path.pop()                 # undo
+backtrack(0)`
+        },
+        {
+            id: "graphs", name: "Graphs (BFS, DFS, Union-Find)", week: 4,
+            cues: ["Grids of islands, regions or spreading", "Dependencies and ordering (topological sort)", "Connectivity and cycle detection in undirected graphs"],
+            complexity: "O(V + E) traversal; near O(1) amortised union-find.",
+            template: `indeg, adj = [0] * n, defaultdict(list)
+for a, b in prereqs:           # b must come before a
+    adj[b].append(a)
+    indeg[a] += 1
+q = deque(i for i in range(n) if indeg[i] == 0)
+order = []
+while q:
+    u = q.popleft()
+    order.append(u)
+    for v in adj[u]:
+        indeg[v] -= 1
+        if indeg[v] == 0:
+            q.append(v)
+return order if len(order) == n else []   # [] means a cycle`
+        },
+        {
+            id: "adv-graphs", name: "Advanced Graphs", week: 5,
+            cues: ["Weighted shortest path (Dijkstra)", "Minimum spanning tree (Prim / Kruskal)", "Shortest path with a limit on stops (Bellman-Ford style)"],
+            complexity: "Dijkstra O(E log V) with a heap.",
+            template: `dist = {src: 0}
+pq = [(0, src)]
+while pq:
+    d, u = heapq.heappop(pq)
+    if d > dist.get(u, inf):
+        continue                    # stale entry
+    for v, w in adj[u]:
+        nd = d + w
+        if nd < dist.get(v, inf):
+            dist[v] = nd
+            heapq.heappush(pq, (nd, v))`
+        },
+        {
+            id: "dp-1d", name: "1-D Dynamic Programming", week: 5,
+            cues: ["Count ways, or min / max over choices along a sequence", "The answer at i depends on a few earlier answers", "Brute-force recursion repeats the same subproblems"],
+            complexity: "Usually O(n) or O(n²) time; often O(1) space with rolling variables.",
+            template: `# State: best total using houses[:i]. Transition: skip or take.
+prev2, prev1 = 0, 0
+for x in nums:
+    prev2, prev1 = prev1, max(prev1, prev2 + x)
+return prev1`
+        },
+        {
+            id: "dp-2d", name: "2-D Dynamic Programming", week: 6,
+            cues: ["Two sequences compared (LCS, edit distance)", "Grid paths", "Knapsack: items × capacity"],
+            complexity: "O(m · n) time; space can often drop to one row.",
+            template: `dp = [[0] * (n + 1) for _ in range(m + 1)]
+for i in range(m - 1, -1, -1):
+    for j in range(n - 1, -1, -1):
+        if a[i] == b[j]:
+            dp[i][j] = 1 + dp[i + 1][j + 1]
+        else:
+            dp[i][j] = max(dp[i + 1][j], dp[i][j + 1])
+return dp[0][0]`
+        },
+        {
+            id: "greedy-intervals", name: "Greedy & Intervals", week: 6,
+            cues: ["A locally best choice can be proven safe", "Overlapping ranges: merge, insert or remove", "Sort by start or end first"],
+            complexity: "O(n log n) for the sort, O(n) for the sweep.",
+            template: `intervals.sort(key=lambda x: x[0])
+merged = [intervals[0]]
+for s, e in intervals[1:]:
+    if s <= merged[-1][1]:                  # overlaps
+        merged[-1][1] = max(merged[-1][1], e)
+    else:
+        merged.append([s, e])`
+        },
+        {
+            id: "bits-math", name: "Bit Manipulation & Math", week: 7,
+            cues: ["Pairs cancel out (XOR)", "Count or flip bits without strings", "Matrix rotation and traversal, fast exponentiation"],
+            complexity: "Typically O(n) or O(log n) with O(1) space.",
+            template: `x & (x - 1)    # clear the lowest set bit
+x & -x         # isolate the lowest set bit
+res = 0
+for x in nums:
+    res ^= x       # duplicates cancel, the single number remains`
+        },
+        {
+            id: "concurrency-design", name: "Concurrency & Design", week: 7,
+            cues: ["Implement a data structure with O(1) operations", "Threads must take turns or share a bounded buffer", "Systems-flavoured interview rounds"],
+            complexity: "Aim for O(1) per operation; correctness under interleaving first.",
+            template: `class BoundedQueue:
+    def __init__(self, cap):
+        self.q, self.cap = deque(), cap
+        self.cv = threading.Condition()
+
+    def put(self, x):
+        with self.cv:
+            self.cv.wait_for(lambda: len(self.q) < self.cap)
+            self.q.append(x)
+            self.cv.notify_all()
+
+    def get(self):
+        with self.cv:
+            self.cv.wait_for(lambda: self.q)
+            x = self.q.popleft()
+            self.cv.notify_all()
+            return x`
+        }
+    ];
+
+    // [patternId, LeetCode number, title, difficulty]. Premium-only problems are excluded.
+    const PROBLEM_ROWS = [
+        ["hashing", 217, "Contains Duplicate", "E"],
+        ["hashing", 242, "Valid Anagram", "E"],
+        ["hashing", 1, "Two Sum", "E"],
+        ["hashing", 49, "Group Anagrams", "M"],
+        ["hashing", 347, "Top K Frequent Elements", "M"],
+        ["hashing", 238, "Product of Array Except Self", "M"],
+        ["hashing", 36, "Valid Sudoku", "M"],
+        ["hashing", 128, "Longest Consecutive Sequence", "M"],
+
+        ["two-pointers", 125, "Valid Palindrome", "E"],
+        ["two-pointers", 167, "Two Sum II - Input Array Is Sorted", "M"],
+        ["two-pointers", 15, "3Sum", "M"],
+        ["two-pointers", 11, "Container With Most Water", "M"],
+        ["two-pointers", 42, "Trapping Rain Water", "H"],
+
+        ["sliding-window", 121, "Best Time to Buy and Sell Stock", "E"],
+        ["sliding-window", 3, "Longest Substring Without Repeating Characters", "M"],
+        ["sliding-window", 424, "Longest Repeating Character Replacement", "M"],
+        ["sliding-window", 567, "Permutation in String", "M"],
+        ["sliding-window", 76, "Minimum Window Substring", "H"],
+        ["sliding-window", 239, "Sliding Window Maximum", "H"],
+
+        ["stack", 20, "Valid Parentheses", "E"],
+        ["stack", 155, "Min Stack", "M"],
+        ["stack", 150, "Evaluate Reverse Polish Notation", "M"],
+        ["stack", 739, "Daily Temperatures", "M"],
+        ["stack", 853, "Car Fleet", "M"],
+        ["stack", 84, "Largest Rectangle in Histogram", "H"],
+
+        ["binary-search", 704, "Binary Search", "E"],
+        ["binary-search", 74, "Search a 2D Matrix", "M"],
+        ["binary-search", 875, "Koko Eating Bananas", "M"],
+        ["binary-search", 153, "Find Minimum in Rotated Sorted Array", "M"],
+        ["binary-search", 33, "Search in Rotated Sorted Array", "M"],
+        ["binary-search", 981, "Time Based Key-Value Store", "M"],
+        ["binary-search", 410, "Split Array Largest Sum", "H"],
+        ["binary-search", 4, "Median of Two Sorted Arrays", "H"],
+
+        ["linked-list", 206, "Reverse Linked List", "E"],
+        ["linked-list", 21, "Merge Two Sorted Lists", "E"],
+        ["linked-list", 141, "Linked List Cycle", "E"],
+        ["linked-list", 143, "Reorder List", "M"],
+        ["linked-list", 19, "Remove Nth Node From End of List", "M"],
+        ["linked-list", 138, "Copy List with Random Pointer", "M"],
+        ["linked-list", 2, "Add Two Numbers", "M"],
+        ["linked-list", 146, "LRU Cache", "M"],
+        ["linked-list", 23, "Merge k Sorted Lists", "H"],
+
+        ["trees", 226, "Invert Binary Tree", "E"],
+        ["trees", 104, "Maximum Depth of Binary Tree", "E"],
+        ["trees", 543, "Diameter of Binary Tree", "E"],
+        ["trees", 572, "Subtree of Another Tree", "E"],
+        ["trees", 235, "Lowest Common Ancestor of a Binary Search Tree", "M"],
+        ["trees", 102, "Binary Tree Level Order Traversal", "M"],
+        ["trees", 199, "Binary Tree Right Side View", "M"],
+        ["trees", 98, "Validate Binary Search Tree", "M"],
+        ["trees", 230, "Kth Smallest Element in a BST", "M"],
+        ["trees", 105, "Construct Binary Tree from Preorder and Inorder Traversal", "M"],
+        ["trees", 124, "Binary Tree Maximum Path Sum", "H"],
+        ["trees", 297, "Serialize and Deserialize Binary Tree", "H"],
+
+        ["tries", 208, "Implement Trie (Prefix Tree)", "M"],
+        ["tries", 211, "Design Add and Search Words Data Structure", "M"],
+        ["tries", 212, "Word Search II", "H"],
+
+        ["heap", 703, "Kth Largest Element in a Stream", "E"],
+        ["heap", 1046, "Last Stone Weight", "E"],
+        ["heap", 973, "K Closest Points to Origin", "M"],
+        ["heap", 215, "Kth Largest Element in an Array", "M"],
+        ["heap", 621, "Task Scheduler", "M"],
+        ["heap", 355, "Design Twitter", "M"],
+        ["heap", 295, "Find Median from Data Stream", "H"],
+
+        ["backtracking", 78, "Subsets", "M"],
+        ["backtracking", 39, "Combination Sum", "M"],
+        ["backtracking", 46, "Permutations", "M"],
+        ["backtracking", 90, "Subsets II", "M"],
+        ["backtracking", 40, "Combination Sum II", "M"],
+        ["backtracking", 79, "Word Search", "M"],
+        ["backtracking", 131, "Palindrome Partitioning", "M"],
+        ["backtracking", 17, "Letter Combinations of a Phone Number", "M"],
+        ["backtracking", 51, "N-Queens", "H"],
+
+        ["graphs", 200, "Number of Islands", "M"],
+        ["graphs", 133, "Clone Graph", "M"],
+        ["graphs", 695, "Max Area of Island", "M"],
+        ["graphs", 417, "Pacific Atlantic Water Flow", "M"],
+        ["graphs", 130, "Surrounded Regions", "M"],
+        ["graphs", 994, "Rotting Oranges", "M"],
+        ["graphs", 207, "Course Schedule", "M"],
+        ["graphs", 210, "Course Schedule II", "M"],
+        ["graphs", 684, "Redundant Connection", "M"],
+        ["graphs", 547, "Number of Provinces", "M"],
+        ["graphs", 127, "Word Ladder", "H"],
+
+        ["adv-graphs", 743, "Network Delay Time", "M"],
+        ["adv-graphs", 1584, "Min Cost to Connect All Points", "M"],
+        ["adv-graphs", 787, "Cheapest Flights Within K Stops", "M"],
+        ["adv-graphs", 778, "Swim in Rising Water", "H"],
+        ["adv-graphs", 332, "Reconstruct Itinerary", "H"],
+
+        ["dp-1d", 70, "Climbing Stairs", "E"],
+        ["dp-1d", 746, "Min Cost Climbing Stairs", "E"],
+        ["dp-1d", 198, "House Robber", "M"],
+        ["dp-1d", 213, "House Robber II", "M"],
+        ["dp-1d", 5, "Longest Palindromic Substring", "M"],
+        ["dp-1d", 91, "Decode Ways", "M"],
+        ["dp-1d", 322, "Coin Change", "M"],
+        ["dp-1d", 152, "Maximum Product Subarray", "M"],
+        ["dp-1d", 139, "Word Break", "M"],
+        ["dp-1d", 300, "Longest Increasing Subsequence", "M"],
+        ["dp-1d", 416, "Partition Equal Subset Sum", "M"],
+
+        ["dp-2d", 62, "Unique Paths", "M"],
+        ["dp-2d", 1143, "Longest Common Subsequence", "M"],
+        ["dp-2d", 309, "Best Time to Buy and Sell Stock with Cooldown", "M"],
+        ["dp-2d", 518, "Coin Change II", "M"],
+        ["dp-2d", 494, "Target Sum", "M"],
+        ["dp-2d", 97, "Interleaving String", "M"],
+        ["dp-2d", 72, "Edit Distance", "M"],
+        ["dp-2d", 312, "Burst Balloons", "H"],
+        ["dp-2d", 10, "Regular Expression Matching", "H"],
+
+        ["greedy-intervals", 53, "Maximum Subarray", "M"],
+        ["greedy-intervals", 55, "Jump Game", "M"],
+        ["greedy-intervals", 45, "Jump Game II", "M"],
+        ["greedy-intervals", 134, "Gas Station", "M"],
+        ["greedy-intervals", 846, "Hand of Straights", "M"],
+        ["greedy-intervals", 763, "Partition Labels", "M"],
+        ["greedy-intervals", 57, "Insert Interval", "M"],
+        ["greedy-intervals", 56, "Merge Intervals", "M"],
+        ["greedy-intervals", 435, "Non-overlapping Intervals", "M"],
+        ["greedy-intervals", 1851, "Minimum Interval to Include Each Query", "H"],
+
+        ["bits-math", 136, "Single Number", "E"],
+        ["bits-math", 191, "Number of 1 Bits", "E"],
+        ["bits-math", 338, "Counting Bits", "E"],
+        ["bits-math", 190, "Reverse Bits", "E"],
+        ["bits-math", 268, "Missing Number", "E"],
+        ["bits-math", 371, "Sum of Two Integers", "M"],
+        ["bits-math", 48, "Rotate Image", "M"],
+        ["bits-math", 54, "Spiral Matrix", "M"],
+        ["bits-math", 50, "Pow(x, n)", "M"],
+
+        ["concurrency-design", 1114, "Print in Order", "E"],
+        ["concurrency-design", 1115, "Print FooBar Alternately", "M"],
+        ["concurrency-design", 1117, "Building H2O", "M"],
+        ["concurrency-design", 1226, "The Dining Philosophers", "M"],
+        ["concurrency-design", 622, "Design Circular Queue", "M"],
+        ["concurrency-design", 380, "Insert Delete GetRandom O(1)", "M"],
+        ["concurrency-design", 1396, "Design Underground System", "M"],
+        ["concurrency-design", 460, "LFU Cache", "H"]
+    ];
+
+    const slugify = (t) => t.toLowerCase().replace(/[^a-z0-9\s-]/g, "").trim().replace(/[\s-]+/g, "-");
+    const PROBLEMS = PROBLEM_ROWS.map(([pattern, num, title, diff], order) => ({
+        id: `lc${num}`, pattern, num, title, diff, order,
+        url: `https://leetcode.com/problems/${slugify(title)}/`
+    }));
+    const PROBLEM_BY_ID = Object.fromEntries(PROBLEMS.map(p => [p.id, p]));
+    const PATTERN_BY_ID = Object.fromEntries(PATTERNS.map(p => [p.id, p]));
+
+    const WEEKS = [
+        { n: 1, title: "Linear scans", patterns: ["hashing", "two-pointers", "sliding-window"] },
+        { n: 2, title: "Order and pointers", patterns: ["stack", "binary-search", "linked-list"] },
+        { n: 3, title: "Trees and heaps", patterns: ["trees", "tries", "heap"] },
+        { n: 4, title: "Search spaces", patterns: ["backtracking", "graphs"] },
+        { n: 5, title: "Weighted graphs and DP I", patterns: ["adv-graphs", "dp-1d"] },
+        { n: 6, title: "DP II and greedy", patterns: ["dp-2d", "greedy-intervals"] },
+        { n: 7, title: "Bits, design and concurrency", patterns: ["bits-math", "concurrency-design"] },
+        { n: 8, title: "Interleaved consolidation", patterns: [] }
+    ];
+
+    // =========================================================================
+    // 2. STATE
+    // =========================================================================
+
+    const STORAGE_KEY = "dsa_patterns_tracker_v1";
+    const DEFAULT_STATE = () => ({
+        version: 1,
+        startDate: null,
+        dailyNew: 4,
+        theme: null,
+        tab: "today",
+        open: {},          // expanded pattern groups on the Problems tab
+        filters: { diff: "ALL", status: "ALL", pattern: "ALL", q: "" },
+        problems: {},      // id -> { attempts: [{d, g, m}], reps, interval, ease, due, everSolved, note }
+        mock: null,        // { date, ids }
+        active: null       // { id, start }
+    });
+    let state = DEFAULT_STATE();
+
+    function load() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) state = { ...DEFAULT_STATE(), ...JSON.parse(raw) };
+        } catch (e) { /* corrupt or blocked storage: start fresh */ }
+        state.filters = { ...DEFAULT_STATE().filters, ...(state.filters || {}) };
+        if (!state.theme) {
+            state.theme = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+    }
+    function save() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+    }
+
+    // =========================================================================
+    // 3. DATES AND SPACED REPETITION
+    // =========================================================================
+
+    const pad = (n) => String(n).padStart(2, "0");
+    const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    const today = () => ymd(new Date());
+    const parse = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+    const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return ymd(d); };
+    const daysBetween = (a, b) => Math.round((parse(b) - parse(a)) / 86400000);
+    const fmtDate = (s) => parse(s).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+
+    function rec(id) {
+        if (!state.problems[id]) state.problems[id] = { attempts: [], reps: 0, interval: 0, ease: 2.5, due: null, everSolved: false, note: "" };
+        return state.problems[id];
+    }
+
+    // SM-2-style scheduling. again = saw solution, hard = needed hints, good = solved solo, easy = solo and easy.
+    function schedule(r, grade) {
+        if (grade === "again") {
+            r.reps = 0; r.interval = 1; r.ease = Math.max(1.3, r.ease - 0.2);
+        } else if (grade === "hard") {
+            r.interval = r.reps === 0 ? 1 : Math.max(1, Math.round(r.interval * 1.2));
+            r.ease = Math.max(1.3, r.ease - 0.15);
+        } else {
+            r.reps += 1;
+            if (r.reps === 1) r.interval = grade === "easy" ? 3 : 1;
+            else if (r.reps === 2) r.interval = grade === "easy" ? 7 : 3;
+            else r.interval = Math.round(r.interval * r.ease * (grade === "easy" ? 1.3 : 1));
+            if (grade === "easy") r.ease = Math.min(3.0, r.ease + 0.15);
+            r.everSolved = true;
+        }
+        r.interval = Math.min(r.interval, 120);
+        r.due = addDays(today(), r.interval);
+    }
+
+    function statusOf(id) {
+        const r = state.problems[id];
+        if (!r || !r.attempts.length) return "new";
+        if (r.reps >= 3 && r.interval >= 14) return "mastered";
+        const last = r.attempts[r.attempts.length - 1].g;
+        return (last === "good" || last === "easy") ? "solved" : "learning";
+    }
+    const isDue = (id) => { const r = state.problems[id]; return !!(r && r.due && r.due <= today()); };
+    const STATUS_LABEL = { new: "New", learning: "Learning", solved: "Solved", mastered: "Mastered" };
+    const GRADE_LABEL = { again: "Saw solution", hard: "Needed hints", good: "Solved solo", easy: "Easy" };
+
+    // =========================================================================
+    // 4. DERIVED VIEWS
+    // =========================================================================
+
+    function dueList() {
+        return PROBLEMS.filter(p => isDue(p.id))
+            .sort((a, b) => (state.problems[a.id].due).localeCompare(state.problems[b.id].due) || a.order - b.order);
+    }
+
+    function newToday() {
+        // Problems first attempted today count against today's allowance.
+        const t = today();
+        const startedToday = PROBLEMS.filter(p => {
+            const r = state.problems[p.id];
+            return r && r.attempts.length && r.attempts[0].d === t;
+        });
+        const remaining = Math.max(0, state.dailyNew - startedToday.length);
+        const fresh = PROBLEMS.filter(p => statusOf(p.id) === "new").slice(0, remaining);
+        return { startedToday, fresh };
+    }
+
+    function currentWeek() {
+        if (!state.startDate) return 1;
+        return Math.min(8, Math.max(1, Math.floor(daysBetween(state.startDate, today()) / 7) + 1));
+    }
+
+    function patternProgress(pid) {
+        const list = PROBLEMS.filter(p => p.pattern === pid);
+        const solved = list.filter(p => state.problems[p.id] && state.problems[p.id].everSolved).length;
+        const mastered = list.filter(p => statusOf(p.id) === "mastered").length;
+        return { total: list.length, solved, mastered };
+    }
+
+    function streak() {
+        const days = new Set();
+        Object.values(state.problems).forEach(r => r.attempts.forEach(a => days.add(a.d)));
+        let d = today();
+        if (!days.has(d)) d = addDays(d, -1);
+        let n = 0;
+        while (days.has(d)) { n++; d = addDays(d, -1); }
+        return n;
+    }
+
+    function weakPatterns() {
+        // Patterns attempted at least once, ranked by share of failed (again/hard) attempts.
+        return PATTERNS.map(pt => {
+            let tot = 0, bad = 0;
+            PROBLEMS.filter(p => p.pattern === pt.id).forEach(p => {
+                const r = state.problems[p.id];
+                if (r) r.attempts.forEach(a => { tot++; if (a.g === "again" || a.g === "hard") bad++; });
+            });
+            return { pt, tot, rate: tot ? bad / tot : 0 };
+        }).filter(x => x.tot >= 2 && x.rate > 0).sort((a, b) => b.rate - a.rate).slice(0, 3);
+    }
+
+    // =========================================================================
+    // 5. RENDERING
+    // =========================================================================
+
+    const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    const $ = (id) => document.getElementById(id);
+
+    function diffChip(d) { return `<span class="chip d-${d}" title="Target ${TARGET_MIN[d]} min">${{ E: "Easy", M: "Medium", H: "Hard" }[d]}</span>`; }
+    function statusChip(id) {
+        const s = statusOf(id);
+        if (isDue(id)) return `<span class="chip s-due">Review due</span>`;
+        return `<span class="chip s-${s}">${STATUS_LABEL[s]}</span>`;
+    }
+
+    function problemRow(p, { showPattern = false, showNote = true, compact = false } = {}) {
+        const r = state.problems[p.id];
+        const last = r && r.attempts.length ? r.attempts[r.attempts.length - 1] : null;
+        const best = r ? r.attempts.filter(a => a.g === "good" || a.g === "easy").reduce((m, a) => Math.min(m, a.m), Infinity) : Infinity;
+        const meta = [];
+        if (showPattern) meta.push(esc(PATTERN_BY_ID[p.pattern].name));
+        if (last) meta.push(`last: ${GRADE_LABEL[last.g].toLowerCase()} · ${fmtDate(last.d)}`);
+        if (best !== Infinity) meta.push(`best ${best}m / ${TARGET_MIN[p.diff]}m`);
+        if (r && r.due) meta.push(r.due <= today() ? "review today" : `next review ${fmtDate(r.due)}`);
+        const active = state.active && state.active.id === p.id;
+        return `
+            <div class="prob ${compact ? "compact" : ""} ${active ? "is-active" : ""}" data-id="${p.id}">
+                <div class="prob-num">#${p.num}</div>
+                <div class="prob-main">
+                    <a class="prob-title" href="${p.url}" target="_blank" rel="noopener noreferrer">${esc(p.title)}</a>
+                    ${meta.length ? `<div class="prob-meta">${meta.map(m => `<span>${m}</span>`).join("")}</div>` : ""}
+                    ${showNote ? `<input class="note-input" data-note="${p.id}" value="${esc(r ? r.note : "")}" placeholder="Key insight in one line…" aria-label="Note for ${esc(p.title)}">` : ""}
+                </div>
+                <div class="chips">${diffChip(p.diff)}${statusChip(p.id)}</div>
+                <div class="prob-right">
+                    <button class="btn ${active ? "" : "primary"}" data-start="${p.id}" ${active ? "disabled" : ""}>${active ? "In progress" : (r && r.attempts.length ? "Re-solve" : "Start")}</button>
+                </div>
+            </div>`;
+    }
+
+    function renderStats() {
+        const solved = PROBLEMS.filter(p => state.problems[p.id] && state.problems[p.id].everSolved).length;
+        const mastered = PROBLEMS.filter(p => statusOf(p.id) === "mastered").length;
+        const due = dueList().length;
+        const s = streak();
+        const wk = currentWeek();
+        return `
+            <div class="stats">
+                <div class="stat"><div class="stat-label">Solved solo</div><div class="stat-value">${solved}<small> / ${PROBLEMS.length}</small></div><div class="bar"><span style="width:${(solved / PROBLEMS.length * 100).toFixed(1)}%"></span></div></div>
+                <div class="stat"><div class="stat-label">Mastered</div><div class="stat-value">${mastered}</div><div class="stat-label" style="text-transform:none">3+ solo reviews, 2-week gap</div></div>
+                <div class="stat"><div class="stat-label">Reviews due</div><div class="stat-value ${due ? "coral" : ""}">${due}</div></div>
+                <div class="stat"><div class="stat-label">Streak</div><div class="stat-value">${s}<small> day${s === 1 ? "" : "s"}</small></div></div>
+                <div class="stat"><div class="stat-label">Plan week</div><div class="stat-value">${state.startDate ? wk : "–"}<small> / 8</small></div><div class="stat-label" style="text-transform:none">${state.startDate ? esc(WEEKS[wk - 1].title) : "Starts with your first attempt"}</div></div>
+            </div>`;
+    }
+
+    function renderToday() {
+        const due = dueList();
+        const { startedToday, fresh } = newToday();
+        const solvedCount = PROBLEMS.filter(p => state.problems[p.id] && state.problems[p.id].everSolved).length;
+        const weak = weakPatterns();
+        const isSat = new Date().getDay() === 6;
+        const mock = state.mock && state.mock.date === today() ? state.mock : null;
+
+        $("view-today").innerHTML = `
+            ${renderStats()}
+            <div class="grid-2">
+                <div>
+                    <div class="panel">
+                        <div class="panel-head"><span class="panel-title">1. Reviews due</span><span class="panel-sub">Re-solve from a blank editor before anything new</span></div>
+                        ${due.length ? due.map(p => problemRow(p, { showPattern: true, showNote: false })).join("") : `<div class="empty">Nothing due. Reviews appear here 1, 3, 7+ days after each solve, spaced further apart as you keep getting them right.</div>`}
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head"><span class="panel-title">2. New problems</span><span class="panel-sub">${startedToday.length} started today &middot; daily target ${state.dailyNew} (change in Data &amp; settings)</span></div>
+                        ${startedToday.map(p => problemRow(p, { showPattern: true, showNote: false })).join("")}
+                        ${fresh.map(p => problemRow(p, { showPattern: true, showNote: false })).join("")}
+                        ${!startedToday.length && !fresh.length ? `<div class="empty">${PROBLEMS.every(p => statusOf(p.id) !== "new") ? "Every problem has been attempted. Keep clearing reviews and run mocks." : "Today's new-problem allowance is used. Clear reviews or run a mock."}</div>` : ""}
+                    </div>
+                </div>
+                <div>
+                    <div class="panel">
+                        <div class="panel-head"><span class="panel-title">3. Interleaved mock</span><span class="panel-sub">${isSat ? "Today is mock day" : "Best on Saturdays"}</span></div>
+                        <div class="panel-body prose" style="font-size:13px">
+                            <p>Three problems you have already solved, from <strong>different patterns</strong>, back to back in about 75 minutes. Mixing patterns trains you to recognise which one applies, which is the part interviews actually test.</p>
+                        </div>
+                        ${mock ? mock.ids.map(id => problemRow(PROBLEM_BY_ID[id], { showPattern: false, showNote: false, compact: true })).join("") : ""}
+                        <div class="panel-body" style="border-top:1px solid var(--border)">
+                            <button class="btn ${mock ? "ghost" : "primary"}" data-action="mock" ${solvedCount < 3 ? "disabled" : ""}>${mock ? "Draw a new set" : "Draw 3 mixed problems"}</button>
+                            ${solvedCount < 3 ? `<span class="panel-sub" style="margin-left:8px">Unlocks after 3 solo solves</span>` : ""}
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head"><span class="panel-title">Weakest patterns</span><span class="panel-sub">By share of attempts needing hints or the solution</span></div>
+                        ${weak.length ? weak.map(w => `
+                            <div class="panel-body" style="border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:center;justify-content:space-between">
+                                <div><strong>${esc(w.pt.name)}</strong><div class="panel-sub">${Math.round(w.rate * 100)}% of ${w.tot} attempts</div></div>
+                                <button class="btn ghost" data-pattern-jump="${w.pt.id}">Practice &rarr;</button>
+                            </div>`).join("") : `<div class="empty">Shows up once you have a few graded attempts.</div>`}
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    function matchesFilters(p) {
+        const f = state.filters;
+        if (f.diff !== "ALL" && p.diff !== f.diff) return false;
+        if (f.pattern !== "ALL" && p.pattern !== f.pattern) return false;
+        if (f.status === "DUE" && !isDue(p.id)) return false;
+        if (!["ALL", "DUE"].includes(f.status) && statusOf(p.id) !== f.status) return false;
+        if (f.q) {
+            const r = state.problems[p.id];
+            const hay = `${p.num} ${p.title} ${PATTERN_BY_ID[p.pattern].name} ${r ? r.note : ""}`.toLowerCase();
+            if (!hay.includes(f.q.toLowerCase())) return false;
+        }
+        return true;
+    }
+
+    function pills(name, options, current) {
+        return `<div class="pills" role="group">${options.map(([v, label]) =>
+            `<button class="pill ${current === v ? "active" : ""}" data-filter="${name}" data-value="${v}" aria-pressed="${current === v}">${label}</button>`).join("")}</div>`;
+    }
+
+    function renderProblems() {
+        const f = state.filters;
+        const filtering = f.diff !== "ALL" || f.status !== "ALL" || f.pattern !== "ALL" || f.q;
+        const groups = PATTERNS.map(pt => {
+            const items = PROBLEMS.filter(p => p.pattern === pt.id && matchesFilters(p));
+            if (!items.length) return "";
+            const prog = patternProgress(pt.id);
+            const open = filtering || !!state.open[pt.id];
+            return `
+                <div class="panel" id="group-${pt.id}">
+                    <button class="group-head" data-toggle="${pt.id}" aria-expanded="${open}">
+                        <span><span class="caret">&#9654;</span> <span class="group-name">${esc(pt.name)}</span><span class="group-week">week ${pt.week}</span></span>
+                        <span class="bar"><span style="width:${(prog.solved / prog.total * 100).toFixed(1)}%"></span></span>
+                        <span class="group-count">${prog.solved}/${prog.total} solved</span>
+                    </button>
+                    <div ${open ? "" : "hidden"}>${items.map(p => problemRow(p)).join("")}</div>
+                </div>`;
+        }).join("");
+
+        $("view-problems").innerHTML = `
+            <div class="filters">
+                <span><span class="filter-label">Difficulty</span>${pills("diff", [["ALL", "All"], ["E", "Easy"], ["M", "Medium"], ["H", "Hard"]], f.diff)}</span>
+                <span><span class="filter-label">Status</span>${pills("status", [["ALL", "All"], ["DUE", "Due"], ["new", "New"], ["learning", "Learning"], ["solved", "Solved"], ["mastered", "Mastered"]], f.status)}</span>
+                <label><span class="filter-label">Pattern</span>
+                    <select class="search" style="flex:none;padding:5px 8px" data-filter-select="pattern" aria-label="Filter by pattern">
+                        <option value="ALL">All patterns</option>
+                        ${PATTERNS.map(pt => `<option value="${pt.id}" ${f.pattern === pt.id ? "selected" : ""}>${esc(pt.name)}</option>`).join("")}
+                    </select>
+                </label>
+                <input class="search" id="searchInput" type="search" placeholder="Search number, title or note (press / )" value="${esc(f.q)}" aria-label="Search problems">
+                ${filtering ? `<button class="btn ghost" data-action="clear-filters">Clear filters</button>` : `<button class="btn ghost" data-action="expand-all">Expand all</button>`}
+            </div>
+            ${groups || `<div class="panel"><div class="empty">No problems match these filters.</div></div>`}`;
+    }
+
+    function renderPatterns() {
+        $("view-patterns").innerHTML = `
+            <div class="cards">
+                ${PATTERNS.map(pt => {
+                    const prog = patternProgress(pt.id);
+                    return `
+                    <article class="pcard" id="pattern-${pt.id}">
+                        <div class="pcard-head"><span class="panel-title">${esc(pt.name)}</span><span class="panel-sub">week ${pt.week}</span></div>
+                        <div class="pcard-body">
+                            <div><div class="h-mini">Reach for it when</div><ul class="cue-list">${pt.cues.map(c => `<li>${esc(c)}</li>`).join("")}</ul></div>
+                            <div><div class="h-mini">Template (Python)</div><pre class="code"><button class="copy" data-copy="${pt.id}">Copy</button><code>${esc(pt.template)}</code></pre></div>
+                            <div><div class="h-mini">Complexity</div><div style="font-size:13px;color:var(--text-secondary)">${esc(pt.complexity)}</div></div>
+                        </div>
+                        <div class="pcard-foot">
+                            <span class="bar"><span style="width:${(prog.solved / prog.total * 100).toFixed(1)}%"></span></span>
+                            <span class="panel-sub">${prog.solved}/${prog.total}</span>
+                            <button class="btn ghost" data-pattern-jump="${pt.id}">Practice &rarr;</button>
+                        </div>
+                    </article>`;
+                }).join("")}
+            </div>`;
+    }
+
+    function renderPlan() {
+        const wk = currentWeek();
+        $("view-plan").innerHTML = `
+            <div class="panel">
+                <div class="panel-head"><span class="panel-title">8-week plan</span><span class="panel-sub">${state.startDate ? `Started ${fmtDate(state.startDate)} · you are in week ${wk}` : "Week 1 starts with your first attempt"}</span></div>
+                <div class="scroll-x">
+                    <table class="plan">
+                        <thead><tr><th>Week</th><th>Focus</th><th>Patterns</th><th>Problems</th><th style="min-width:140px">Progress</th></tr></thead>
+                        <tbody>
+                            ${WEEKS.map(w => {
+                                const list = PROBLEMS.filter(p => w.patterns.includes(p.pattern));
+                                const solved = list.filter(p => state.problems[p.id] && state.problems[p.id].everSolved).length;
+                                return `<tr class="${state.startDate && w.n === wk ? "current" : ""}">
+                                    <td class="week-cell">Week ${w.n}</td>
+                                    <td>${esc(w.title)}</td>
+                                    <td>${w.patterns.length ? w.patterns.map(id => `<a href="#" data-pattern-jump="${id}" style="color:var(--teal)">${esc(PATTERN_BY_ID[id].name)}</a>`).join(", ") : "No new patterns: daily mixed mocks, clear every review, re-solve your weakest patterns."}</td>
+                                    <td class="mono">${list.length || "–"}</td>
+                                    <td>${list.length ? `<div class="bar"><span style="width:${(solved / list.length * 100).toFixed(1)}%"></span></div><span class="panel-sub">${solved}/${list.length}</span>` : `<span class="panel-sub">mocks + reviews</span>`}</td>
+                                </tr>`;
+                            }).join("")}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-head"><span class="panel-title">Weekly rhythm</span><span class="panel-sub">About 1.5–2.5 hours on study days</span></div>
+                <div class="rhythm">
+                    <div><b>Mon</b>Reviews due, then about 4 new problems from this week's pattern. Read the pattern card first.</div>
+                    <div><b>Tue</b>Reviews, then new problems.</div>
+                    <div><b>Wed</b>Reviews, then new problems. Start the week's second pattern.</div>
+                    <div><b>Thu</b>Reviews, then new problems.</div>
+                    <div><b>Fri</b>Reviews, then the week's hardest problems.</div>
+                    <div><b>Sat</b>Interleaved mock: 3 mixed solved problems in ~75 minutes.</div>
+                    <div><b>Sun</b>Reviews only, or rest. Write one-line insights for the week.</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-head"><span class="panel-title">How this tracker works, and why</span></div>
+                <div class="panel-body prose">
+                    <p><strong>Learn by pattern, then mix.</strong> Each week introduces one to three patterns so you can learn a template and its cues in a block. Saturday mocks and week 8 then mix patterns, because interviews don't tell you which pattern to use. Research on interleaved practice finds that mixing problem types improves the ability to tell them apart, with a moderate average benefit (Brunmair &amp; Richter, 2019, <em>Psychological Bulletin</em>).</p>
+                    <p><strong>Re-solve on a spaced schedule.</strong> Every solve is scheduled for review: first after 1 day, then 3, then at growing gaps based on how it went (a simplified SM-2 scheme, as used in flashcard apps). Spaced retrieval is one of the most reliable findings in learning science (<a href="https://www.nature.com/articles/s44159-022-00089-1" target="_blank" rel="noopener noreferrer">Carpenter, Pan &amp; Butler, 2022, <em>Nature Reviews Psychology</em></a>). Evidence specific to coding interviews is thin, so treat the intervals as a sensible default rather than a proven formula.</p>
+                    <p><strong>Recall, not recognition.</strong> A review means solving again from a blank editor. Reading your old code only feels like learning. That is also why grading matters: <em>Saw solution</em> and <em>Needed hints</em> bring a problem back tomorrow, and only <em>Solved solo</em> lets the gap grow. As <a href="https://www.redgreencode.com/leetcode-tip-10-planning-a-spaced-repetition-schedule/" target="_blank" rel="noopener noreferrer">Red-Green-Code</a> puts it, you can only solve a problem on demand if you have practised solving it from scratch.</p>
+                    <p><strong>Practise against the clock.</strong> Target times are 15 / 25 / 40 minutes for easy / medium / hard. Published guidance ranges from about 20–45 minutes for a medium and 35–60 for a hard, so these sit in the middle. Going over is fine while learning; the timer records it so you can watch it fall.</p>
+                    <p><strong>A mastered problem</strong> has been solved solo at least three times with the review gap at two weeks or more.</p>
+                    <p>Problem set: 136 free LeetCode problems across 17 patterns, close to the widely used NeetCode 150 core, plus a concurrency and design set for systems-flavoured interviews. Premium-only problems are excluded.</p>
+                </div>
+            </div>`;
+    }
+
+    function renderCounts() {
+        const due = dueList().length;
+        const { fresh } = newToday();
+        $("count-today").textContent = due + fresh.length;
+        const solved = PROBLEMS.filter(p => state.problems[p.id] && state.problems[p.id].everSolved).length;
+        $("count-problems").textContent = `${solved}/${PROBLEMS.length}`;
+    }
+
+    function render() {
+        ["today", "problems", "patterns", "plan"].forEach(t => {
+            $(`view-${t}`).classList.toggle("hidden", t !== state.tab);
+            const b = $(`tab-${t}`);
+            b.classList.toggle("active", t === state.tab);
+            b.setAttribute("aria-selected", t === state.tab ? "true" : "false");
+        });
+        ({ today: renderToday, problems: renderProblems, patterns: renderPatterns, plan: renderPlan })[state.tab]();
+        renderCounts();
+        renderAttemptBar();
+        $("dailyNewSelect").value = String(state.dailyNew);
+        $("themeBtn").textContent = state.theme === "dark" ? "Light mode" : "Dark mode";
+    }
+
+    // =========================================================================
+    // 6. ATTEMPTS
+    // =========================================================================
+
+    let clockTimer = null;
+
+    function startAttempt(id) {
+        if (state.active && state.active.id !== id) {
+            toast("Finish or cancel the current attempt first");
+            return;
+        }
+        state.active = { id, start: Date.now() };
+        if (!state.startDate) state.startDate = today();
+        save();
+        render();
+        window.open(PROBLEM_BY_ID[id].url, "_blank", "noopener");
+    }
+
+    function finishAttempt(grade) {
+        if (!state.active) return;
+        const { id, start } = state.active;
+        state.active = null;
+        if (grade !== "cancel") {
+            const minutes = Math.max(1, Math.round((Date.now() - start) / 60000));
+            const r = rec(id);
+            r.attempts.push({ d: today(), g: grade, m: minutes });
+            schedule(r, grade);
+            const p = PROBLEM_BY_ID[id];
+            toast(`${p.title}: ${GRADE_LABEL[grade].toLowerCase()} in ${minutes}m · next review ${fmtDate(r.due)}`);
+        }
+        save();
+        render();
+    }
+
+    function renderAttemptBar() {
+        const bar = $("attemptBar");
+        clearInterval(clockTimer);
+        if (!state.active) {
+            bar.classList.add("hidden");
+            document.body.classList.remove("attempting");
+            return;
+        }
+        const p = PROBLEM_BY_ID[state.active.id];
+        const r = state.problems[p.id];
+        bar.classList.remove("hidden");
+        document.body.classList.add("attempting");
+        $("abLabel").textContent = r && r.attempts.length ? "Re-solving from a blank editor" : "Solving from scratch";
+        $("abTitle").textContent = `#${p.num} ${p.title}`;
+        const target = TARGET_MIN[p.diff] * 60;
+        const tick = () => {
+            const sec = Math.floor((Date.now() - state.active.start) / 1000);
+            const mm = pad(Math.floor(sec / 60)), ss = pad(sec % 60);
+            $("abClock").innerHTML = `${mm}:${ss} <small>/ ${TARGET_MIN[p.diff]}:00</small>`;
+            $("abClock").classList.toggle("over", sec > target);
+        };
+        tick();
+        clockTimer = setInterval(() => { if (state.active) tick(); }, 1000);
+    }
+
+    function drawMock() {
+        const solved = PROBLEMS.filter(p => state.problems[p.id] && state.problems[p.id].everSolved);
+        const shuffled = solved.slice().sort(() => Math.random() - 0.5);
+        const picked = [], usedPatterns = new Set();
+        for (const p of shuffled) {
+            if (picked.length === 3) break;
+            if (!usedPatterns.has(p.pattern)) { picked.push(p); usedPatterns.add(p.pattern); }
+        }
+        for (const p of shuffled) {          // fewer than 3 patterns solved: allow repeats
+            if (picked.length === 3) break;
+            if (!picked.includes(p)) picked.push(p);
+        }
+        state.mock = { date: today(), ids: picked.map(p => p.id) };
+        save();
+        render();
+    }
+
+    // =========================================================================
+    // 7. DATA: EXPORT, BACKUP, RESTORE, RESET
+    // =========================================================================
+
+    function download(name, text, type) {
+        const url = URL.createObjectURL(new Blob([text], { type }));
+        const a = Object.assign(document.createElement("a"), { href: url, download: name });
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+    }
+
+    function exportCSV() {
+        const q = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+        const head = ["Number", "Title", "Pattern", "Difficulty", "Status", "Attempts", "Best solo minutes", "Next review", "Note", "URL"];
+        const rows = PROBLEMS.map(p => {
+            const r = state.problems[p.id];
+            const best = r ? r.attempts.filter(a => a.g === "good" || a.g === "easy").reduce((m, a) => Math.min(m, a.m), Infinity) : Infinity;
+            return [p.num, p.title, PATTERN_BY_ID[p.pattern].name, p.diff, STATUS_LABEL[statusOf(p.id)], r ? r.attempts.length : 0,
+                best === Infinity ? "" : best, r && r.due ? r.due : "", r ? r.note : "", p.url].map(q).join(",");
+        });
+        download("dsa-patterns-progress.csv", [head.map(q).join(","), ...rows].join("\n"), "text/csv;charset=utf-8");
+        toast("Downloaded CSV");
+    }
+
+    function restore(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const parsed = JSON.parse(e.target.result);
+                if (!parsed || typeof parsed !== "object" || typeof parsed.problems !== "object") throw new Error("shape");
+                state = { ...DEFAULT_STATE(), ...parsed };
+                state.filters = { ...DEFAULT_STATE().filters, ...(state.filters || {}) };
+                applyTheme(); save(); render();
+                toast("Backup restored");
+            } catch (err) { toast("That file isn't a valid backup"); }
+        };
+        reader.readAsText(file);
+    }
+
+    let resetArmed = null;
+    function resetClick() {
+        const btn = $("resetBtn");
+        if (!resetArmed) {
+            btn.textContent = "Click again to erase everything";
+            resetArmed = setTimeout(() => { resetArmed = null; btn.textContent = "Clear all progress"; }, 3500);
+            return;
+        }
+        clearTimeout(resetArmed); resetArmed = null;
+        const theme = state.theme;
+        state = DEFAULT_STATE(); state.theme = theme;
+        btn.textContent = "Clear all progress";
+        save(); render();
+        toast("All progress cleared");
+    }
+
+    function applyTheme() { document.documentElement.classList.toggle("dark", state.theme === "dark"); }
+
+    let toastTimer = null;
+    function toast(msg) {
+        const t = $("toast");
+        t.textContent = msg; t.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => t.classList.remove("show"), 2800);
+    }
+
+    function copyText(text) {
+        const done = () => toast("Copied");
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(done, () => toast("Copy failed: select the text manually"));
+        } else {
+            const ta = Object.assign(document.createElement("textarea"), { value: text });
+            ta.style.position = "fixed"; ta.style.opacity = "0";
+            document.body.appendChild(ta); ta.select();
+            try { document.execCommand("copy"); done(); } catch (e) { toast("Copy failed: select the text manually"); }
+            ta.remove();
+        }
+    }
+
+    // =========================================================================
+    // 8. EVENTS
+    // =========================================================================
+
+    function setTab(tab) { state.tab = tab; save(); render(); window.scrollTo({ top: 0 }); }
+
+    function jumpToPattern(pid) {
+        state.filters = { diff: "ALL", status: "ALL", pattern: "ALL", q: "" };
+        state.open[pid] = true;
+        state.tab = "problems";
+        save(); render();
+        const el = $(`group-${pid}`);
+        if (el) el.scrollIntoView({ block: "start" });
+    }
+
+    document.addEventListener("click", (e) => {
+        const t = e.target.closest("button, a");
+        const menu = $("settingsMenu");
+        if (menu.open && !menu.contains(e.target)) menu.open = false;
+        if (!t) return;
+
+        if (t.dataset.tab) return setTab(t.dataset.tab);
+        if (t.dataset.start) return startAttempt(t.dataset.start);
+        if (t.dataset.grade) return finishAttempt(t.dataset.grade);
+        if (t.dataset.patternJump) { e.preventDefault(); return jumpToPattern(t.dataset.patternJump); }
+        if (t.dataset.copy) return copyText(PATTERN_BY_ID[t.dataset.copy].template);
+        if (t.dataset.toggle) {
+            const id = t.dataset.toggle;
+            state.open[id] = t.getAttribute("aria-expanded") !== "true";
+            save(); return renderProblems();
+        }
+        if (t.dataset.filter) {
+            state.filters[t.dataset.filter] = t.dataset.value;
+            save(); return renderProblems();
+        }
+        switch (t.dataset.action) {
+            case "mock": return drawMock();
+            case "clear-filters": state.filters = DEFAULT_STATE().filters; save(); return renderProblems();
+            case "expand-all": PATTERNS.forEach(p => { state.open[p.id] = true; }); save(); return renderProblems();
+            case "export-csv": menu.open = false; return exportCSV();
+            case "backup": menu.open = false; download("dsa-patterns-backup.json", JSON.stringify(state, null, 2), "application/json"); return toast("Downloaded backup");
+            case "restore": menu.open = false; return $("restoreInput").click();
+        }
+        if (t.id === "themeBtn") { state.theme = state.theme === "dark" ? "light" : "dark"; applyTheme(); save(); render(); }
+        if (t.id === "resetBtn") resetClick();
+    });
+
+    document.addEventListener("input", (e) => {
+        const t = e.target;
+        if (t.dataset.note) { rec(t.dataset.note).note = t.value; save(); }
+        if (t.id === "searchInput") {
+            state.filters.q = t.value; save();
+            const pos = t.selectionStart;
+            renderProblems();
+            const s = $("searchInput"); s.focus(); s.setSelectionRange(pos, pos);
+        }
+    });
+
+    document.addEventListener("change", (e) => {
+        const t = e.target;
+        if (t.id === "dailyNewSelect") { state.dailyNew = Number(t.value); save(); render(); }
+        if (t.dataset.filterSelect) { state.filters[t.dataset.filterSelect] = t.value; save(); renderProblems(); }
+        if (t.id === "restoreInput" && t.files[0]) { restore(t.files[0]); t.value = ""; }
+    });
+
+    document.addEventListener("keydown", (e) => {
+        const typing = ["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName);
+        if (e.key === "Escape") {
+            const menu = $("settingsMenu");
+            if (menu.open) { menu.open = false; menu.querySelector("summary").focus(); }
+        }
+        if (e.key === "/" && !typing) {
+            e.preventDefault();
+            if (state.tab !== "problems") setTab("problems");
+            $("searchInput").focus();
+        }
+    });
+
+    // Keep "today" correct if the page stays open past midnight.
+    let lastDay = today();
+    setInterval(() => { if (today() !== lastDay) { lastDay = today(); render(); } }, 60000);
+
+    load();
+    applyTheme();
+    render();
+    </script>
+</body>
+</html>
