@@ -1,6 +1,6 @@
 ---
-title: 'Real-time E-commerce Recommender System'
-description: 'Building a scalable recommendation engine with Lambda Architecture, Kafka, Flink, and Airflow'
+title: "A real-time recommender for an online store"
+description: "A lambda architecture built on Kafka, Flink and Airflow."
 pubDate: 'Dec 12 2024'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 category: 

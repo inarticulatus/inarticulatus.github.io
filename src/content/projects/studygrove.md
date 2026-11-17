@@ -1,6 +1,6 @@
 ---
-title: 'StudyGrove: AI Study Planning with Accountability Through Gamification'
-description: 'Building an AI-powered study planner with a tamagotchi-style farm game — the AI generates daily plans from your materials, the Grove dies if you skip, and verification ensures you actually learned something'
+title: "StudyGrove: a study planner with a farm that dies if you skip"
+description: "An AI writes daily plans from your own notes, a tamagotchi-style grove keeps you coming back, and short checks confirm you learned the material."
 pubDate: 'Apr 13 2026'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 category: 

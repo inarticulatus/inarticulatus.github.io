@@ -1,6 +1,6 @@
 ---
-title: 'Compliance-First RAG: What Generic RAG Gets Wrong'
-description: 'Building a compliance-ready retrieval-augmented generation system for regulated professional services — and why document-level access controls, immutable audit logs, and data residency matter more than retrieval quality'
+title: "Search over regulatory documents that a compliance team can sign off"
+description: "Per-document access control, an audit log nobody can edit, and data kept in the region the contract names. For a compliance buyer these matter more than retrieval scores."
 pubDate: 'Apr 13 2026'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 category: 

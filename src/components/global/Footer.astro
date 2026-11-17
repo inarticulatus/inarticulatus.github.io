@@ -2,17 +2,16 @@
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="border-black/20 border bg-grid">
-  <div class="p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-    <!-- CTA Button -->
-    <a href="mailto:utkarsh@craton-labs.com"
-      class="uppercase font-black text-orange border border-2 border-orange px-4 py-2 hover:bg-orange hover:text-white transition-colors text-sm">
-      Contact me!
-    </a>
-
-    <!-- Copyright -->
-    <p class="uppercase font-black text-orange border border-2 border-orange/30 bg-orange/10 px-4 py-2 text-sm">
-      Tripathi &copy; {currentYear}
-    </p>
+<footer class="border-t border-black/10">
+  <div class="mx-auto max-w-6xl px-6 md:px-10 py-10 grid gap-6 md:grid-cols-[1fr_auto] text-sm text-black/60">
+    <div>
+      <p class="font-semibold text-black">Utkarsh Tripathi</p>
+      <p class="mt-1">Founder and CTO, Craton Labs (Manta Solutions Private Limited)</p>
+    </div>
+    <ul class="flex flex-wrap items-start gap-x-6 gap-y-2 md:justify-end">
+      <li><a href="mailto:utkarsh@craton-labs.com" class="hover:text-orange">utkarsh@craton-labs.com</a></li>
+      <li><a href="https://www.linkedin.com/in/utkarshtripathi7" class="hover:text-orange">LinkedIn</a></li>
+      <li>&copy; {currentYear}</li>
+    </ul>
   </div>
 </footer>

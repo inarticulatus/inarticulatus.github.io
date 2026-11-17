@@ -1,6 +1,6 @@
 ---
-title: 'Document In, Cited Output Out: A Pipeline Where Every Cell Links to Its Source'
-description: 'An extraction pipeline for regulated documents where every value in the output grid carries a citation back to the document that produced it — and a verification layer that decides whether a value is allowed to stand'
+title: "A document pipeline where every cell cites its source"
+description: "Figures pulled from regulatory documents into a grid, where each value carries the exact text it came from and is flagged if that text doesn't contain it."
 pubDate: 'Oct 01 2026'
 heroImage: '../../assets/blog-placeholder-2.jpg'
 category:

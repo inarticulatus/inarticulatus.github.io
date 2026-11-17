@@ -1,124 +1,83 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import BgGrid from "../components/assets/BgGrid.astro";
-import SectionTitle from '../components/assets/SectionTitle.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHead from "../components/assets/SectionHead.astro";
+import Experience from "../components/landing/Experience.astro";
+import Contact from "../components/landing/Contact.astro";
 
-const techStack = ['Python', 'SQL', 'PySpark', 'Airflow', 'dbt', 'Docker', 'AWS', 'Kafka', 'PostgreSQL', 'Power BI'];
+const principles = [
+  {
+    title: "Every finding comes with its evidence.",
+    body: "A failing claim is shown next to the text that should have supported it, so your team can check my work instead of trusting it.",
+  },
+  {
+    title: "I say what a check doesn't cover.",
+    body: "Grounding tells you an answer matches its source. It doesn't tell you the source is right. Reports state those limits plainly.",
+  },
+  {
+    title: "Your team owns what I build.",
+    body: "Harnesses run on your data and come documented, so you can re-run them without me.",
+  },
+  {
+    title: "Engagements are fixed pieces of work.",
+    body: "Each one has a defined scope and an end. The first is always a single system.",
+  },
+];
 ---
 
-<BaseLayout>
-
-  <section class="border-black/20 border-b divide-y divide-black/20">
-    <!-- Hero -->
-    <div class="p-8 relative bg-grid">
-      <BgGrid />
-      <h1 class="text-black tracking-tighter font-black uppercase text-3xl md:text-5xl lg:text-8xl relative">
-        <span class="px-2 bg-orange text-white">About Me</span>
+<BaseLayout title="About" description="Utkarsh Tripathi, founder and CTO of Craton Labs. LLM evaluation and assurance for banks, insurers and fintechs.">
+  <section class="border-b border-black/10">
+    <div class="mx-auto max-w-6xl px-6 md:px-10 py-16 md:py-24">
+      <p class="font-mono text-xs uppercase tracking-wider text-orange">About</p>
+      <h1 class="mt-5 max-w-4xl text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+        I test whether AI in financial services can back up what it says.
       </h1>
-    </div>
-
-    <!-- Intro Card -->
-    <div class="p-8 md:p-12">
-      <div class="flex flex-col md:flex-row gap-8 items-start">
-        <div class="flex-1">
-          <h2 class="text-2xl md:text-3xl text-black font-black uppercase leading-tight">Utkarsh Tripathi</h2>
-          <p class="text-eagle mt-1 font-medium">Founder &amp; CTO, Craton Labs · AI Evaluation &amp; Assurance · Data Engineer</p>
-
-          <!-- Contact Buttons -->
-          <div class="mt-4 flex flex-wrap gap-2">
-            <a href="mailto:utkarsh@craton-labs.com"
-              class="text-xs px-3 py-1.5 border border-black/20 hover:bg-orange hover:border-orange hover:text-white transition-colors">Email</a>
-            <a href="https://www.linkedin.com/in/utkarshtripathi7"
-              class="text-xs px-3 py-1.5 border border-black/20 hover:bg-orange hover:border-orange hover:text-white transition-colors">LinkedIn</a>
-            <a href="/cv/Utkarsh-Tripathi-Resume.pdf"
-              class="text-xs px-3 py-1.5 border border-cyan/50 text-cyan hover:bg-cyan hover:border-cyan hover:text-white transition-colors">Resume</a>
-          </div>
-          <p class="text-sm text-black/70 mt-4">
-            <strong class="text-black">Open to:</strong> AI evaluation and assurance work for regulated
-            financial workflows, plus data engineering, ML engineering, and analytics roles focused on
-            scalable systems.
-          </p>
-          <p class="text-sm mt-2">
-            <span class="bg-orange text-white px-2 py-0.5 font-semibold">Available Immediately</span>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bio -->
-    <div class="p-8 md:p-12">
-      <p class="text-black text-lg leading-relaxed">
-        I make <strong>LLM output in regulated financial workflows verifiable and measurable</strong> —
-        citation-backed retrieval, self-verification loops, and an evaluation harness that measures
-        claim-level grounding, unsupported-claim rate, and traceability.
-      </p>
-      <p class="text-black text-lg leading-relaxed mt-4">
-        I am the founder and CTO of <strong>Craton Labs</strong> (legally Manta Solutions Private Limited), a BFSI tech-compliance company focused on
-        tech compliance and on building platforms for the safe use of advanced tech — AI agents and LLMs —
-        in financial services. My work is advisory, documentation, and technical testing: it is not a legal
-        opinion, and not a conformity assessment, certification, or attestation under any regulatory regime.
-      </p>
-      <p class="text-black text-lg leading-relaxed mt-4">
-        Alongside that, I build <strong>scalable data pipelines</strong> and <strong>ML systems</strong> that
-        turn raw data into business value. With experience spanning data engineering, analytics, and machine
-        learning, I focus on creating reliable, production-ready solutions, from ETL workflows and real-time
-        streaming to model deployment and monitoring.
-      </p>
-    </div>
-
-    <!-- Skills Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-black/20">
-      <!-- Core Strengths -->
-      <div class="p-8">
-        <h3 class="text-orange font-mono text-sm uppercase tracking-wider mb-4">Core Strengths</h3>
-        <ul class="space-y-3 text-black text-sm">
-          <li class="flex items-start gap-3">
-            <span class="w-1.5 h-1.5 bg-cyan rounded-full mt-1.5 flex-shrink-0"></span>
-            <span>End-to-end data pipelines: ingestion → transformation → analytics</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="w-1.5 h-1.5 bg-cyan rounded-full mt-1.5 flex-shrink-0"></span>
-            <span>Production ML: feature engineering, model training, deployment</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="w-1.5 h-1.5 bg-cyan rounded-full mt-1.5 flex-shrink-0"></span>
-            <span>Data quality: testing, monitoring, and observability</span>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Focus -->
-      <div class="p-8">
-        <h3 class="text-orange font-mono text-sm uppercase tracking-wider mb-4">Focus</h3>
-        <ul class="space-y-3 text-black text-sm">
-          <li class="flex items-start gap-3">
-            <span class="w-1.5 h-1.5 bg-cyan rounded-full mt-1.5 flex-shrink-0"></span>
-            <span>Measuring whether generated output is actually supported</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="w-1.5 h-1.5 bg-cyan rounded-full mt-1.5 flex-shrink-0"></span>
-            <span>Traceability from a claim back to its source</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="w-1.5 h-1.5 bg-cyan rounded-full mt-1.5 flex-shrink-0"></span>
-            <span>Evidence a risk or audit function can act on</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="w-1.5 h-1.5 bg-cyan rounded-full mt-1.5 flex-shrink-0"></span>
-            <span>Currently going deeper on AI sandboxing, RLHF and post-training, and AI optimization (<a href="/learn/" class="text-cyan underline underline-offset-4">study trackers</a>)</span>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Tech Stack -->
-      <div class="p-8">
-        <h3 class="text-orange font-mono text-sm uppercase tracking-wider mb-4">Tech Stack</h3>
-        <div class="flex flex-wrap gap-2">
-          {techStack.map((tech) => (
-          <span class="text-xs px-2 py-1 bg-black/5 text-black/80 rounded">{tech}</span>
-          ))}
-        </div>
+      <div class="mt-8 max-w-2xl space-y-5 text-lg leading-relaxed text-black/75">
+        <p>
+          I'm Utkarsh Tripathi, founder and CTO of Craton Labs (Manta Solutions Private
+          Limited), built for banks, insurers and fintechs that run LLMs over documents:
+          policy wordings, regulatory circulars, compliance filings.
+        </p>
+        <p>
+          The work is testing and tooling. I check whether each claim an LLM makes is
+          supported by the text it cites, measure how often it isn't, and probe whether text
+          inside a document can steer the system. Where it helps, I build those checks into
+          your pipeline so they keep running.
+        </p>
       </div>
     </div>
   </section>
+
+  <section class="border-b border-black/10">
+    <div class="mx-auto max-w-6xl px-6 md:px-10 py-20">
+      <SectionHead label="How I work">What you can expect.</SectionHead>
+      <ul class="mt-12 grid gap-px bg-black/10 border border-black/10 md:grid-cols-2">
+        {principles.map((p) => (
+          <li class="bg-white p-7">
+            <h3 class="text-lg font-bold tracking-tight">{p.title}</h3>
+            <p class="mt-2 text-black/70 leading-relaxed">{p.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Experience />
+
+  <section class="border-b border-black/10">
+    <div class="mx-auto max-w-6xl px-6 md:px-10 py-16 grid gap-6 md:grid-cols-[1fr_1.2fr]">
+      <p class="font-mono text-xs uppercase tracking-wider text-orange">Also</p>
+      <p class="text-black/70 leading-relaxed">
+        I publish the study trackers I use, currently on AI sandboxing, RLHF and inference
+        optimisation. <a href="/learn/" class="font-semibold text-black underline decoration-black/30 underline-offset-4 hover:decoration-orange">See them on Learn &rarr;</a>
+      </p>
+      <p class="font-mono text-xs uppercase tracking-wider text-orange">Scope</p>
+      <p class="text-sm text-black/60 leading-relaxed">
+        Craton Labs provides advisory work, documentation and technical testing. It is not a
+        legal opinion, a conformity assessment, a certification or an attestation under any
+        regulatory regime.
+      </p>
+    </div>
+  </section>
+
+  <Contact />
 </BaseLayout>

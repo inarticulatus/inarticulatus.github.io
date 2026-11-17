@@ -1,36 +1,33 @@
 ---
+const path = Astro.url.pathname;
+const links = [
+  { href: "/projects/", label: "Work" },
+  { href: "/about/", label: "About" },
+  { href: "/learn/", label: "Learn" },
+];
 ---
 
-<div class="border-black/20 border-b justify-center w-full p-8">
-  <div
-    class="text-center items-center w-full flex flex-col justify-between md:p-2 md:flex-row"
-  >
-    <a
-      href="/"
-      class="text-black font-black uppercase tracking-tight text-xl p-4 md:p-0"
-      ><span class="text-black  p-2">UTKARSH TRIPATHI</span>
-    </a>
-    <div>
-    <a
-      href="/projects/"
-      class="w-full duration-200 font-black hover:underline hover:decoration-5 hover:decoration-orange md:ml-auto lg:w-fit px-2 py-4  text-black text-center text-sm uppercase"
-      >Projects & Research</a
-    >
-    <a
-      href="/learn/"
-      class="w-full duration-200 font-black hover:underline hover:decoration-5 hover:decoration-orange md:ml-auto lg:w-fit px-2 py-4  text-black text-center text-sm uppercase"
-      >Learn</a
-    >
-    <!-- <a
-      href="#"
-      class="w-full duration-200 font-black hover:underline hover:decoration-5 hover:decoration-orange text-black lg:w-fit px-2 py-4 text-black hover:text-black text-center text-xs uppercase"
-      >Blog
-    </a> -->
-    <a
-      href="/about/"
-      class="w-full duration-200 font-black hover:underline hover:decoration-5 hover:decoration-orange text-black lg:w-fit px-2 py-4 text-black hover:text-black text-center text-sm uppercase"
-      >About</a
-    >
+<header class="border-b border-black/10 bg-white">
+  <nav aria-label="Site"
+    class="mx-auto max-w-6xl px-6 md:px-10 py-5 flex flex-wrap items-center justify-between gap-x-8 gap-y-3">
+    <a href="/" class="font-bold tracking-tight text-lg text-black hover:text-orange">Utkarsh Tripathi</a>
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-[15px]">
+      {links.map((l) => (
+        <a href={l.href}
+          aria-current={path.startsWith(l.href) ? "page" : undefined}
+          class:list={[
+            "hover:text-orange",
+            path.startsWith(l.href)
+              ? "font-semibold text-black underline decoration-orange decoration-2 underline-offset-8"
+              : "text-black/70",
+          ]}>
+          {l.label}
+        </a>
+      ))}
+      <a href="mailto:utkarsh@craton-labs.com"
+        class="bg-black text-white font-semibold px-4 py-2 hover:bg-orange">
+        Email me
+      </a>
     </div>
-  </div>
-</div>
+  </nav>
+</header>

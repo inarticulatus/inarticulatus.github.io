@@ -1,6 +1,6 @@
 ---
-title: 'Store-and-Forward Telemetry for the Konkan Railway'
-description: 'Building an opportunistic data offload system using ESP32 and Raspberry Pi Pico to extract diagnostic telemetry from trains on the 740km Konkan route where LTE is absent for hours at a time'
+title: "Getting diagnostic data off trains on the Konkan line"
+description: "LTE drops out for hours along the 740 km route. A unit built on an ESP32 and a Raspberry Pi Pico, under $30 in parts, stores telemetry and unloads it at each station the train passes."
 pubDate: 'May 16 2026'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 category: 

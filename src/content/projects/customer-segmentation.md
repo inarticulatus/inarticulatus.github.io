@@ -1,6 +1,6 @@
 ---
-title: "The Cost of a Minute: How Delivery Delays Define Customer Value"
-description: "A deep dive into e-commerce data using K-Means clustering to uncover the hidden relationship between delivery performance and customer retention."
+title: "Late deliveries and lost customers"
+description: "K-means clustering on e-commerce orders, looking at how delivery delays relate to whether customers come back."
 pubDate: 'Dec 12 2024'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 category:

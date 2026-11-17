@@ -63,8 +63,8 @@
     }
     #main-view :not(pre) > code { overflow-wrap: anywhere; }
     #main-view h2 { font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.1; }
-    .site-link { font-weight: 900; text-transform: uppercase; font-size: 13px; text-underline-offset: 6px; }
-    .site-link:hover, .site-link.current { text-decoration: underline; text-decoration-thickness: 4px; text-decoration-color: #e85a4f; }
+    .site-link { font-size: 15px; text-underline-offset: 8px; }
+    .site-link:hover, .site-link.current { text-decoration: underline; text-decoration-thickness: 2px; text-decoration-color: #e85a4f; }
     /* Custom flat scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
@@ -119,11 +119,11 @@
   <!-- Site navigation (matches utkarshtripathi.com) -->
   <nav aria-label="Site" class="border-b border-charcoal/20 bg-stoneBg">
     <div class="flex flex-wrap items-center justify-between gap-x-5 gap-y-2 px-5 lg:px-8 py-4">
-      <a href="/" class="font-black uppercase tracking-tight text-lg text-charcoal">Utkarsh Tripathi</a>
+      <a href="/" class="font-bold tracking-tight text-lg text-charcoal">Utkarsh Tripathi</a>
       <div class="flex flex-wrap gap-x-5 gap-y-1">
-        <a href="/learn/" class="site-link current">Learn</a>
-        <a href="/projects/" class="site-link">Projects &amp; Research</a>
+        <a href="/projects/" class="site-link">Work</a>
         <a href="/about/" class="site-link">About</a>
+        <a href="/learn/" class="site-link current" aria-current="page">Learn</a>
       </div>
     </div>
   </nav>

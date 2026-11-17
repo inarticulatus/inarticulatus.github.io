@@ -1,128 +1,71 @@
 ---
-import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
-import BgGrid from "../../components/assets/BgGrid.astro";
-import FormattedDate from '../../components/FormattedDate.astro';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import CTA from '../../components/landing/CTA.astro';
+import { getCollection } from "astro:content";
+import FormattedDate from "../../components/FormattedDate.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const posts = await getCollection('projects');
-const categories = Array.from(
-new Set(
-posts
-.flatMap((a) => Array.isArray(a.data.category) ? a.data.category : [a.data.category])
-.filter(Boolean)
-.map((c) => c.toLowerCase())
-)
-);
+// Grouped for a client reading top to bottom: client-style work first, coursework last.
+const CASE_STUDIES = [
+  "cited-extraction-pipeline",
+  "llm-claim-grounding",
+  "craton-labs",
+  "konkan-railway-store-and-forward",
+];
+const COURSEWORK = [
+  "ab-testing-framework",
+  "dimensionality-reduction",
+  "ml-from-scratch",
+  "customer-segmentation",
+];
+
+const posts = await getCollection("projects");
+const byDate = (a: (typeof posts)[number], b: (typeof posts)[number]) =>
+  b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+const pick = (ids: string[]) =>
+  ids.map((id) => posts.find((p) => p.id === id)).filter((p) => p !== undefined);
+
+const groups = [
+  { label: "Case studies", intro: "The write-ups closest to what I do for clients.", items: pick(CASE_STUDIES) },
+  {
+    label: "Side projects",
+    intro: "Things I built for myself or to learn a tool properly.",
+    items: posts.filter((p) => !CASE_STUDIES.includes(p.id) && !COURSEWORK.includes(p.id)).sort(byDate),
+  },
+  { label: "Coursework, 2024", intro: "Statistics and ML exercises from before Craton Labs.", items: pick(COURSEWORK) },
+];
 ---
 
-<BaseLayout>
-  <section class="border-black/20 border-b divide-y divide-black/20">
-    <!-- Hero -->
-    <div class="p-8 relative bg-grid">
-      <BgGrid />
-      <h1 class="text-black tracking-tighter font-black uppercase text-3xl md:text-5xl lg:text-8xl relative">
-        <span class="px-2 bg-orange text-white">My Works</span>
+<BaseLayout title="Work" description="Case studies in LLM evaluation and document pipelines for regulated finance, plus side projects and coursework.">
+  <section class="border-b border-black/10">
+    <div class="mx-auto max-w-6xl px-6 md:px-10 py-16 md:py-20">
+      <p class="font-mono text-xs uppercase tracking-wider text-orange">Work</p>
+      <h1 class="mt-5 max-w-3xl text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+        Work and writing
       </h1>
-    </div>
-
-    <!-- Intro -->
-    <div class="p-8">
-      <p class="text-black font-black uppercase lg:text-xl">
-        A collection of data engineering projects, ML systems, and research explorations.
+      <p class="mt-6 max-w-2xl text-lg text-black/70 leading-relaxed">
+        Systems I've built and tested, written up in enough detail to judge the approach.
       </p>
     </div>
-
-    <!-- Filter Buttons -->
-    <div class="p-8">
-      <ul id="category-filter" class="flex items-center gap-3 flex-wrap">
-        <li>
-          <button data-category="all"
-            class="category-btn text-xs px-3 py-1.5 font-semibold border border-black/20 text-black hover:bg-orange hover:border-orange hover:text-white transition-colors">
-            ALL
-          </button>
-        </li>
-        {categories.map((category) => (
-        <li>
-          <button data-category={category}
-            class="category-btn text-xs px-3 py-1.5 font-semibold border border-black/20 text-black hover:bg-orange hover:border-orange hover:text-white transition-colors">
-            {category.toUpperCase()}
-          </button>
-        </li>
-        ))}
-      </ul>
-    </div>
-
-    <!-- Project Grid -->
-    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2">
-      {posts.map((post, index) => (
-      <a href={`/projects/${post.id}/`}
-        class="project-card p-8 border-b border-black/10 md:border-b md:odd:border-r hover:bg-orange/5 transition-colors block"
-        data-category={(Array.isArray(post.data.category) ? post.data.category.map(c=> c.toLowerCase()).join(',')
-        : (post.data.category?.toLowerCase() || ''))}
-        >
-        <!-- Category -->
-        <p class="text-cyan text-xs font-mono mb-2 uppercase">
-          {Array.isArray(post.data.category) ? post.data.category.join(', ') : (post.data.category || 'Project')}
-        </p>
-
-        <!-- Title -->
-        <h4 class="font-black text-lg text-black uppercase mb-2">{post.data.title}</h4>
-
-        <!-- Description -->
-        <p class="text-black/70 text-sm mb-3">{post.data.description}</p>
-
-        <!-- Date -->
-        <p class="text-black/50 text-xs font-mono">
-          <FormattedDate date={post.data.pubDate} />
-        </p>
-      </a>
-      ))}
-    </div>
-
-    <p id="no-projects" class="hidden text-orange text-center py-8">No projects found in this category.</p>
-
-    <!-- Filter Script -->
-    <script is:inline>
-      document.addEventListener('DOMContentLoaded', () => {
-        const buttons = document.querySelectorAll('.category-btn');
-        const cards = document.querySelectorAll('.project-card');
-        const noProjects = document.getElementById('no-projects');
-
-        function filterProjects(selected) {
-          let visibleCount = 0;
-          cards.forEach(card => {
-            const categories = card.dataset.category.split(',');
-            const show = selected === 'all' || categories.includes(selected);
-            card.style.display = show ? '' : 'none';
-            if (show) visibleCount++;
-          });
-
-          buttons.forEach(btn => {
-            const active = btn.dataset.category === selected;
-            btn.classList.toggle('bg-orange', active);
-            btn.classList.toggle('border-orange', active);
-            btn.classList.toggle('text-white', active);
-          });
-
-          noProjects.classList.toggle('hidden', visibleCount > 0);
-
-          const newUrl = new URL(window.location);
-          if (selected === 'all') newUrl.searchParams.delete('category');
-          else newUrl.searchParams.set('category', selected);
-          history.replaceState({}, '', newUrl);
-        }
-
-        buttons.forEach(btn => {
-          btn.addEventListener('click', () => filterProjects(btn.dataset.category));
-        });
-
-        const params = new URLSearchParams(window.location.search);
-        const initial = params.get('category')?.toLowerCase() || 'all';
-        filterProjects(initial);
-      });
-    </script>
   </section>
 
+  {groups.map((g) => (
+    <section class="border-b border-black/10">
+      <div class="mx-auto max-w-6xl px-6 md:px-10 py-14 grid gap-8 lg:grid-cols-[240px_1fr]">
+        <div>
+          <h2 class="text-xl font-bold tracking-tight">{g.label}</h2>
+          <p class="mt-2 text-sm text-black/60 leading-relaxed">{g.intro}</p>
+        </div>
+        <ul class="border-t border-black/15">
+          {g.items.map((post) => (
+            <li class="border-b border-black/15">
+              <a href={`/projects/${post.id}/`} class="group block py-6">
+                <span class="block text-lg md:text-xl font-bold tracking-tight group-hover:text-orange">{post.data.title}</span>
+                <span class="mt-2 block text-black/70 leading-relaxed max-w-2xl">{post.data.description}</span>
+                <span class="mt-2 block font-mono text-xs text-black/45"><FormattedDate date={post.data.pubDate} /></span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
 </BaseLayout>

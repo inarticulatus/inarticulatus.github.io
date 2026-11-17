@@ -1,6 +1,6 @@
 ---
-title: 'Building an Offline-First Audiobook Player for the Web'
-description: 'Designing a browser-based audiobook player with IndexedDB storage, chapter extraction, and a Nothing OS-inspired aesthetic — and why the web platform is underestimated for offline applications'
+title: "An audiobook player that works offline in the browser"
+description: "Books stored in IndexedDB, chapters detected automatically, and a design borrowed from Nothing OS. A case for the web as a platform for offline apps."
 pubDate: 'Apr 13 2026'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 category: 

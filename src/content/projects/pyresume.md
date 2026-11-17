@@ -1,6 +1,6 @@
 ---
-title: 'PyResume: The Data-Model-Separation Pattern for Document Generation'
-description: 'Building a YAML-driven resume generator with Jinja2 templating and Tectonic LaTeX — and why separating content from presentation is the most maintainable approach to any document pipeline'
+title: "PyResume: a resume generator driven by YAML"
+description: "Content lives in YAML, layout in Jinja2 templates, and Tectonic compiles the LaTeX, so changing one never means touching the other."
 pubDate: 'Apr 13 2026'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 category: 

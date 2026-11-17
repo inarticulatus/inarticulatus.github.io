@@ -1,6 +1,6 @@
 ---
-title: 'ML From Scratch: Gradient Descent to Gradient Boosting'
-description: 'Implementing core ML algorithms from first principles using only NumPy'
+title: "Machine learning algorithms in plain NumPy"
+description: "Gradient descent through to gradient boosting, implemented without ML libraries."
 pubDate: 'Dec 12 2024'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 category: 

@@ -1,6 +1,6 @@
 ---
-title: 'How I Measure Whether an LLM Claim Is Actually Supported by Its Source'
-description: 'Claim-level grounding, unsupported-claim rate, and adversarial testing — the three measurements that tell you whether an LLM output can be relied on, rather than merely sounds right'
+title: "How I check whether an LLM's claims are backed by its sources"
+description: "Splitting answers into single claims, testing each against the cited text, and probing for instructions hidden inside retrieved documents."
 pubDate: 'Oct 01 2026'
 heroImage: '../../assets/blog-placeholder-1.jpg'
 category:

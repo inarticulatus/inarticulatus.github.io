@@ -1,3 +1,3 @@
-export const SITE_TITLE = 'Utkarsh Tripathi — I make AI show its work';
+export const SITE_TITLE = 'Utkarsh Tripathi · LLM evaluation for regulated finance';
 export const SITE_DESCRIPTION =
-	'LLM output that can be checked: every claim traced to its source, measured for grounding and unsupported statements, and logged so a reviewer or auditor can follow the reasoning. Founder and CTO of Craton Labs (Manta Solutions Private Limited), a BFSI tech-compliance company. Data engineering and ML across banking and insurance.';
+	'I test LLM features for banks, insurers and fintechs one claim at a time: what the cited source supports, what it does not, and what hidden instructions in a document can make the system do. Founder and CTO of Craton Labs.';

@@ -1,6 +1,6 @@
 ---
-title: 'Tradr: Building a High-Performance Trading Terminal in Rust'
-description: 'Designing a terminal trading interface with Rust and ratatui — why a TUI makes sense for real-time data, the architecture of a multi-model ensemble system, and the case for Rust in a data-intensive application'
+title: "Tradr: a trading terminal in Rust"
+description: "A text interface built with ratatui for live market data, backed by an ensemble of models, and why Rust suited a data-heavy tool."
 pubDate: 'Apr 13 2026'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 category: 

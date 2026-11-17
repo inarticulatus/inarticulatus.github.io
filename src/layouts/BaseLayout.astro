@@ -2,21 +2,27 @@
 import BaseHead from "../components/BaseHead.astro";
 import Navigation from "../components/global/Navigation.astro";
 import Footer from "../components/global/Footer.astro";
-import CTA from "../components/landing/CTA.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
 ---
 
-<html lang="en" class="selection:bg-orange selection:text-black">
+<html lang="en">
   <head>
-    <BaseHead />
+    <BaseHead title={title} description={description} />
   </head>
-  <body
-    class="mx-auto bg-white max-w-7xl border-x border-black/10 2xl:max-w-7xl text-black"
-  >
+  <body class="bg-white text-black antialiased">
+    <a href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-black focus:text-white focus:px-3 focus:py-2">
+      Skip to content
+    </a>
     <Navigation />
-    <div class="min-h-[80dvh]">
-    <slot />
-    </div>
+    <main id="main" class="min-h-[70dvh]">
+      <slot />
+    </main>
     <Footer />
   </body>
 </html>
-

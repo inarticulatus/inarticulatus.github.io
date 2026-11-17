@@ -42,52 +42,6 @@
       transparent 1px,
       transparent 6px);
 
-  /* Animation: Marquee */
-  --animate-marquee: marquee 20s linear infinite;
-
-  @keyframes marquee {
-    from {
-      transform: translateX(0%);
-    }
-
-    to {
-      transform: translateX(-100%);
-    }
-  }
-}
-
-/* =============================================================================
-   TYPEWRITER (text is driven by the script in Hero.astro; CSS only draws the caret)
-   ============================================================================= */
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0;
-  }
-}
-
-.typewriter::after {
-  content: "";
-  border-right: 0.08em solid currentcolor;
-  margin-left: 0.04em;
-  animation: blink 1s steps(1) infinite;
-}
-
-.typewriter.typing::after {
-  animation: none;
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .typewriter::after {
-    animation: none;
-    border-right: 0;
-  }
 }
 
 /* =============================================================================
@@ -97,7 +51,7 @@
 /* Smooth transitions */
 a,
 button {
-  transition: all 0.2s ease;
+  transition: color 0.15s ease, background-color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
 /* Selection highlight */

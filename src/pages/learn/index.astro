@@ -1,55 +1,58 @@
 ---
-import BgGrid from "../../components/assets/BgGrid.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const trackers = [
   {
     href: "/learn/frontier-ai/",
-    title: "Frontier AI & Systems Engineering",
+    title: "Frontier AI and systems engineering",
     kind: "4-week study tracker",
-    blurb: "A week-by-week plan with daily checklists and progress saved in your browser.",
+    blurb: "A week-by-week plan with daily checklists.",
   },
   {
     href: "/learn/rl-environments/",
-    title: "RL Environment Engineering Workbook",
+    title: "RL environment engineering",
     kind: "Hands-on workbook",
-    blurb: "Build and harden RL training environments, with code blocks and a per-section checklist.",
+    blurb: "Build and harden RL training environments, with code and a checklist per section.",
   },
   {
     href: "/learn/dsa-patterns/",
-    title: "DSA Patterns",
+    title: "DSA patterns",
     kind: "8-week spaced-repetition tracker",
-    blurb: "17 patterns and 136 problems, with honest attempt grading, timed solves, spaced reviews and mixed mocks.",
+    blurb: "17 patterns and 136 problems, with timed solves, spaced reviews and mixed mock sessions.",
   },
   {
     href: "/learn/msc-schedule/",
-    title: "MSc Study Schedule",
+    title: "MSc study schedule",
     kind: "Dated course planner",
-    blurb: "Every topic of an MSc in Data Science & AI, paired with free lectures, books and docs, with target dates set by your weekly hours.",
+    blurb: "Every topic of an MSc in Data Science and AI, paired with free lectures, books and docs, dated by the hours you have each week.",
   },
 ];
 ---
 
-<BaseLayout>
-  <section class="border-black/20 border-b divide-y divide-black/20">
-    <div class="p-8 relative bg-grid">
-      <BgGrid />
-      <h1 class="text-black tracking-tighter font-black uppercase text-3xl md:text-5xl lg:text-8xl relative">
-        <span class="px-2 bg-orange text-white">Learn</span>
+<BaseLayout title="Learn" description="Study trackers and workbooks I use myself. Free to use; progress stays in your browser.">
+  <section class="border-b border-black/10">
+    <div class="mx-auto max-w-6xl px-6 md:px-10 py-16 md:py-20">
+      <p class="font-mono text-xs uppercase tracking-wider text-orange">Learn</p>
+      <h1 class="mt-5 max-w-3xl text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+        Study trackers I use myself
       </h1>
-    </div>
-    <div class="p-8">
-      <p class="text-black font-black uppercase lg:text-xl">
-        Study trackers and workbooks I use myself. Progress is stored locally in your browser.
+      <p class="mt-6 max-w-2xl text-lg text-black/70 leading-relaxed">
+        Anyone can use them. Progress is saved in your browser and never leaves it.
       </p>
     </div>
-    <ul class="divide-y divide-black/20">
+  </section>
+
+  <section class="border-b border-black/10">
+    <ul class="mx-auto max-w-6xl px-6 md:px-10 py-6">
       {trackers.map((t) => (
-        <li>
-          <a href={t.href} class="block p-8 hover:bg-orange/10 duration-200">
-            <p class="text-orange font-black uppercase text-sm">{t.kind}</p>
-            <h2 class="text-black font-black uppercase text-2xl md:text-3xl tracking-tight">{t.title}</h2>
-            <p class="mt-2 text-black/70">{t.blurb}</p>
+        <li class="border-b border-black/15 last:border-b-0">
+          <a href={t.href} class="group grid gap-2 py-7 md:grid-cols-[220px_1fr_auto] md:gap-8 md:items-baseline">
+            <span class="font-mono text-xs uppercase tracking-wider text-cyan">{t.kind}</span>
+            <span>
+              <span class="block text-xl md:text-2xl font-bold tracking-tight group-hover:text-orange">{t.title}</span>
+              <span class="mt-2 block text-black/70 leading-relaxed">{t.blurb}</span>
+            </span>
+            <span aria-hidden="true" class="hidden md:block text-black/40 group-hover:text-orange">&rarr;</span>
           </a>
         </li>
       ))}

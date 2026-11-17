@@ -1,6 +1,6 @@
 ---
-title: 'Statistical Experimentation: A/B Testing From First Principles'
-description: 'Building a complete experimentation framework — from hypothesis testing to Bayesian inference'
+title: "A/B testing, built from the statistics up"
+description: "An experimentation framework covering classical hypothesis tests and Bayesian inference."
 pubDate: 'Dec 12 2024'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 category: 

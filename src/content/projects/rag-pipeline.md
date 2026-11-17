@@ -1,6 +1,6 @@
 ---
-title: 'Production RAG Pipeline for Document Intelligence'
-description: 'Building an enterprise-grade Retrieval-Augmented Generation system with dbt, Qdrant, and LangChain'
+title: "A RAG pipeline for searching documents"
+description: "Document transforms in dbt, vectors in Qdrant and orchestration in LangChain."
 pubDate: 'Dec 12 2024'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 category: 

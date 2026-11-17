@@ -1,76 +1,77 @@
 ---
-// Assets
 import BgGrid from "../assets/BgGrid.astro";
 ---
 
-<section class="border-black/20 border-b">
-  <div class="p-8 relative">
-    <BgGrid />
-    <h1
-      class="text-black/70 tracking-tighter font-black uppercase text-3xl md:text-5xl lg:text-8xl relative leading-[1.2]">
-      <span class="bg-orange px-4 text-white">Utkarsh Tripathi</span>
-      <br>
-      I make AI show its work
-    </h1>
-  </div>
-  <div class="px-8 pb-8 space-y-6">
-    <p class="text-black/60 font-bold lg:text-xl">
-      Founder &amp; CTO, Craton Labs &middot; verifiable AI for banks, insurers and fintechs
-    </p>
-    <p class="font-black uppercase text-xl md:text-3xl lg:text-5xl tracking-tight leading-tight">
-      <span class="block text-sm lg:text-base font-mono font-medium text-black/50 tracking-normal mb-1">Now going deep on</span>
-      <span class="typewriter text-orange" data-words='["AI sandboxing","RLHF","AI optimization"]'>AI sandboxing</span>
-    </p>
-    <div class="flex flex-wrap gap-3">
-      <a href="#focus"
-        class="uppercase font-black text-sm px-4 py-2 bg-orange text-white border-2 border-orange hover:bg-white hover:text-orange">
-        Current focus &darr;
-      </a>
-      <a href="/projects/"
-        class="uppercase font-black text-sm px-4 py-2 border-2 border-black/80 text-black hover:bg-black hover:text-white">
-        Case studies &rarr;
-      </a>
+<section class="relative border-b border-black/10">
+  <BgGrid />
+  <div class="relative mx-auto max-w-6xl px-6 md:px-10 py-16 md:py-24 grid gap-14 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+    <div>
+      <p class="font-mono text-xs uppercase tracking-wider text-orange">
+        LLM evaluation for banks, insurers and fintechs
+      </p>
+      <h1 class="mt-5 text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] text-black">
+        Your LLM cites a source. Does the source say that?
+      </h1>
+      <p class="mt-6 text-lg md:text-xl leading-relaxed text-black/75 max-w-xl">
+        I test LLM features in regulated finance one claim at a time: what the cited text
+        supports, what it doesn't, and what an instruction hidden in a document can make the
+        system do. You get a ranked list of failures, each with its evidence.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+        <a href="mailto:utkarsh@craton-labs.com"
+          class="bg-orange text-white font-semibold px-5 py-3 hover:bg-black">
+          Email me about your system
+        </a>
+        <a href="/projects/llm-claim-grounding/"
+          class="font-semibold text-black underline decoration-black/30 underline-offset-4 hover:decoration-orange">
+          How the testing works &rarr;
+        </a>
+      </div>
+      <p class="mt-10 text-sm text-black/55">
+        Utkarsh Tripathi &middot; Founder and CTO, Craton Labs
+      </p>
     </div>
+
+    <!-- The thesis, shown rather than told: one source, two claims, one verdict each. -->
+    <figure class="bg-[#fdfcfa] border border-black/80 shadow-[8px_8px_0_0_rgba(45,45,45,0.85)] text-[15px] leading-relaxed">
+      <div class="flex items-center justify-between gap-4 border-b border-black/15 px-5 py-3 font-mono text-xs uppercase tracking-wider text-black/55">
+        <span>Claim check</span>
+        <span>1 source &middot; 2 answers</span>
+      </div>
+
+      <div class="px-5 py-4 border-b border-black/15">
+        <p class="font-mono text-xs text-black/55 mb-2">Policy wording, section 4.2</p>
+        <p class="text-black/80">
+          The assured must maintain a paid-up premium of
+          <mark class="bg-cyan/15 text-black px-0.5">not less than ₹5,00,000 at all times during the policy period</mark>.
+          <mark class="bg-orange/15 text-black px-0.5">Where the policy is issued on a quarterly basis</mark>, the minimum applies at each quarter end.
+          <mark class="bg-orange/15 text-black px-0.5">Claims arising before the policy inception date are not payable</mark>.
+        </p>
+      </div>
+
+      <div class="px-5 py-4 border-b border-black/15">
+        <p class="inline-block font-mono text-xs uppercase tracking-wider bg-cyan text-white px-2 py-0.5">Supported</p>
+        <p class="mt-2 text-black">
+          “The minimum paid-up premium is ₹5,00,000, maintained at all times during the policy period.”
+        </p>
+      </div>
+
+      <div class="px-5 py-4">
+        <p class="inline-block font-mono text-xs uppercase tracking-wider bg-orange text-white px-2 py-0.5">Not supported</p>
+        <p class="mt-2 text-black">
+          “The minimum is ₹5,00,000 <span class="underline decoration-orange decoration-2 underline-offset-2">for both quarterly and annual policies</span>, and claims from before inception are
+          <span class="underline decoration-orange decoration-2 underline-offset-2">payable at the insurer's discretion</span>.”
+        </p>
+        <ul class="mt-3 space-y-1 text-sm text-black/70">
+          <li><span class="font-mono text-orange">1</span>&nbsp; Applies the quarterly rule to every policy.</li>
+          <li><span class="font-mono text-orange">2</span>&nbsp; Invents a discretion the wording rules out.</li>
+        </ul>
+      </div>
+
+      <figcaption class="border-t border-black/15 px-5 py-3 text-xs text-black/55">
+        Illustrative example, not client material. Both answers cite the same paragraph, so a
+        similarity score can't tell them apart.
+      </figcaption>
+    </figure>
   </div>
 </section>
-
-<script>
-  // Types each word, holds, erases, then moves on. The server-rendered word is the
-  // fallback for no-JS and reduced-motion users, so nothing is empty or shifts.
-  const el = document.querySelector<HTMLElement>(".typewriter");
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  if (el && !reduce) {
-    const words: string[] = JSON.parse(el.dataset.words ?? "[]");
-    const TYPE_MS = 90;
-    const ERASE_MS = 45;
-    const HOLD_MS = 2200;
-    const GAP_MS = 350;
-    let w = 0;
-    let i = el.textContent!.length;
-
-    const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-    const run = async () => {
-      if (words.length < 2) return;
-      await wait(HOLD_MS);
-      for (;;) {
-        el.classList.add("typing");
-        while (i > 0) {
-          el.textContent = words[w].slice(0, --i);
-          await wait(ERASE_MS);
-        }
-        await wait(GAP_MS);
-        w = (w + 1) % words.length;
-        while (i < words[w].length) {
-          el.textContent = words[w].slice(0, ++i);
-          await wait(TYPE_MS);
-        }
-        el.classList.remove("typing");
-        await wait(HOLD_MS);
-      }
-    };
-
-    run();
-  }
-</script>
