@@ -267,3 +267,56 @@ body.ap-attempting .ap-toast { bottom: 120px; }
     .ap-attempt-hint { display: none; }
 }
 .ap-table a, .ap-prose a { color: var(--tk-teal); text-underline-offset: 3px; }
+
+/* Rich lesson content (converted workbooks) */
+.ap-html { max-width: 90ch; }
+.ap-html h2, .ap-html h3, .ap-html h4 { margin: 22px 0 8px; color: var(--tk-text); font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; font-size: 14px; }
+.ap-html h2 { font-size: 18px; }
+.ap-html > :first-child { margin-top: 0; }
+.ap-html ul, .ap-html ol { margin: 6px 0 12px; padding-left: 20px; }
+.ap-html li { margin: 3px 0; }
+.ap-html blockquote { margin: 10px 0; padding: 10px 14px; border-left: 3px solid var(--tk-coral); background: var(--tk-coral-bg); color: var(--tk-text); }
+.ap-html pre { margin: 10px 0; padding: 12px 14px; overflow-x: auto; background: #2d2d2d; color: #f2efe9; font-family: var(--tk-mono); font-size: 12px; white-space: pre-wrap; }
+html.dark .ap-html pre { background: #121110; }
+.ap-html table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+.ap-html th, .ap-html td { text-align: left; vertical-align: top; padding: 8px 10px; border: 1px solid var(--tk-border); }
+.ap-html th { background: var(--tk-subtle); font-family: var(--tk-mono); font-size: 11px; text-transform: uppercase; color: var(--tk-muted); }
+.ap-html .ap-cards { margin: 10px 0; }
+.ap-html .ap-card p { margin: 4px 0 0; }
+.ap-html .ap-callout { margin: 10px 0; }
+.ap-html .ap-panel { margin: 12px 0; }
+.ap-html .ap-panel > :first-child { margin-top: 0; }
+
+.ap-reveal { border: 1px solid var(--tk-teal); background: var(--tk-surface); }
+.ap-reveal > summary { cursor: pointer; padding: 10px 14px; font-weight: 700; list-style: none; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.ap-reveal > summary::-webkit-details-marker { display: none; }
+.ap-reveal > summary::after { content: "Show"; margin-left: auto; font-family: var(--tk-mono); font-size: 11px; color: var(--tk-teal); }
+.ap-reveal[open] > summary::after { content: "Hide"; }
+.ap-reveal-tag { font-family: var(--tk-mono); font-size: 11px; text-transform: uppercase; color: var(--tk-teal); }
+.ap-reveal-body { padding: 0 14px 14px; }
+
+.ap-drill { border: 1px solid var(--tk-strong); background: var(--tk-coral-bg); padding: 16px; }
+.ap-drill-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+.ap-drill-timer { display: flex; gap: 6px; align-items: center; }
+.ap-clock-sm { font-family: var(--tk-mono); font-weight: 700; font-size: 16px; padding: 4px 10px; background: var(--tk-text); color: var(--tk-bg); }
+.ap-clock-sm.over { color: var(--tk-coral); }
+.ap-quote { margin: 0 0 10px; padding: 10px 14px; border-left: 3px solid var(--tk-coral); background: var(--tk-surface); font-weight: 600; }
+.ap-drill-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.ap-field { display: grid; gap: 4px; font-family: var(--tk-mono); font-size: 11px; text-transform: uppercase; color: var(--tk-muted); }
+.ap-field select { font: inherit; font-family: var(--tk-sans); font-size: 13px; text-transform: none; color: var(--tk-text); background: var(--tk-surface); border: 1px solid var(--tk-strong); padding: 7px 8px; }
+.ap-field .ap-textarea { text-transform: none; }
+.ap-rubric { margin-top: 14px; }
+.ap-rubric .ap-block-h { font-size: 12px; }
+
+.ap-quiz { border: 1px solid var(--tk-border); background: var(--tk-surface); padding: 14px 16px; }
+.ap-quiz-qs { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 12px 0; }
+
+.ap-files { border: 1px solid var(--tk-border); background: var(--tk-surface); }
+.ap-file { border-top: 1px solid var(--tk-border); }
+.ap-file:first-child { border-top: 0; }
+.ap-file > summary { cursor: pointer; padding: 9px 14px; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.ap-file > summary code { font-family: var(--tk-mono); font-size: 13px; font-weight: 600; }
+.ap-file[open] > summary { background: var(--tk-subtle); }
+.ap-file-body { padding: 10px 14px 14px; color: var(--tk-text-2); }
+.ap-file-body p { margin: 0 0 8px; }
+.ap-file-body a { color: var(--tk-teal); font-weight: 600; }

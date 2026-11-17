@@ -66,6 +66,13 @@
     sections.forEach(function (s) {
         BY_SECTION[s.id] = [];
         (s.blocks || []).forEach(function (b) {
+            if (b.type === "drill" && b.rubric) {
+                b.rubric.forEach(function (t, k) {
+                    var rec = { id: b.id + "_r" + k, section: s.id, text: t, sub: "", counts: false, src: { text: t } };
+                    ITEMS.push(rec); BY_SECTION[s.id].push(rec);
+                });
+                return;
+            }
             if (b.type !== "checklist" && b.type !== "resources" && b.type !== "problems") return;
             (b.items || []).forEach(function (it) {
                 var r = it.ref ? library[it.ref] || {} : {};
@@ -120,6 +127,17 @@
             var r = reviews[k] || {};
             if (r.note && !s.notes[k]) s.notes[k] = r.note;
             s.reviews[k] = { attempts: r.attempts || [], reps: r.reps || 0, interval: r.interval || 0, ease: r.ease || 2.5, due: r.due || null, everSolved: !!r.everSolved };
+        });
+        // The old RL workbook: drill notes, quiz answers and mock-interview answers.
+        Object.keys(raw.drillNotes || {}).forEach(function (k) { if (raw.drillNotes[k]) s.notes["drill_" + k] = raw.drillNotes[k]; });
+        Object.keys(raw.quizAnswers || {}).forEach(function (k) {
+            var a = raw.quizAnswers[k] || {};
+            Object.keys(a).forEach(function (f) { if (a[f]) s.values["quiz_" + k + "." + f] = a[f]; });
+        });
+        Object.keys(raw.mockResponses || {}).forEach(function (k) {
+            var m = raw.mockResponses[k] || {};
+            ["mech", "impl", "edge"].forEach(function (f) { if (m[f]) s.notes["mock_" + k + "_" + f] = m[f]; });
+            Object.keys(m.rubric || {}).forEach(function (i) { if (m.rubric[i]) s.checks["mock_" + k + "_r" + i] = 1; });
         });
         if (raw.dailyNew) s.settings.dailyNew = raw.dailyNew;
         if (raw.startDate) s.settings.startDate = raw.startDate;
@@ -240,6 +258,7 @@
             '<div class="tk-side-foot"><button type="button" class="tk-btn" data-tk-theme>Dark mode</button>' +
             '<details class="tk-menu"><summary class="tk-btn">Data &amp; export</summary><div class="tk-menu-panel">' +
             '<button type="button" data-action="csv">Download progress (.csv)</button>' +
+            '<button type="button" data-action="notes">Export notes (.md)</button>' +
             '<button type="button" data-action="backup">Back up progress (.json)</button>' +
             '<button type="button" data-action="restore">Restore backup&hellip;</button>' +
             '<button type="button" data-action="reset" class="tk-danger">Reset all progress</button>' +
@@ -335,7 +354,7 @@
         var title, kicker = "", sub = "";
         if (view === "section") {
             var g = groupOf(current);
-            kicker = g ? gTitle(g) : (C.looseLabel || "");
+            kicker = current.kicker || (g ? gTitle(g) : (C.looseLabel || ""));
             title = titleOf(current);
             sub = subOf(current);
         } else if (view === "library") { title = "Library"; sub = "Every resource, grouped by type"; }
@@ -401,6 +420,44 @@
                         return '<div class="ap-ref-entry"><p class="ap-ref-name">' + esc(e.name) + "</p>" + (e.desc ? '<p class="ap-sub">' + esc(e.desc) + "</p>" : "") +
                             (e.code ? '<div class="ap-code"><button type="button" class="ap-copy" data-copy>Copy</button><pre><code>' + esc(e.code) + "</code></pre></div>" : "") + "</div>";
                     }).join("") + "</section>";
+            case "html":
+                return '<section class="ap-block"><div class="ap-prose ap-html">' + b.html + "</div></section>";
+            case "reveal":
+                return '<details class="ap-block ap-reveal"><summary><span class="ap-reveal-tag">' + esc(b.label || "Reference solution") + "</span> " + esc(b.title) + "</summary>" +
+                    '<div class="ap-reveal-body">' + (b.note ? '<p class="ap-sub">' + esc(b.note) + "</p>" : "") +
+                    '<div class="ap-code"><button type="button" class="ap-copy" data-copy>Copy</button><pre><code>' + esc(b.code) + "</code></pre></div></div></details>";
+            case "drill":
+                var secs = b.seconds || 90, tid = "t_" + b.id;
+                return '<section class="ap-block ap-drill"><div class="ap-drill-head"><div><p class="ap-card-label">' + esc(b.label || "Timed drill") + "</p>" +
+                    (b.title ? '<p class="ap-card-title">' + esc(b.title) + "</p>" : "") + "</div>" +
+                    '<div class="ap-drill-timer"><span class="ap-clock-sm" id="' + tid + '">' + clockOf(drills[tid] != null ? drills[tid].left : secs) + "</span>" +
+                    '<button type="button" class="tk-btn ap-primary" data-drill="' + tid + '" data-secs="' + secs + '">Start / pause</button>' +
+                    '<button type="button" class="tk-btn" data-drill-reset="' + tid + '" data-secs="' + secs + '">Reset</button></div></div>' +
+                    '<blockquote class="ap-quote">' + esc(b.prompt) + "</blockquote>" +
+                    (b.hint ? '<p class="ap-sub">' + esc(b.hint) + "</p>" : "") +
+                    '<div class="ap-drill-fields">' + (b.fields || [{ id: b.id, label: "Your answer", placeholder: "" }]).map(function (f) {
+                        return '<label class="ap-field"><span>' + esc(f.label) + '</span><textarea class="ap-textarea" rows="' + (f.rows || 4) + '" data-note="' + esc(f.id) + '" placeholder="' + esc(f.placeholder || "") + '">' + esc(S.notes[f.id] || "") + "</textarea></label>";
+                    }).join("") + "</div>" +
+                    (b.rubric ? '<div class="ap-rubric"><h4 class="ap-block-h">Self-grading rubric <span class="ap-hint">' + b.rubric.filter(function (t, k) { return S.checks[b.id + "_r" + k]; }).length + " of " + b.rubric.length + " hit</span></h4>" +
+                        '<ul class="ap-checks">' + b.rubric.map(function (t, k) { return checkRow({ id: b.id + "_r" + k, text: t }, b, false); }).join("") + "</ul></div>" : "") + "</section>";
+            case "quiz":
+                var answers = b.questions.map(function (q) { return S.values[b.id + "." + q.id] || ""; });
+                var tried = answers.every(function (a) { return a; });
+                var right = b.questions.every(function (q, k) { return answers[k] === q.answer; });
+                return '<section class="ap-block ap-quiz"><div class="ap-ref-head"><h3 class="ap-block-h">' + esc(b.title) + "</h3>" +
+                    '<span class="ap-status ' + (right ? "s-mastered" : tried ? "s-due" : "s-new") + '">' + (right ? "Correct" : tried ? "Not quite" : "Your call") + "</span></div>" +
+                    (b.trace ? '<div class="ap-code"><pre><code>' + esc(b.trace) + "</code></pre></div>" : "") +
+                    '<div class="ap-quiz-qs">' + b.questions.map(function (q, k) {
+                        return '<label class="ap-field"><span>' + esc(q.label) + '</span><select data-value="' + esc(b.id + "." + q.id) + '"><option value="">Choose…</option>' +
+                            q.options.map(function (o) { return '<option value="' + esc(o.value) + '"' + (answers[k] === o.value ? " selected" : "") + ">" + esc(o.label) + "</option>"; }).join("") + "</select></label>";
+                    }).join("") + "</div>" +
+                    (tried ? '<div class="ap-callout ' + (right ? "ap-tip" : "") + '"><div class="ap-prose">' + (right ? b.explanation : esc(b.wrong || "Not quite. Try again.")) + "</div></div>" : "") + "</section>";
+            case "files":
+                return '<section class="ap-block">' + head + '<div class="ap-files">' + b.items.map(function (f) {
+                    return '<details class="ap-file"><summary><code>' + esc(f.path) + "</code>" + (f.tag ? '<span class="ap-tag">' + esc(f.tag) + "</span>" : "") + "</summary>" +
+                        '<div class="ap-file-body">' + (f.category ? '<p class="ap-card-label">' + esc(f.category) + "</p>" : "") + '<p>' + esc(f.summary) + "</p>" +
+                        (f.href ? '<a href="#' + esc(f.href) + '">Go to ' + esc(f.tag || "section") + " &rarr;</a>" : "") + "</div></details>";
+                }).join("") + "</div></section>";
             case "list":
                 return '<section class="ap-block">' + head + '<ul class="ap-list">' + b.items.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></section>";
             case "problems":
@@ -767,6 +824,21 @@
         save(true); renderAll();
     }
 
+    // ------------------------------------------------------------------ drill countdowns
+    var drills = {};
+    function clockOf(sec) { sec = Math.max(0, sec); return String(Math.floor(sec / 60)).padStart(2, "0") + ":" + String(sec % 60).padStart(2, "0"); }
+    function drillToggle(tid, secs) {
+        var d = drills[tid] || (drills[tid] = { left: secs, id: null });
+        if (d.id) { clearInterval(d.id); d.id = null; return; }
+        if (d.left <= 0) d.left = secs;
+        d.id = setInterval(function () {
+            d.left--;
+            var el = document.getElementById(tid); if (el) { el.textContent = clockOf(d.left); el.classList.toggle("over", d.left <= 10); }
+            if (d.left <= 0) { clearInterval(d.id); d.id = null; toast("Time. Wrap up your answer."); }
+        }, 1000);
+    }
+    function drillReset(tid, secs) { var d = drills[tid]; if (d) clearInterval(d.id); drills[tid] = { left: secs, id: null }; var el = document.getElementById(tid); if (el) { el.textContent = clockOf(secs); el.classList.remove("over"); } }
+
     // ------------------------------------------------------------------ timer
     var timer = { left: 0, total: 0, id: null, paused: false };
     function clockText() { var s = Math.max(0, timer.left); return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0"); }
@@ -806,6 +878,24 @@
             download(C.id + "-progress.csv", rows.map(function (r) { return r.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(","); }).join("\n"), "text/csv");
             return toast("Downloaded CSV");
         }
+        if (a === "notes") {
+            var md = ["# " + (meta.title || "") + (meta.mark ? " " + meta.mark : "") + ": notes", "", "Exported " + new Date().toLocaleString(), ""];
+            sections.forEach(function (sec) {
+                var parts = [];
+                (sec.blocks || []).forEach(function (b) {
+                    var add = function (id, label) { var v = (S.notes[id] || "").trim(); if (v) parts.push("**" + label + "**\n\n" + v); };
+                    if (b.type === "note") add(b.id, b.label || "Notes");
+                    if (b.type === "drill") {
+                        (b.fields || [{ id: b.id, label: "Answer" }]).forEach(function (f) { add(f.id, (b.title || b.prompt) + " · " + f.label); });
+                        if (b.rubric) { var hit = b.rubric.filter(function (t, k) { return S.checks[b.id + "_r" + k]; }); if (hit.length) parts.push("Rubric hit: " + hit.length + "/" + b.rubric.length); }
+                    }
+                    (b.items || []).forEach(function (it) { if (it.noteField) add(it.noteField.id, it.text || it.title); if (b.type === "problems") add(it.id, "#" + it.num + " " + it.title); });
+                });
+                if (parts.length) md.push("## " + titleOf(sec), "", parts.join("\n\n"), "");
+            });
+            download(C.id + "-notes.md", md.join("\n"), "text/markdown");
+            return toast("Notes exported");
+        }
         if (a === "backup") {
             download(C.id + "-backup.json", JSON.stringify({ app: "learn", tracker: C.id, exported: new Date().toISOString(), checks: S.checks, notes: S.notes, values: S.values, reviews: S.reviews, mock: S.mock, settings: S.settings }, null, 2), "application/json");
             return toast("Backup downloaded");
@@ -823,9 +913,15 @@
         if (t.dataset.check) {
             if (t.checked) S.checks[t.dataset.check] = 1; else delete S.checks[t.dataset.check];
             $$('[data-check="' + t.dataset.check + '"]').forEach(function (x) { x.checked = t.checked; var li = x.closest(".ap-check"); if (li) li.classList.toggle("is-on", t.checked); });
-            save(); refreshAfterChange(); return;
+            save(); refreshAfterChange();
+            if (t.closest(".ap-rubric")) { var yy = window.scrollY; renderMain(); window.scrollTo(0, yy); }
+            return;
         }
-        if (t.dataset.value) { S.values[t.dataset.value] = t.value; save(); toast("Saved"); return; }
+        if (t.dataset.value) {
+            S.values[t.dataset.value] = t.value; save();
+            if (t.closest(".ap-quiz") && view === "section") { var y = window.scrollY; renderMain(); window.scrollTo(0, y); } else toast("Saved");
+            return;
+        }
         if (t.dataset.setting) {
             var k = t.dataset.setting, v = t.value;
             if (k === "hpw") v = Math.max(1, Math.min(80, Math.round(+v || 10)));
@@ -870,6 +966,8 @@
         }
         if (t.dataset.timer) return timerAction(t.dataset.timer);
         if (t.dataset.start) return startAttempt(t.dataset.start);
+        if (t.dataset.drill) return drillToggle(t.dataset.drill, +t.dataset.secs);
+        if (t.dataset.drillReset) return drillReset(t.dataset.drillReset, +t.dataset.secs);
         if (t.dataset.grade) return finishAttempt(t.dataset.grade);
         if (t.dataset.action) return action(t.dataset.action, t);
         if (t.hasAttribute("data-copy")) {
