@@ -7,18 +7,17 @@
     <meta name="description" content="A 24-day, 4-week study plan for GPU kernels, RLHF/GRPO/DPO, sandboxing and distributed systems, with progress saved in your browser.">
     <meta name="color-scheme" content="light dark">
     <script>
-        // Apply saved (or system) theme before first paint to avoid a light flash.
+        // Shared /learn/ theme, applied before first paint.
         (function () {
             try {
-                var raw = localStorage.getItem("frontier_ai_workbench_v2");
-                var t = raw ? JSON.parse(raw).theme : null;
-                if (t !== "dark" && t !== "light") {
-                    t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-                }
+                var t = localStorage.getItem("learn_theme");
+                if (t !== "dark" && t !== "light") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
                 if (t === "dark") document.documentElement.classList.add("dark");
             } catch (e) {}
         })();
     </script>
+    <link rel="stylesheet" href="/learn/assets/tracker-shell.css?v=1">
+    <script src="/learn/assets/tracker-shell.js?v=1" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -962,8 +961,8 @@
         }
         .tab-count { white-space: nowrap; }
 
-        /* Sticky table headers where the table fits without horizontal scroll */
-        @media (min-width: 1140px) {
+        /* Sticky table headers where the table fits beside the sidebar without horizontal scroll */
+        @media (min-width: 1580px) {
             .table-scroll { overflow: visible; }
             table.data-table thead th {
                 position: sticky; top: var(--header-h, 56px); z-index: 5;
@@ -1102,120 +1101,109 @@
         .hidden {
             display: none !important;
         }
+        /* Shared tracker layout overrides */
+        .tk-side .control-cluster { display: flex; flex-wrap: wrap; gap: 4px; border: 0; padding: 0; background: none; }
+        .tk-side .control-cluster .timer-readout { flex: 1 0 100%; text-align: center; font-size: 20px; padding: 6px 0; }
+        .tk-side .control-cluster .btn-tool { flex: 1 1 auto; border: 1px solid var(--border-color); }
+        .tk-side .next-up-btn { width: 100%; text-align: left; white-space: normal; }
+        .filter-bar { flex-wrap: wrap; }
+        .filter-bar .search-box { flex: 1 1 200px; }
+        #main-content > section, #main-content > main { scroll-margin-top: 80px; }
     </style>
 </head>
-<body>
+<body class="tk-body">
     <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <!-- Site navigation (matches utkarshtripathi.com) -->
-    <nav class="site-nav" aria-label="Site">
-        <div class="site-nav-inner">
-            <a href="/" class="site-name">Utkarsh Tripathi</a>
-            <div class="site-links">
+    <nav class="tk-site" aria-label="Site">
+        <div class="tk-site-inner">
+            <a href="/" class="tk-site-name">Utkarsh Tripathi</a>
+            <div class="tk-site-links">
                 <a href="/projects/">Work</a>
                 <a href="/about/">About</a>
-                <a href="/learn/" class="current" aria-current="page">Learn</a>
+                <a href="/learn/" aria-current="page">Learn</a>
+                <a href="/cv/Utkarsh-Tripathi-Resume.pdf">Resume</a>
             </div>
         </div>
     </nav>
 
-    <!-- Page hero -->
-    <section class="page-hero">
-        <div class="page-hero-inner">
-            <a href="/learn/" class="kicker">&larr; Learn &middot; 4-week study tracker</a>
-            <h1 class="hero-title">Frontier AI <span class="hero-mark">&amp; Systems</span></h1>
-            <p class="hero-sub">24 study days &middot; 3 tracks &middot; 5 hours a day &middot; a closed-book gate every Sunday</p>
+    <header class="tk-mbar">
+        <div class="tk-mbar-text">
+            <a href="/learn/" class="tk-kicker">&larr; Learn</a>
+            <div class="tk-mbar-title" data-tk-title>Schedule</div>
         </div>
-    </section>
+        <button type="button" class="tk-btn" data-tk-open aria-controls="tkSide" aria-expanded="false">&#9776; Sections</button>
+    </header>
+    <div class="tk-backdrop" data-tk-close></div>
 
-    <!-- STICKY TOOLBAR -->
-    <header class="sticky-header" id="stickyHeader">
-        <div class="header-inner">
-            <nav class="nav-tabs" aria-label="Main Tabs" role="tablist">
-                <button type="button" onclick="switchTab('schedule')" id="tabBtn-schedule" role="tab" aria-controls="panel-schedule" class="tab-btn active">
-                    Schedule <span id="tabBadge-schedule" class="tab-count">0/96</span>
-                </button>
-                <button type="button" onclick="switchTab('resources')" id="tabBtn-resources" role="tab" aria-controls="panel-resources" class="tab-btn">
-                    Books, Papers &amp; Gates <span id="tabBadge-resources" class="tab-count">0/12</span>
-                </button>
-                <button type="button" onclick="switchTab('reference')" id="tabBtn-reference" role="tab" aria-controls="panel-reference" class="tab-btn">
-                    Reference Sheet
-                </button>
-            </nav>
-
-            <div class="header-controls">
-                <!-- Study block timer -->
-                <div class="control-cluster" role="group" aria-label="Study block timer">
-                    <span id="timerDisplay" class="timer-readout" aria-live="off">00:00</span>
-                    <button type="button" onclick="startStudyTimer(25)" class="btn-tool" title="Start a 25-minute block">25m</button>
-                    <button type="button" onclick="startStudyTimer(90)" class="btn-tool" title="Start a 90-minute block">90m</button>
-                    <button type="button" onclick="startStudyTimer(120)" class="btn-tool" title="Start a 120-minute block">120m</button>
-                    <button type="button" onclick="pauseResumeTimer()" id="timerToggleBtn" class="btn-tool">Pause</button>
-                    <button type="button" onclick="clearStudyTimer()" class="btn-tool" title="Reset timer" aria-label="Reset timer">&#8634;</button>
+    <div class="tk-layout">
+        <aside class="tk-side" id="tkSide" aria-label="Tracker sections">
+            <div class="tk-side-scroll">
+                <div class="tk-brand tk-grid-bg">
+                    <div class="tk-brand-top">
+                        <a href="/learn/" class="tk-kicker">&larr; Learn &middot; 4-week study tracker</a>
+                        <button type="button" class="tk-btn tk-close" data-tk-close aria-label="Close sections">&times;</button>
+                    </div>
+                    <h1 class="tk-title">Frontier AI <span class="tk-mark">&amp; Systems</span></h1>
+                    <p class="tk-sub">24 study days &middot; 3 tracks &middot; 5 hours a day &middot; a closed-book gate every Sunday</p>
+                    <div class="tk-progress">
+                        <div class="tk-progress-top"><span>Total progress</span><span id="metricTotalText">0 / 96 (0%)</span></div>
+                        <div class="tk-bar"><div id="metricTotalBar" style="width: 0%"></div></div>
+                    </div>
                 </div>
 
-                <!-- Data tools menu -->
-                <details class="tools-menu" id="toolsMenu">
-                    <summary class="btn-tool tools-summary">Data &amp; settings</summary>
-                    <div class="tools-panel">
-                        <button type="button" onclick="copyScheduleTSV()" class="menu-item">Copy schedule for Sheets (TSV)</button>
-                        <button type="button" onclick="downloadScheduleCSV()" class="menu-item">Download CSV</button>
-                        <button type="button" onclick="exportBackupJSON()" class="menu-item">Back up progress (.json)</button>
-                        <button type="button" onclick="document.getElementById('importFileInput').click()" class="menu-item">Restore backup&hellip;</button>
-                        <input type="file" id="importFileInput" accept=".json" class="hidden" aria-label="Restore JSON backup" onchange="importBackupJSON(event)">
-                        <button type="button" onclick="toggleColorTheme()" id="themeSwitchBtn" class="menu-item">Dark Mode</button>
-                        <button type="button" onclick="handleResetProgress()" id="resetProgressBtn" class="menu-item danger-text">Clear all progress</button>
+                <nav class="tk-nav" aria-label="Sections" role="tablist">
+                    <button type="button" class="tk-item" data-view="schedule" id="tabBtn-schedule" role="tab" aria-controls="panel-schedule" onclick="switchTab('schedule')" data-title="Schedule"><span class="tk-item-main"><span class="tk-item-label">Schedule</span><span class="tk-item-sub">All 24 days</span></span><span class="tk-item-count" id="tabBadge-schedule">0/96</span></button>
+                        <button type="button" class="tk-item tk-sub-item" data-week="W1" onclick="focusWeek('W1')" title="Show only week 1"><span class="tk-item-main"><span class="tk-item-label">W1 &middot; GPU kernels</span></span><span class="tk-item-count" id="metricW1Text">0 / 24</span><span class="tk-item-bar"><div id="metricW1Bar" style="width:0%"></div></span></button>
+                        <button type="button" class="tk-item tk-sub-item" data-week="W2" onclick="focusWeek('W2')" title="Show only week 2"><span class="tk-item-main"><span class="tk-item-label">W2 &middot; RLHF and RLVR</span></span><span class="tk-item-count" id="metricW2Text">0 / 24</span><span class="tk-item-bar"><div id="metricW2Bar" style="width:0%"></div></span></button>
+                        <button type="button" class="tk-item tk-sub-item" data-week="W3" onclick="focusWeek('W3')" title="Show only week 3"><span class="tk-item-main"><span class="tk-item-label">W3 &middot; Sandbox and systems</span></span><span class="tk-item-count" id="metricW3Text">0 / 24</span><span class="tk-item-bar"><div id="metricW3Bar" style="width:0%"></div></span></button>
+                        <button type="button" class="tk-item tk-sub-item" data-week="W4" onclick="focusWeek('W4')" title="Show only week 4"><span class="tk-item-main"><span class="tk-item-label">W4 &middot; Mocks and loop</span></span><span class="tk-item-count" id="metricW4Text">0 / 24</span><span class="tk-item-bar"><div id="metricW4Bar" style="width:0%"></div></span></button>
+                    <button type="button" class="tk-item" data-view="resources" id="tabBtn-resources" role="tab" aria-controls="panel-resources" onclick="switchTab('resources')" data-title="Books, papers &amp; gates"><span class="tk-item-main"><span class="tk-item-label">Books, papers &amp; gates</span><span class="tk-item-sub">Reading list and Sunday gates</span></span><span class="tk-item-count" id="tabBadge-resources">0/12</span></button>
+                    <button type="button" class="tk-item" data-view="reference" id="tabBtn-reference" role="tab" aria-controls="panel-reference" onclick="switchTab('reference')" data-title="Reference sheet"><span class="tk-item-main"><span class="tk-item-label">Reference sheet</span><span class="tk-item-sub">Formulas and numbers to know</span></span></button>
+                </nav>
+
+                <div class="tk-block">
+                    <p class="tk-block-h">Up next</p>
+                    <button type="button" onclick="jumpToNextIncompleteDay()" id="nextUpButton" class="next-up-btn">W1 Mon &rarr;</button>
+                </div>
+
+                <div class="tk-block">
+                    <p class="tk-block-h">Study block timer</p>
+                    <div class="control-cluster" role="group" aria-label="Study block timer">
+                        <span id="timerDisplay" class="timer-readout" aria-live="off">00:00</span>
+                        <button type="button" onclick="startStudyTimer(25)" class="btn-tool" title="Start a 25-minute block">25m</button>
+                        <button type="button" onclick="startStudyTimer(90)" class="btn-tool" title="Start a 90-minute block">90m</button>
+                        <button type="button" onclick="startStudyTimer(120)" class="btn-tool" title="Start a 120-minute block">120m</button>
+                        <button type="button" onclick="pauseResumeTimer()" id="timerToggleBtn" class="btn-tool">Pause</button>
+                        <button type="button" onclick="clearStudyTimer()" class="btn-tool" title="Reset timer" aria-label="Reset timer">&#8634;</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tk-side-foot">
+                <button type="button" class="tk-btn" data-tk-theme id="themeSwitchBtn">Dark mode</button>
+                <details class="tk-menu" id="toolsMenu">
+                    <summary class="tk-btn">Data &amp; export</summary>
+                    <div class="tk-menu-panel">
+                        <button type="button" onclick="copyScheduleTSV()">Copy schedule for Sheets (TSV)</button>
+                        <button type="button" onclick="downloadScheduleCSV()">Download CSV</button>
+                        <button type="button" onclick="exportBackupJSON()">Back up progress (.json)</button>
+                        <button type="button" onclick="document.getElementById('importFileInput').click()">Restore backup&hellip;</button>
+                        <button type="button" onclick="handleResetProgress()" id="resetProgressBtn" class="tk-danger">Clear all progress</button>
                     </div>
                 </details>
+                <input type="file" id="importFileInput" accept=".json" class="hidden" aria-label="Restore JSON backup" onchange="importBackupJSON(event)">
             </div>
-        </div>
-    </header>
+        </aside>
 
-    <div class="app-shell" id="main-content">
-        <!-- TOP PROGRESS SUMMARY STRIP -->
-        <section class="summary-banner" aria-label="Progress Summary">
-            <div class="metric-item">
-                <div class="metric-top">
-                    <span class="metric-label">Total Progress</span>
-                    <span id="metricTotalText" class="metric-val">0 / 96 (0%)</span>
+        <div class="tk-main">
+            <div class="tk-head">
+                <div>
+                    <h2 class="tk-head-title" data-tk-title>Schedule</h2>
+                    <p class="tk-head-sub">Press / to search the schedule</p>
                 </div>
-                <div class="bar-track"><div id="metricTotalBar" class="bar-fill" style="width: 0%"></div></div>
             </div>
-            <div class="metric-item metric-link" role="button" tabindex="0" title="Show only week 1" onclick="focusWeek('W1')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();focusWeek('W1');}">
-                <div class="metric-top">
-                    <span class="metric-label">W1 · GPU Kernels</span>
-                    <span id="metricW1Text" class="metric-val">0 / 24</span>
-                </div>
-                <div class="bar-track"><div id="metricW1Bar" class="bar-fill" style="width: 0%"></div></div>
-            </div>
-            <div class="metric-item metric-link" role="button" tabindex="0" title="Show only week 2" onclick="focusWeek('W2')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();focusWeek('W2');}">
-                <div class="metric-top">
-                    <span class="metric-label">W2 · RLHF & RLVR</span>
-                    <span id="metricW2Text" class="metric-val">0 / 24</span>
-                </div>
-                <div class="bar-track"><div id="metricW2Bar" class="bar-fill" style="width: 0%"></div></div>
-            </div>
-            <div class="metric-item metric-link" role="button" tabindex="0" title="Show only week 3" onclick="focusWeek('W3')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();focusWeek('W3');}">
-                <div class="metric-top">
-                    <span class="metric-label">W3 · Sandbox & Sys</span>
-                    <span id="metricW3Text" class="metric-val">0 / 24</span>
-                </div>
-                <div class="bar-track"><div id="metricW3Bar" class="bar-fill" style="width: 0%"></div></div>
-            </div>
-            <div class="metric-item metric-link" role="button" tabindex="0" title="Show only week 4" onclick="focusWeek('W4')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();focusWeek('W4');}">
-                <div class="metric-top">
-                    <span class="metric-label">W4 · Mocks & Loop</span>
-                    <span id="metricW4Text" class="metric-val">0 / 24</span>
-                </div>
-                <div class="bar-track"><div id="metricW4Bar" class="bar-fill" style="width: 0%"></div></div>
-            </div>
-            <div class="next-up-box">
-                <span class="next-up-label">Current Focus Day</span>
-                <button type="button" onclick="jumpToNextIncompleteDay()" id="nextUpButton" class="next-up-btn">
-                    W1 Mon — Roofline & Softmax →
-                </button>
-            </div>
-        </section>
+
+            <div class="tk-content" id="main-content">
 
         <!-- =================================================================
              TAB 1: 24-DAY SCHEDULE (TABLE VIEW & CARD VIEW)
@@ -1516,6 +1504,13 @@ Deny: socket(AF_INET/AF_INET6), connect, ptrace, mount, umount2, pivot_root,
                 </div>
             </div>
         </section>
+            </div>
+
+            <footer class="tk-foot">
+                <span>Progress is saved in this browser only &middot; back it up from Data &amp; export</span>
+                <a href="/learn/">All study trackers</a>
+            </footer>
+        </div>
     </div>
 
     <!-- Toast Notification -->
@@ -2078,6 +2073,7 @@ Deny: socket(AF_INET/AF_INET6), connect, ptrace, mount, umount2, pivot_root,
                 btn.classList.toggle("active", t === tabId);
                 btn.setAttribute("aria-selected", t === tabId ? "true" : "false");
             });
+            if (window.TK) TK.setActive(tabId);
             saveUiPrefs();
         }
 
@@ -2090,12 +2086,10 @@ Deny: socket(AF_INET/AF_INET6), connect, ptrace, mount, umount2, pivot_root,
 
         // Close the Data & settings menu on outside click or Escape
         document.addEventListener("click", (e) => {
-            const m = document.getElementById("toolsMenu");
-            if (m && m.open && !m.contains(e.target)) m.open = false;
+            // The shared shell closes the Data menu; nothing to do here.
         });
         document.addEventListener("keydown", (e) => {
-            const m = document.getElementById("toolsMenu");
-            if (e.key === "Escape" && m && m.open) { m.open = false; m.querySelector("summary").focus(); }
+            // Escape is handled by the shared shell.
         });
 
         function clearFilters() {
@@ -2122,6 +2116,7 @@ Deny: socket(AF_INET/AF_INET6), connect, ptrace, mount, umount2, pivot_root,
                 b.classList.toggle("active", w === wk);
                 b.setAttribute("aria-pressed", w === wk ? "true" : "false");
             });
+            document.querySelectorAll(".tk-item[data-week]").forEach((el) => el.classList.toggle("is-active", el.dataset.week === wk));
             saveUiPrefs();
             renderScheduleView();
         }
@@ -2162,18 +2157,9 @@ Deny: socket(AF_INET/AF_INET6), connect, ptrace, mount, umount2, pivot_root,
             }
         }
 
-        function toggleColorTheme() {
-            appState.theme = appState.theme === "dark" ? "light" : "dark";
-            applyThemeUI();
-            persistState(`Switched to ${appState.theme} mode`);
-        }
-
-        function applyThemeUI() {
-            const isDark = appState.theme === "dark";
-            document.documentElement.classList.toggle("dark", isDark);
-            const btn = document.getElementById("themeSwitchBtn");
-            if (btn) btn.textContent = isDark ? "Light Mode" : "Dark Mode";
-        }
+        // Theme is shared by every /learn/ tracker; the shell owns it.
+        function toggleColorTheme() { if (window.TK) TK.toggleTheme(); }
+        function applyThemeUI() { if (window.TK) TK.applyTheme(); }
 
         // Two-step confirmation for clearing data (no alert/confirm popups)
         let resetArmed = false;
@@ -2385,7 +2371,7 @@ Deny: socket(AF_INET/AF_INET6), connect, ptrace, mount, umount2, pivot_root,
         });
 
         function syncHeaderHeight() {
-            const h = document.getElementById("stickyHeader");
+            const h = document.querySelector(".tk-head");
             if (h) document.documentElement.style.setProperty("--header-h", `${h.offsetHeight}px`);
         }
         window.addEventListener("resize", syncHeaderHeight);

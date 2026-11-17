@@ -6,6 +6,18 @@
   <title>RL Environment Engineering Workbook</title>
   <meta name="description" content="A 7-day hands-on workbook for building and hardening RL coding-agent environments: air-gapped Docker, anti-tamper verifiers, AppSec tests, safety sinks and trajectory diagnosis.">
   <meta name="theme-color" content="#faf8f5">
+  <script>
+      // Shared /learn/ theme, applied before first paint.
+      (function () {
+          try {
+              var t = localStorage.getItem("learn_theme");
+              if (t !== "dark" && t !== "light") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+              if (t === "dark") document.documentElement.classList.add("dark");
+          } catch (e) {}
+      })();
+  </script>
+  <link rel="stylesheet" href="/learn/assets/tracker-shell.css?v=1">
+  <script src="/learn/assets/tracker-shell.js?v=1" defer></script>
   <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,19 +29,19 @@
         extend: {
           // Site palette (utkarshtripathi.com): cream, charcoal, coral, teal
           colors: {
-            charcoal: '#2d2d2d',
-            charcoalLight: '#3d3b38',
-            stoneBg: '#faf8f5',
-            stoneAlt: '#f5f3f0',
-            stoneBorder: '#d9d4cc',
-            sage: '#2a9d8f',
-            sageDark: '#22867a',
-            ochre: '#e85a4f',
-            ochreLight: '#fbe8e5',
-            tealMuted: '#1f7a6f',
-            tealLight: '#e3f2ef',
-            crimson: '#c0392b',
-            eagle: '#8b8578'
+            charcoal: 'rgb(var(--rl-charcoal) / <alpha-value>)',
+            charcoalLight: 'rgb(var(--rl-charcoalLight) / <alpha-value>)',
+            stoneBg: 'rgb(var(--rl-stoneBg) / <alpha-value>)',
+            stoneAlt: 'rgb(var(--rl-stoneAlt) / <alpha-value>)',
+            stoneBorder: 'rgb(var(--rl-stoneBorder) / <alpha-value>)',
+            sage: 'rgb(var(--rl-sage) / <alpha-value>)',
+            sageDark: 'rgb(var(--rl-sageDark) / <alpha-value>)',
+            ochre: 'rgb(var(--rl-ochre) / <alpha-value>)',
+            ochreLight: 'rgb(var(--rl-ochreLight) / <alpha-value>)',
+            tealMuted: 'rgb(var(--rl-tealMuted) / <alpha-value>)',
+            tealLight: 'rgb(var(--rl-tealLight) / <alpha-value>)',
+            crimson: 'rgb(var(--rl-crimson) / <alpha-value>)',
+            eagle: 'rgb(var(--rl-eagle) / <alpha-value>)',
           },
           fontFamily: {
             sans: ['Geist', 'system-ui', 'sans-serif'],
@@ -43,14 +55,49 @@
     }
   </script>
   <style>
+    :root {
+      --rl-charcoal: 45 45 45;
+      --rl-charcoalLight: 61 59 56;
+      --rl-stoneBg: 250 248 245;
+      --rl-stoneAlt: 245 243 240;
+      --rl-stoneBorder: 217 212 204;
+      --rl-sage: 42 157 143;
+      --rl-sageDark: 34 134 122;
+      --rl-ochre: 232 90 79;
+      --rl-ochreLight: 251 232 229;
+      --rl-tealMuted: 31 122 111;
+      --rl-tealLight: 227 242 239;
+      --rl-crimson: 192 57 43;
+      --rl-eagle: 139 133 120;
+    }
+    html.dark {
+      --rl-charcoal: 242 239 233;
+      --rl-charcoalLight: 189 183 173;
+      --rl-stoneBg: 29 28 26;
+      --rl-stoneAlt: 42 41 38;
+      --rl-stoneBorder: 57 55 51;
+      --rl-sage: 69 184 169;
+      --rl-sageDark: 58 160 147;
+      --rl-ochre: 240 114 103;
+      --rl-ochreLight: 58 36 33;
+      --rl-tealMuted: 69 184 169;
+      --rl-tealLight: 30 53 50;
+      --rl-crimson: 229 103 90;
+      --rl-eagle: 139 133 120;
+      color-scheme: dark;
+    }
+    /* Code blocks stay dark in both themes */
+    html.dark .bg-charcoal { background-color: #121110 !important; }
+    html.dark .bg-charcoal.text-stoneBg, html.dark .bg-charcoal .text-stoneBg { color: #f2efe9 !important; }
+    html.dark .bg-charcoalLight { background-color: #2a2926 !important; }
+    html.dark .bg-charcoal .text-stoneAlt, html.dark .bg-charcoalLight .text-stoneAlt { color: #bdb7ad !important; }
     /* Strict architectural flat aesthetic: zero gradients, zero drop shadows */
-    * {
+    #main-view *, #reference-drawer * {
       box-shadow: none !important;
-      background-image: none !important;
     }
     body {
-      background-color: #faf8f5;
-      color: #2d2d2d;
+      background-color: rgb(var(--rl-stoneBg));
+      color: rgb(var(--rl-charcoal));
       font-family: 'Geist', sans-serif;
     }
     pre, code {
@@ -71,10 +118,10 @@
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #f5f3f0;
+      background: rgb(var(--rl-stoneAlt));
     }
     ::-webkit-scrollbar-thumb {
-      background: #8b8578;
+      background: rgb(var(--rl-eagle));
     }
     .code-block-body {
       max-height: 520px;
@@ -108,7 +155,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen selection:bg-ochre selection:text-white">
+<body class="tk-body min-h-screen selection:bg-ochre selection:text-white">
   <a class="skip-link" href="#main-view">Skip to content</a>
 
   <!-- Toast Notification Banner -->
@@ -116,100 +163,77 @@
     Copied to clipboard
   </div>
 
-  <!-- Site navigation (matches utkarshtripathi.com) -->
-  <nav aria-label="Site" class="border-b border-charcoal/20 bg-stoneBg">
-    <div class="flex flex-wrap items-center justify-between gap-x-5 gap-y-2 px-5 lg:px-8 py-4">
-      <a href="/" class="font-bold tracking-tight text-lg text-charcoal">Utkarsh Tripathi</a>
-      <div class="flex flex-wrap gap-x-5 gap-y-1">
-        <a href="/projects/" class="site-link">Work</a>
-        <a href="/about/" class="site-link">About</a>
-        <a href="/learn/" class="site-link current" aria-current="page">Learn</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Mobile module bar -->
-  <header class="lg:hidden flex items-center justify-between gap-3 bg-stoneBg text-charcoal px-4 py-2.5 border-b border-charcoal sticky top-0 z-30">
-    <div class="min-w-0">
-      <a href="/learn/" class="text-[11px] font-mono uppercase tracking-wider text-sage underline underline-offset-4">&larr; Learn</a>
-      <div id="mobile-module-title" class="font-black uppercase text-sm tracking-tight truncate">RL Environment Workbook</div>
-    </div>
-    <button id="mobile-menu-btn" aria-label="Open modules menu" aria-controls="sidebar" aria-expanded="false" onclick="toggleMobileSidebar()" class="shrink-0 flex items-center gap-2 px-3 py-2 border border-charcoal text-xs font-mono uppercase hover:bg-charcoal hover:text-stoneBg">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-      </svg>
-      Days
-    </button>
-  </header>
-
-  <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 z-30 bg-charcoal/50 hidden lg:hidden"></div>
-
-  <div class="lg:flex">
-  <!-- Sidebar: modules, progress and tools -->
-  <aside id="sidebar" aria-label="Workbook modules" class="fixed inset-y-0 left-0 z-40 w-80 bg-stoneBg text-charcoal border-r border-charcoal/20 flex flex-col transform -translate-x-full lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:shrink-0 transition-transform duration-150">
-    <!-- Brand Header -->
-    <div class="p-5 border-b border-charcoal/20 bg-grid">
-      <div class="flex items-start justify-between gap-2">
-        <div>
-          <a href="/learn/" class="text-[11px] font-mono uppercase tracking-wider text-sage underline underline-offset-4">&larr; Learn &middot; 7-day workbook</a>
-          <h1 class="mt-2 font-black uppercase text-2xl leading-none tracking-tight">RL Environment <span class="bg-ochre text-white px-1">Engineering</span></h1>
+  <nav class="tk-site" aria-label="Site">
+        <div class="tk-site-inner">
+            <a href="/" class="tk-site-name">Utkarsh Tripathi</a>
+            <div class="tk-site-links">
+                <a href="/projects/">Work</a>
+                <a href="/about/">About</a>
+                <a href="/learn/" aria-current="page">Learn</a>
+                <a href="/cv/Utkarsh-Tripathi-Resume.pdf">Resume</a>
+            </div>
         </div>
-        <button aria-label="Close modules menu" onclick="toggleMobileSidebar()" class="lg:hidden text-charcoal/70 hover:text-charcoal p-1">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <p class="mt-3 text-xs text-charcoal/70 leading-relaxed">
-        Build <span class="font-mono text-charcoal">ArtifactVault</span>, a hardened RL environment for coding agents, in 7 days.
-      </p>
-
-      <!-- Progress Bar -->
-      <div class="mt-4">
-        <div class="flex justify-between items-center text-xs font-mono mb-1.5">
-          <span class="uppercase text-charcoal/60">Completion</span>
-          <span id="overall-progress-text" class="font-semibold">0% (0/36)</span>
-        </div>
-        <div class="w-full h-2 bg-stoneAlt border border-charcoal/20 overflow-hidden">
-          <div id="overall-progress-bar" class="h-full bg-sage transition-all duration-200" style="width: 0%"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Navigation Tabs -->
-    <nav class="flex-1 overflow-y-auto py-2" id="nav-list" aria-label="Days">
-      <!-- Dynamically populated by JS -->
     </nav>
 
-    <!-- Bottom Utility Controls -->
-    <div class="p-4 border-t border-charcoal/20 space-y-2">
-      <button onclick="toggleReferenceDrawer()" class="w-full flex items-center justify-between px-3 py-2 text-xs font-mono uppercase tracking-wider border border-charcoal hover:bg-charcoal hover:text-stoneBg transition-colors">
-        <span>All reference solutions</span>
-        <span aria-hidden="true">&rarr;</span>
-      </button>
-      <details class="group">
-        <summary class="cursor-pointer list-none flex items-center justify-between px-3 py-2 text-xs font-mono uppercase tracking-wider border border-charcoal/20 hover:border-charcoal">
-          <span>Data &amp; export</span><span class="group-open:rotate-180 transition-transform" aria-hidden="true">&#9662;</span>
-        </summary>
-        <div class="mt-2 grid grid-cols-2 gap-2">
-          <button onclick="exportPortfolioMarkdown()" class="px-2.5 py-2 text-xs font-mono bg-sage hover:bg-sageDark text-white">Export notes .md</button>
-          <button onclick="exportBackupJSON()" title="Download all progress and notes as JSON" class="px-2.5 py-2 text-xs font-mono border border-charcoal/20 hover:border-charcoal">Backup .json</button>
-          <button onclick="document.getElementById('import-file').click()" title="Restore a JSON backup" class="px-2.5 py-2 text-xs font-mono border border-charcoal/20 hover:border-charcoal">Restore .json</button>
-          <input type="file" id="import-file" accept=".json" class="hidden" aria-label="Restore JSON backup" onchange="importBackupJSON(event)">
-          <button onclick="resetProgressModal()" class="px-2.5 py-2 text-xs font-mono border border-crimson/40 text-crimson hover:bg-crimson hover:text-white transition-colors">Reset all</button>
-        </div>
-      </details>
+  <header class="tk-mbar">
+    <div class="tk-mbar-text">
+      <a href="/learn/" class="tk-kicker">&larr; Learn</a>
+      <div class="tk-mbar-title" id="mobile-module-title">RL Environment Workbook</div>
     </div>
-  </aside>
+    <button type="button" class="tk-btn" data-tk-open aria-controls="tkSide" aria-expanded="false">&#9776; Days</button>
+  </header>
+  <div class="tk-backdrop" data-tk-close></div>
 
-  <!-- Main Content Area -->
-  <div class="flex-1 flex flex-col min-w-0">
-    <!-- Dynamic View Container -->
-    <main class="flex-1 p-5 sm:p-8 lg:p-10 max-w-6xl w-full mx-auto space-y-8" id="main-view">
+  <div class="tk-layout">
+    <aside class="tk-side" id="tkSide" aria-label="Workbook days">
+      <div class="tk-side-scroll">
+        <div class="tk-brand tk-grid-bg">
+                    <div class="tk-brand-top">
+                        <a href="/learn/" class="tk-kicker">&larr; Learn &middot; 7-day workbook</a>
+                        <button type="button" class="tk-btn tk-close" data-tk-close aria-label="Close sections">&times;</button>
+                    </div>
+                    <h1 class="tk-title">RL Environment <span class="tk-mark">Engineering</span></h1>
+                    <p class="tk-sub">Build <span style="font-family:var(--tk-mono)">ArtifactVault</span>, a hardened RL environment for coding agents, in 7 days.</p>
+                    <div class="tk-progress">
+                    <div class="tk-progress-top"><span>Completion</span><span id="overall-progress-text">0% (0/36)</span></div>
+                    <div class="tk-bar"><div id="overall-progress-bar" style="width: 0%"></div></div>
+                </div>
+                </div>
+
+        <nav class="tk-nav" id="nav-list" aria-label="Days"></nav>
+
+        <div class="tk-block">
+          <p class="tk-block-h">Up next</p>
+          <button type="button" id="rl-next-up" class="tk-btn" style="width:100%;justify-content:space-between" onclick="jumpToNextIncomplete()">Start with setup <span aria-hidden="true">&rarr;</span></button>
+        </div>
+        <div class="tk-block">
+          <button type="button" onclick="toggleReferenceDrawer()" class="tk-btn" style="width:100%;justify-content:space-between">All reference solutions <span aria-hidden="true">&rarr;</span></button>
+        </div>
+      </div>
+
+      <div class="tk-side-foot">
+        <button type="button" class="tk-btn" data-tk-theme>Dark mode</button>
+        <details class="tk-menu">
+          <summary class="tk-btn">Data &amp; export</summary>
+          <div class="tk-menu-panel">
+            <button type="button" onclick="exportPortfolioMarkdown()">Export notes (.md)</button>
+            <button type="button" onclick="exportBackupJSON()">Back up progress (.json)</button>
+            <button type="button" onclick="document.getElementById('import-file').click()">Restore backup&hellip;</button>
+            <button type="button" class="tk-danger" onclick="resetProgressModal()">Reset all progress</button>
+          </div>
+        </details>
+        <input type="file" id="import-file" accept=".json" class="hidden" aria-label="Restore JSON backup" onchange="importBackupJSON(event)">
+      </div>
+    </aside>
+
+    <div class="tk-main">
+    <main class="tk-content max-w-6xl w-full space-y-8" id="main-view">
       <!-- Populated by JavaScript based on active tab -->
     </main>
 
-    <footer class="px-5 lg:px-8 py-5 border-t border-charcoal/20 bg-grid text-xs font-mono uppercase text-charcoal/60 flex flex-col sm:flex-row justify-between items-center gap-2">
+    <footer class="tk-foot">
       <span>Progress is saved in this browser only &middot; back it up from Data &amp; export</span>
-      <a href="/learn/" class="text-sage underline underline-offset-4">All study trackers</a>
+      <a href="/learn/">All study trackers</a>
     </footer>
   </div>
   </div>
@@ -1443,31 +1467,32 @@ Your objective is to remediate these issues while preserving all legitimate func
     function renderSidebarNav() {
       const nav = document.getElementById("nav-list");
       if (!nav) return;
-
       nav.innerHTML = NAVIGATION_MODULES.map(mod => {
         const isActive = appState.activeTab === mod.id;
         const { done, total } = getDayCompletion(mod.id);
-        const isComplete = total > 0 && done === total;
-
-        return `
-          <button
-            onclick="switchTab('${mod.id}')"
-            ${isActive ? 'aria-current="page"' : ''}
-            class="w-full text-left px-5 py-2.5 border-l-4 transition-colors flex items-start justify-between gap-3 ${
-              isActive ? 'border-ochre bg-ochre/10' : 'border-transparent hover:bg-ochre/5'
-            }"
-          >
-            <div class="min-w-0">
-              <div class="text-[10px] font-mono uppercase tracking-wider ${isActive ? 'text-ochre' : 'text-charcoal/50'}">${mod.code}</div>
-              <div class="font-black uppercase text-[13px] leading-tight tracking-tight truncate">${mod.title}</div>
-              <div class="text-[11px] text-charcoal/60 truncate mt-0.5">${mod.subtitle}</div>
-            </div>
-            <span class="text-[11px] font-mono shrink-0 mt-3 px-1.5 py-0.5 ${
-              isComplete ? 'bg-sage text-white' : 'text-charcoal/50'
-            }">${isComplete ? '&#10003; ' : ''}${done}/${total}</span>
-          </button>
-        `;
+        const pct = total ? Math.round(100 * done / total) : 0;
+        return `<button type="button" onclick="switchTab('${mod.id}')" data-view="${mod.id}"
+            class="tk-item${isActive ? " is-active" : ""}" ${isActive ? 'aria-current="page"' : ""}>
+            <span class="tk-item-main">
+              <span class="tk-item-sub" style="font-family:var(--tk-mono);text-transform:uppercase;font-size:10px">${mod.code}</span>
+              <span class="tk-item-label">${mod.title}</span>
+              <span class="tk-item-sub">${mod.subtitle}</span>
+            </span>
+            <span class="tk-item-count">${total && done === total ? "&#10003; " : ""}${done}/${total}</span>
+            <span class="tk-item-bar"><span style="width:${pct}%"></span></span>
+          </button>`;
       }).join("");
+      const next = NAVIGATION_MODULES.find(m => { const c = getDayCompletion(m.id); return c.total && c.done < c.total; });
+      const btn = document.getElementById("rl-next-up");
+      if (btn) {
+        btn.dataset.target = next ? next.id : "";
+        btn.firstChild.textContent = next ? `${next.code} · ${next.title} ` : "All days complete ";
+      }
+    }
+
+    function jumpToNextIncomplete() {
+      const btn = document.getElementById("rl-next-up");
+      if (btn && btn.dataset.target) switchTab(btn.dataset.target);
     }
 
     function switchTab(tabId, fromHash) {
@@ -1493,32 +1518,13 @@ Your objective is to remediate these issues while preserving all legitimate func
         const { done, total } = getDayCompletion(mod.id);
         el.textContent = `${mod.code} · ${mod.title} (${done}/${total})`;
       }
+      if (window.TK && mod) TK.setActive(mod.id);
     }
 
-    function isSidebarOpen() {
-      const sb = document.getElementById("sidebar");
-      return !!sb && !sb.classList.contains("-translate-x-full");
-    }
-
-    function closeMobileSidebar() {
-      const sb = document.getElementById("sidebar");
-      const bd = document.getElementById("sidebar-backdrop");
-      const btn = document.getElementById("mobile-menu-btn");
-      if (sb && window.innerWidth < 1024) sb.classList.add("-translate-x-full");
-      if (bd) bd.classList.add("hidden");
-      if (btn) btn.setAttribute("aria-expanded", "false");
-    }
-
-    function toggleMobileSidebar() {
-      const sb = document.getElementById("sidebar");
-      const bd = document.getElementById("sidebar-backdrop");
-      const btn = document.getElementById("mobile-menu-btn");
-      if (!sb) return;
-      sb.classList.toggle("-translate-x-full");
-      const open = isSidebarOpen();
-      if (bd) bd.classList.toggle("hidden", !open);
-      if (btn) btn.setAttribute("aria-expanded", open ? "true" : "false");
-    }
+    // The drawer belongs to the shared shell now.
+    function isSidebarOpen() { return !!(window.TK && TK.isOpen()); }
+    function closeMobileSidebar() { if (window.TK) TK.closeSide(false); }
+    function toggleMobileSidebar() { if (!window.TK) return; if (TK.isOpen()) TK.closeSide(true); else TK.openSide(); }
 
     function toggleCheck(checkId) {
       appState.completedChecks[checkId] = !appState.completedChecks[checkId];
@@ -2682,7 +2688,7 @@ Your objective is to remediate these issues while preserving all legitimate func
                   rows="4"
                   oninput="updateMockField('${q.id}', 'mech', this.value)"
                   placeholder="Lead with the exact architectural mechanism..."
-                  class="w-full p-2.5 text-xs font-mono bg-stoneAlt/40 border border-charcoal rounded focus:bg-white outline-none"
+                  class="w-full p-2.5 text-xs font-mono bg-stoneAlt/40 border border-charcoal rounded focus:bg-stoneBg outline-none"
                 >${escapeHtml(state.mech || "")}</textarea>
               </div>
               <div>
@@ -2693,7 +2699,7 @@ Your objective is to remediate these issues while preserving all legitimate func
                   rows="4"
                   oninput="updateMockField('${q.id}', 'impl', this.value)"
                   placeholder="Cite exact flags, fixtures, or functions..."
-                  class="w-full p-2.5 text-xs font-mono bg-stoneAlt/40 border border-charcoal rounded focus:bg-white outline-none"
+                  class="w-full p-2.5 text-xs font-mono bg-stoneAlt/40 border border-charcoal rounded focus:bg-stoneBg outline-none"
                 >${escapeHtml(state.impl || "")}</textarea>
               </div>
               <div>
@@ -2704,7 +2710,7 @@ Your objective is to remediate these issues while preserving all legitimate func
                   rows="4"
                   oninput="updateMockField('${q.id}', 'edge', this.value)"
                   placeholder="How a clever agent tries to cheat & how you block it..."
-                  class="w-full p-2.5 text-xs font-mono bg-stoneAlt/40 border border-charcoal rounded focus:bg-white outline-none"
+                  class="w-full p-2.5 text-xs font-mono bg-stoneAlt/40 border border-charcoal rounded focus:bg-stoneBg outline-none"
                 >${escapeHtml(state.edge || "")}</textarea>
               </div>
             </div>
@@ -3000,7 +3006,6 @@ Your objective is to remediate these issues while preserving all legitimate func
       const drawer = document.getElementById("reference-drawer");
       if (modal && !modal.classList.contains("hidden")) closeResetModal();
       else if (drawer && !drawer.classList.contains("hidden")) toggleReferenceDrawer();
-      else if (isSidebarOpen() && window.innerWidth < 1024) toggleMobileSidebar();
     });
 
     window.addEventListener("hashchange", () => {

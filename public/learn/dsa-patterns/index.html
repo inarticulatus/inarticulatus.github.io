@@ -11,18 +11,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <script>
-        // Apply saved (or system) theme before first paint.
+        // Shared /learn/ theme, applied before first paint.
         (function () {
             try {
-                var raw = localStorage.getItem("dsa_patterns_tracker_v1");
-                var t = raw ? JSON.parse(raw).theme : null;
-                if (t !== "dark" && t !== "light") {
-                    t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-                }
+                var t = localStorage.getItem("learn_theme");
+                if (t !== "dark" && t !== "light") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
                 if (t === "dark") document.documentElement.classList.add("dark");
             } catch (e) {}
         })();
     </script>
+    <link rel="stylesheet" href="/learn/assets/tracker-shell.css?v=1">
+    <script src="/learn/assets/tracker-shell.js?v=1" defer></script>
     <style>
         :root {
             /* Site palette (utkarshtripathi.com) */
@@ -331,70 +330,107 @@
             .site-nav, .toolbar, .attempt-bar, .toast, .btn, .filters { display: none !important; }
             body { padding-bottom: 0; }
         }
+        /* Shared tracker layout overrides */
+        @media (min-width: 1024px) { .attempt-bar { left: var(--tk-side-w); } }
+        .tk-head { z-index: 40; }
     </style>
 </head>
-<body>
+<body class="tk-body">
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <nav class="site-nav" aria-label="Site">
-        <div class="wrap">
-            <a href="/" class="site-name">Utkarsh Tripathi</a>
-            <div class="site-links">
+    <nav class="tk-site" aria-label="Site">
+        <div class="tk-site-inner">
+            <a href="/" class="tk-site-name">Utkarsh Tripathi</a>
+            <div class="tk-site-links">
                 <a href="/projects/">Work</a>
                 <a href="/about/">About</a>
-                <a href="/learn/" class="current" aria-current="page">Learn</a>
+                <a href="/learn/" aria-current="page">Learn</a>
+                <a href="/cv/Utkarsh-Tripathi-Resume.pdf">Resume</a>
             </div>
         </div>
     </nav>
 
-    <section class="page-hero bg-grid">
-        <div class="wrap">
-            <a href="/learn/" class="kicker">&larr; Learn &middot; 8-week DSA tracker</a>
-            <h1 class="hero-title">DSA <span class="mark">Patterns</span></h1>
-            <p class="hero-sub" id="heroSub">17 patterns &middot; 136 problems &middot; 8 weeks &middot; spaced reviews and interleaved mocks built in</p>
+    <header class="tk-mbar">
+        <div class="tk-mbar-text">
+            <a href="/learn/" class="tk-kicker">&larr; Learn</a>
+            <div class="tk-mbar-title" data-tk-title>Today</div>
         </div>
-    </section>
-
-    <header class="toolbar">
-        <div class="wrap">
-            <nav class="tabs" role="tablist" aria-label="Views">
-                <button class="tab" role="tab" data-tab="today" id="tab-today">Today <span class="count" id="count-today">0</span></button>
-                <button class="tab" role="tab" data-tab="problems" id="tab-problems">Problems <span class="count" id="count-problems">0/0</span></button>
-                <button class="tab" role="tab" data-tab="patterns" id="tab-patterns">Patterns</button>
-                <button class="tab" role="tab" data-tab="plan" id="tab-plan">Plan &amp; method</button>
-            </nav>
-            <details class="menu" id="settingsMenu">
-                <summary>Data &amp; settings</summary>
-                <div class="menu-panel">
-                    <label class="menu-row">New problems per day
-                        <select id="dailyNewSelect" aria-label="New problems per day">
-                            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
-                        </select>
-                    </label>
-                    <button class="menu-item" id="themeBtn" type="button">Dark mode</button>
-                    <button class="menu-item" type="button" data-action="export-csv">Download progress (.csv)</button>
-                    <button class="menu-item" type="button" data-action="backup">Back up progress (.json)</button>
-                    <button class="menu-item" type="button" data-action="restore">Restore backup&hellip;</button>
-                    <input type="file" id="restoreInput" accept=".json" class="hidden" aria-label="Restore JSON backup">
-                    <button class="menu-item danger" type="button" id="resetBtn">Clear all progress</button>
-                </div>
-            </details>
-        </div>
+        <button type="button" class="tk-btn" data-tk-open aria-controls="tkSide" aria-expanded="false">&#9776; Sections</button>
     </header>
+    <div class="tk-backdrop" data-tk-close></div>
 
-    <main id="main" class="wrap" tabindex="-1">
+    <div class="tk-layout">
+        <aside class="tk-side" id="tkSide" aria-label="Tracker sections">
+            <div class="tk-side-scroll">
+                <div class="tk-brand tk-grid-bg">
+                    <div class="tk-brand-top">
+                        <a href="/learn/" class="tk-kicker">&larr; Learn &middot; 8-week DSA tracker</a>
+                        <button type="button" class="tk-btn tk-close" data-tk-close aria-label="Close sections">&times;</button>
+                    </div>
+                    <h1 class="tk-title">DSA <span class="tk-mark">Patterns</span></h1>
+                    <p class="tk-sub">17 patterns &middot; 136 problems &middot; 8 weeks &middot; spaced reviews and interleaved mocks built in</p>
+                    <div class="tk-progress">
+                        <div class="tk-progress-top"><span>Solved solo</span><span id="sideSolvedText">0 / 136</span></div>
+                        <div class="tk-bar"><div id="sideSolvedBar" style="width: 0%"></div></div>
+                    </div>
+                </div>
+
+                <nav class="tk-nav" aria-label="Sections" role="tablist">
+                    <button type="button" class="tk-item" data-view="today" data-tab="today" id="tab-today" role="tab" aria-controls="view-today" data-title="Today"><span class="tk-item-main"><span class="tk-item-label">Today</span><span class="tk-item-sub">Reviews due and new problems</span></span><span class="tk-item-count" id="count-today">0</span></button>
+                    <button type="button" class="tk-item" data-view="problems" data-tab="problems" id="tab-problems" role="tab" aria-controls="view-problems" data-title="Problems"><span class="tk-item-main"><span class="tk-item-label">Problems</span><span class="tk-item-sub">All 136, grouped by pattern</span></span><span class="tk-item-count" id="count-problems">0</span></button>
+                    <button type="button" class="tk-item" data-view="patterns" data-tab="patterns" id="tab-patterns" role="tab" aria-controls="view-patterns" data-title="Patterns"><span class="tk-item-main"><span class="tk-item-label">Patterns</span><span class="tk-item-sub">Cues and code templates</span></span></button>
+                    <button type="button" class="tk-item" data-view="plan" data-tab="plan" id="tab-plan" role="tab" aria-controls="view-plan" data-title="Plan &amp; method"><span class="tk-item-main"><span class="tk-item-label">Plan &amp; method</span><span class="tk-item-sub">8-week plan and why it works</span></span></button>
+                </nav>
+
+                <div class="tk-block">
+                    <p class="tk-block-h">By pattern</p>
+                </div>
+                <nav class="tk-nav" id="sidePatterns" aria-label="Patterns" style="padding-top:0"></nav>
+            </div>
+
+            <div class="tk-side-foot">
+                <button type="button" class="tk-btn" data-tk-theme id="themeBtn">Dark mode</button>
+                <details class="tk-menu" id="settingsMenu">
+                    <summary class="tk-btn">Data &amp; settings</summary>
+                    <div class="tk-menu-panel">
+                        <label>New problems per day
+                            <select id="dailyNewSelect" aria-label="New problems per day">
+                                <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+                            </select>
+                        </label>
+                        <button type="button" data-action="export-csv">Download progress (.csv)</button>
+                        <button type="button" data-action="backup">Back up progress (.json)</button>
+                        <button type="button" data-action="restore">Restore backup&hellip;</button>
+                        <button type="button" class="tk-danger" id="resetBtn">Clear all progress</button>
+                    </div>
+                </details>
+                <input type="file" id="restoreInput" accept=".json" class="hidden" aria-label="Restore JSON backup">
+            </div>
+        </aside>
+
+        <div class="tk-main">
+            <div class="tk-head">
+                <div>
+                    <h2 class="tk-head-title" data-tk-title>Today</h2>
+                    <p class="tk-head-sub">Press / to search problems</p>
+                </div>
+            </div>
+
+            <div class="tk-content">
+    <main id="main" tabindex="-1">
         <section id="view-today" role="tabpanel" aria-labelledby="tab-today"></section>
         <section id="view-problems" role="tabpanel" aria-labelledby="tab-problems" class="hidden"></section>
         <section id="view-patterns" role="tabpanel" aria-labelledby="tab-patterns" class="hidden"></section>
         <section id="view-plan" role="tabpanel" aria-labelledby="tab-plan" class="hidden"></section>
     </main>
+            </div>
 
-    <footer class="foot">
-        <div class="wrap">
-            <span>Progress is saved in this browser only &middot; back it up from Data &amp; settings</span>
-            <a href="/learn/">All study trackers</a>
+            <footer class="tk-foot">
+                <span>Progress is saved in this browser only &middot; back it up from Data &amp; settings</span>
+                <a href="/learn/">All study trackers</a>
+            </footer>
         </div>
-    </footer>
+    </div>
 
     <!-- Active attempt bar -->
     <div class="attempt-bar hidden" id="attemptBar" role="region" aria-label="Current attempt">
@@ -1201,6 +1237,17 @@ for x in nums:
         $("count-today").textContent = due + fresh.length;
         const solved = PROBLEMS.filter(p => state.problems[p.id] && state.problems[p.id].everSolved).length;
         $("count-problems").textContent = `${solved}/${PROBLEMS.length}`;
+        $("sideSolvedText").textContent = `${solved} / ${PROBLEMS.length}`;
+        $("sideSolvedBar").style.width = `${PROBLEMS.length ? Math.round(100 * solved / PROBLEMS.length) : 0}%`;
+        $("sidePatterns").innerHTML = PATTERNS.map(pt => {
+            const list = PROBLEMS.filter(x => x.pattern === pt.id);
+            const done = list.filter(x => state.problems[x.id] && state.problems[x.id].everSolved).length;
+            const pct = list.length ? Math.round(100 * done / list.length) : 0;
+            return `<button type="button" class="tk-item tk-sub-item" data-pattern-jump="${pt.id}" title="Show ${esc(pt.name)} problems">`
+                + `<span class="tk-item-main"><span class="tk-item-label">${esc(pt.name)}</span></span>`
+                + `<span class="tk-item-count">${done}/${list.length}</span>`
+                + `<span class="tk-item-bar"><span style="width:${pct}%"></span></span></button>`;
+        }).join("");
     }
 
     function render() {
@@ -1210,11 +1257,11 @@ for x in nums:
             b.classList.toggle("active", t === state.tab);
             b.setAttribute("aria-selected", t === state.tab ? "true" : "false");
         });
+        if (window.TK) TK.setActive(state.tab);
         ({ today: renderToday, problems: renderProblems, patterns: renderPatterns, plan: renderPlan })[state.tab]();
         renderCounts();
         renderAttemptBar();
         $("dailyNewSelect").value = String(state.dailyNew);
-        $("themeBtn").textContent = state.theme === "dark" ? "Light mode" : "Dark mode";
     }
 
     // =========================================================================
@@ -1348,7 +1395,8 @@ for x in nums:
         toast("All progress cleared");
     }
 
-    function applyTheme() { document.documentElement.classList.toggle("dark", state.theme === "dark"); }
+    // Theme is shared by every /learn/ tracker; the shell owns it.
+    function applyTheme() { if (window.TK) TK.applyTheme(); }
 
     let toastTimer = null;
     function toast(msg) {
@@ -1414,7 +1462,6 @@ for x in nums:
             case "backup": menu.open = false; download("dsa-patterns-backup.json", JSON.stringify(state, null, 2), "application/json"); return toast("Downloaded backup");
             case "restore": menu.open = false; return $("restoreInput").click();
         }
-        if (t.id === "themeBtn") { state.theme = state.theme === "dark" ? "light" : "dark"; applyTheme(); save(); render(); }
         if (t.id === "resetBtn") resetClick();
     });
 

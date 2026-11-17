@@ -11,18 +11,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <script>
-        // Apply saved (or system) theme before first paint.
+        // Shared /learn/ theme, applied before first paint.
         (function () {
             try {
-                var raw = localStorage.getItem("msc_study_schedule_v1");
-                var t = raw ? JSON.parse(raw).theme : null;
-                if (t !== "dark" && t !== "light") {
-                    t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-                }
+                var t = localStorage.getItem("learn_theme");
+                if (t !== "dark" && t !== "light") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
                 if (t === "dark") document.documentElement.classList.add("dark");
             } catch (e) {}
         })();
     </script>
+    <link rel="stylesheet" href="/learn/assets/tracker-shell.css?v=1">
+    <script src="/learn/assets/tracker-shell.js?v=1" defer></script>
     <style>
         :root {
             /* Site palette (utkarshtripathi.com) */
@@ -296,84 +295,127 @@
             .site-nav, .toolbar, .planner, .toast { display: none !important; }
             details.card > .cbody { display: grid !important; }
         }
+        /* Shared tracker layout overrides */
+        .tk-side .controls { display: grid; gap: 12px; }
+        .tk-side .field select, .tk-side .field input[type=date] { width: 100%; }
+        .tk-side .hpw input[type=range] { flex: 1; width: auto; }
+        .tk-tools .search { width: 240px; }
+        .planner .lbl { display: block; margin-bottom: 10px; }
+        @media (max-width: 760px) { .tk-tools { width: 100%; } .tk-tools .search { flex: 1 1 140px; width: auto; } }
     </style>
 </head>
-<body>
+<body class="tk-body">
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <nav class="site-nav" aria-label="Site">
-        <div class="wrap">
-            <a href="/" class="site-name">Utkarsh Tripathi</a>
-            <div class="site-links">
+    <nav class="tk-site" aria-label="Site">
+        <div class="tk-site-inner">
+            <a href="/" class="tk-site-name">Utkarsh Tripathi</a>
+            <div class="tk-site-links">
                 <a href="/projects/">Work</a>
                 <a href="/about/">About</a>
-                <a href="/learn/" class="current" aria-current="page">Learn</a>
+                <a href="/learn/" aria-current="page">Learn</a>
+                <a href="/cv/Utkarsh-Tripathi-Resume.pdf">Resume</a>
             </div>
         </div>
     </nav>
 
-    <section class="page-hero bg-grid">
-        <div class="wrap">
-            <a href="/learn/" class="kicker">&larr; Learn &middot; MSc Data Science &amp; AI &middot; free-resource curriculum</a>
-            <h1 class="hero-title">MSc Study <span class="mark">Schedule</span></h1>
-            <p class="hero-sub" id="heroSub">Every topic of the MSc, in course order, paired with the free lectures, books and docs that cover it. Set a start date and weekly hours; target dates follow.</p>
+    <header class="tk-mbar">
+        <div class="tk-mbar-text">
+            <a href="/learn/" class="tk-kicker">&larr; Learn</a>
+            <div class="tk-mbar-title" data-tk-title>Schedule</div>
         </div>
-    </section>
+        <button type="button" class="tk-btn" data-tk-open aria-controls="tkSide" aria-expanded="false">&#9776; Sections</button>
+    </header>
+    <div class="tk-backdrop" data-tk-close></div>
 
-    <header class="toolbar">
-        <div class="wrap">
-            <nav class="tabs" aria-label="Views">
-                <a class="tab" href="#schedule" data-view="schedule">Schedule <span class="count" id="count-schedule">0</span></a>
-                <a class="tab" href="#topics" data-view="topics">Topics <span class="count" id="count-topics">0/0</span></a>
-                <a class="tab" href="#resources" data-view="resources">Resources <span class="count" id="count-resources">0</span></a>
-            </nav>
-            <div class="tools">
-                <input type="search" id="q" class="search" placeholder="Filter topics…" aria-label="Filter topics">
-                <button class="btn" id="hideDone" type="button" aria-pressed="false">Hide finished</button>
-                <button class="btn primary" id="jump" type="button">Jump to now</button>
-                <details class="menu" id="dataMenu">
-                    <summary>Data &amp; settings</summary>
-                    <div class="menu-panel">
-                        <button class="menu-item" id="themeBtn" type="button">Dark mode</button>
-                        <button class="menu-item" id="expandAll" type="button">Expand all weeks</button>
-                        <button class="menu-item" id="collapseAll" type="button">Collapse all weeks</button>
-                        <button class="menu-item" id="exportBtn" type="button">Back up progress (.json)</button>
-                        <button class="menu-item" id="importBtn" type="button">Restore from backup…</button>
-                        <button class="menu-item danger" id="resetBtn" type="button">Reset all progress</button>
+    <div class="tk-layout">
+        <aside class="tk-side" id="tkSide" aria-label="Tracker sections">
+            <div class="tk-side-scroll">
+                <div class="tk-brand tk-grid-bg">
+                    <div class="tk-brand-top">
+                        <a href="/learn/" class="tk-kicker">&larr; Learn &middot; MSc Data Science &amp; AI</a>
+                        <button type="button" class="tk-btn tk-close" data-tk-close aria-label="Close sections">&times;</button>
+                    </div>
+                    <h1 class="tk-title">MSc Study <span class="tk-mark">Schedule</span></h1>
+                    <p class="tk-sub" id="heroSub">Every topic of the MSc in course order, paired with free lectures, books and docs.</p>
+                    <div class="tk-progress">
+                        <div class="tk-progress-top"><span>Topics covered</span><span id="sideTopicsText">0 / 0</span></div>
+                        <div class="tk-bar"><div id="sideTopicsBar" style="width: 0%"></div></div>
+                    </div>
+                </div>
+
+                <nav class="tk-nav" aria-label="Views">
+                    <a class="tk-item" href="#schedule" data-view="schedule" data-title="Schedule"><span class="tk-item-main"><span class="tk-item-label">Schedule</span><span class="tk-item-sub">Dated weeks, in order</span></span><span class="tk-item-count" id="count-schedule">0</span></a>
+                    <a class="tk-item" href="#topics" data-view="topics" data-title="Topics"><span class="tk-item-main"><span class="tk-item-label">Topics</span><span class="tk-item-sub">Every topic by course</span></span><span class="tk-item-count" id="count-topics">0/0</span></a>
+                    <a class="tk-item" href="#resources" data-view="resources" data-title="Resources"><span class="tk-item-main"><span class="tk-item-label">Resources</span><span class="tk-item-sub">Free books, courses and docs</span></span><span class="tk-item-count" id="count-resources">0</span></a>
+                </nav>
+
+                <div class="tk-block">
+                    <p class="tk-block-h">Your plan</p>
+                    <div class="controls">
+                        <div class="field"><label class="lbl" for="start">Start date</label><input type="date" id="start"></div>
+                        <div class="field"><label class="lbl" for="hpwn">Hours per week</label>
+                            <div class="hpw"><input type="range" id="hpw" min="3" max="40" step="1" aria-label="Hours per week"><input type="number" id="hpwn" min="1" max="80" step="1"></div></div>
+                        <div class="field"><label class="lbl" for="order">Order</label>
+                            <select id="order"><option value="parallel">Courses in a term side by side</option><option value="serial">One course at a time</option></select></div>
+                    </div>
+                </div>
+
+                <div class="tk-block">
+                    <button class="btn primary" id="jump" type="button" style="width:100%">Jump to now</button>
+                </div>
+            </div>
+
+            <div class="tk-side-foot">
+                <button type="button" class="tk-btn" data-tk-theme id="themeBtn">Dark mode</button>
+                <details class="tk-menu" id="dataMenu">
+                    <summary class="tk-btn">Data &amp; settings</summary>
+                    <div class="tk-menu-panel">
+                        <button id="expandAll" type="button">Expand all weeks</button>
+                        <button id="collapseAll" type="button">Collapse all weeks</button>
+                        <button id="exportBtn" type="button">Back up progress (.json)</button>
+                        <button id="importBtn" type="button">Restore from backup&hellip;</button>
+                        <button class="tk-danger" id="resetBtn" type="button">Reset all progress</button>
                     </div>
                 </details>
                 <input type="file" id="importFile" accept="application/json,.json" hidden>
             </div>
-        </div>
-    </header>
+        </aside>
 
-    <main id="main" class="wrap">
-        <section class="panel planner" aria-label="Plan settings">
-            <div class="controls">
-                <div class="field"><label class="lbl" for="start">Start date</label><input type="date" id="start"></div>
-                <div class="field"><label class="lbl" for="hpwn">Hours per week</label>
-                    <div class="hpw"><input type="range" id="hpw" min="3" max="40" step="1" aria-label="Hours per week"><input type="number" id="hpwn" min="1" max="80" step="1"></div></div>
-                <div class="field"><label class="lbl" for="order">Order</label>
-                    <select id="order"><option value="parallel">Courses in a term side by side</option><option value="serial">One course at a time</option></select></div>
+        <div class="tk-main">
+            <div class="tk-head">
+                <div>
+                    <h2 class="tk-head-title" data-tk-title>Schedule</h2>
+                </div>
+                <div class="tk-tools">
+                    <input type="search" id="q" class="search" placeholder="Filter topics…" aria-label="Filter topics">
+                    <button class="btn" id="hideDone" type="button" aria-pressed="false">Hide finished</button>
+                </div>
             </div>
-            <div class="terms" id="courseChips"></div>
-        </section>
 
-        <div class="stats" id="pace"></div>
+            <div class="tk-content">
+                <main id="main">
+                    <section class="panel planner" aria-label="Courses in the plan">
+                        <p class="lbl">Courses in the plan &middot; turn off any you aren't taking</p>
+                        <div class="terms" id="courseChips"></div>
+                    </section>
 
-        <section id="v-schedule"></section>
-        <section id="v-topics" hidden></section>
-        <section id="v-resources" hidden></section>
+                    <div class="stats" id="pace"></div>
 
-        <p class="note">Topics follow the course pages of the programme; resources are free (a few need a free sign-up or Coursera audit, marked “free acct”). Time estimates assume about 1.5 h per lecture set or book section and 1 h per article. Turn courses off above to plan only the ones you are taking.</p>
-    </main>
+                    <section id="v-schedule"></section>
+                    <section id="v-topics" hidden></section>
+                    <section id="v-resources" hidden></section>
 
-    <footer class="foot">
-        <div class="wrap">
-            <span>Progress is saved in this browser only &middot; back it up from Data &amp; settings</span>
-            <a href="/learn/">All study trackers</a>
+                    <p class="note">Topics follow the course pages of the programme; resources are free (a few need a free sign-up or Coursera audit, marked “free acct”). Time estimates assume about 1.5 h per lecture set or book section and 1 h per article.</p>
+                </main>
+            </div>
+
+            <footer class="tk-foot">
+                <span>Progress is saved in this browser only &middot; back it up from Data &amp; settings</span>
+                <a href="/learn/">All study trackers</a>
+            </footer>
         </div>
-    </footer>
+    </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -500,6 +542,8 @@ function renderPace() {
 <div class="stat"><div class="stat-label">Against the plan</div><div class="stat-value ${paceCls}">${paceTxt}</div></div>`;
     $("#count-schedule").textContent = P.length;
     $("#count-topics").textContent = tDone + "/" + tTot;
+    $("#sideTopicsText").textContent = tDone + " / " + tTot;
+    $("#sideTopicsBar").style.width = pct + "%";
 }
 function renderChips() {
     let html = "";
@@ -573,14 +617,8 @@ $("#jump").addEventListener("click", () => {
 function closeMenu() { $("#dataMenu").open = false; }
 document.addEventListener("click", e => { if (!e.target.closest("#dataMenu")) closeMenu(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu(); });
-function applyTheme() {
-    const dark = S.theme ? S.theme === "dark" : document.documentElement.classList.contains("dark");
-    document.documentElement.classList.toggle("dark", dark);
-    $("#themeBtn").textContent = dark ? "Light mode" : "Dark mode";
-}
-$("#themeBtn").addEventListener("click", () => {
-    S.theme = document.documentElement.classList.contains("dark") ? "light" : "dark"; persist(); applyTheme(); closeMenu();
-});
+// Theme is shared by every /learn/ tracker; the shell owns it.
+function applyTheme() { if (window.TK) TK.applyTheme(); }
 $("#expandAll").addEventListener("click", () => { document.querySelectorAll("#v-schedule details.card").forEach(d => d.open = true); closeMenu(); });
 $("#collapseAll").addEventListener("click", () => { document.querySelectorAll("#v-schedule details.card").forEach(d => d.open = false); openSet.clear(); closeMenu(); });
 $("#exportBtn").addEventListener("click", () => {
@@ -611,19 +649,19 @@ let view = "schedule";
 function route() {
     const v = (location.hash || "#schedule").slice(1); view = ["schedule", "topics", "resources"].includes(v) ? v : "schedule";
     ["schedule", "topics", "resources"].forEach(x => { $("#v-" + x).hidden = x !== view; });
-    document.querySelectorAll(".tabs a").forEach(a => { if (a.dataset.view === view) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+    if (window.TK) TK.setActive(view);
     $("#hideDone").hidden = view === "resources";
     $("#jump").hidden = view !== "schedule";
     if (view === "topics") renderTopics();
     if (view === "resources" && !$("#v-resources").innerHTML) renderResources();
 }
-window.addEventListener("hashchange", () => { route(); window.scrollTo({ top: Math.min(window.scrollY, $(".toolbar").offsetTop) }); });
+window.addEventListener("hashchange", () => { route(); window.scrollTo({ top: Math.min(window.scrollY, $(".tk-main").offsetTop) }); });
 
 // ---------- boot ----------
 function applySettingsToControls() { $("#start").value = S.set.start; syncHpw(S.set.hpw); $("#order").value = S.set.order; }
 (function boot() {
     const nC = DATA.courses.length, nB = DATA.courses.reduce((a, c) => a + c.blocks.length, 0), nR = Object.keys(DATA.res).length;
-    $("#heroSub").textContent = `${nC} courses · ${nB} study weeks · ${nR} free resources. Every topic in course order, paired with the free lectures, books and docs that cover it. Set a start date and weekly hours; target dates follow.`;
+    $("#heroSub").textContent = `${nC} courses · ${nB} study weeks · ${nR} free resources, dated by the hours you have each week.`;
     $("#count-resources").textContent = nR;
     applyTheme(); applySettingsToControls(); renderAll(); route();
 })();
