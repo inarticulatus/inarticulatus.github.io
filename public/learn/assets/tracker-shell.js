@@ -67,7 +67,7 @@
         if (t.closest("[data-tk-open]")) { openSide(); return; }
         if (t.closest("[data-tk-close]")) { closeSide(true); return; }
         if (t.closest("[data-tk-theme]")) { toggleTheme(); return; }
-        if (t.closest(".tk-side .tk-item") && !wide.matches) closeSide(false);
+        if (t.closest(".tk-side .tk-item") && !t.closest("[data-tk-keep]") && !wide.matches) closeSide(false);
         document.querySelectorAll("details.tk-menu[open]").forEach(function (m) {
             if (!m.contains(t)) m.open = false;
         });
