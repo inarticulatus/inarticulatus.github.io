@@ -39,11 +39,10 @@ import Contact from "../components/landing/Contact.astro";
         <dl class="divide-y divide-black/10 text-[15px]">
           <div class="px-6 py-4"><dt class="text-black/55 text-sm">Now</dt><dd class="mt-1 font-semibold">Founder and CTO, Craton Labs</dd></div>
           <div class="px-6 py-4"><dt class="text-black/55 text-sm">Focus</dt><dd class="mt-1 font-semibold">RLHF, AI sandboxing, applied ML and deep learning, AI optimisation</dd></div>
-          <div class="px-6 py-4"><dt class="text-black/55 text-sm">Education</dt><dd class="mt-1 font-semibold">Diploma in Data Science, IIT Madras</dd></div>
           <div class="px-6 py-4"><dt class="text-black/55 text-sm">Based in</dt><dd class="mt-1 font-semibold">Bengaluru, India</dd></div>
         </dl>
         <div class="border-t border-black/10 px-6 py-4 flex flex-wrap gap-x-5 gap-y-2 text-[15px]">
-            <a href="mailto:utkarsh@craton-labs.com" class="font-semibold underline decoration-black/30 underline-offset-4 hover:decoration-orange">Email</a>
+            <a href="mailto:utkarsh1999tripathi@gmail.com" class="font-semibold underline decoration-black/30 underline-offset-4 hover:decoration-orange">Email</a>
             <a href="https://www.linkedin.com/in/utkarshtripathi7" class="font-semibold underline decoration-black/30 underline-offset-4 hover:decoration-orange">LinkedIn</a>
             <a href="/cv/Utkarsh-Tripathi-Resume.pdf" class="font-semibold underline decoration-black/30 underline-offset-4 hover:decoration-orange">Resume</a>
         </div>
@@ -51,17 +50,8 @@ import Contact from "../components/landing/Contact.astro";
     </div>
   </section>
 
-  <Experience />
+  <Experience showEducation={false} />
 
-  <section class="border-b border-black/10">
-    <div class="mx-auto max-w-6xl px-6 md:px-10 py-10">
-      <p class="max-w-3xl text-sm text-black/55 leading-relaxed">
-        Consulting through Craton Labs covers advisory work, documentation and technical
-        testing. It is not a legal opinion, a conformity assessment, a certification or an
-        attestation under any regulatory regime.
-      </p>
-    </div>
-  </section>
 
   <Contact />
 </BaseLayout>
