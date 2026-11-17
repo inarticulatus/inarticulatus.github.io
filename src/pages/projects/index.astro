@@ -3,46 +3,44 @@ import { getCollection } from "astro:content";
 import FormattedDate from "../../components/FormattedDate.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-// Grouped for a client reading top to bottom: client-style work first, coursework last.
-const CASE_STUDIES = [
-  "cited-extraction-pipeline",
-  "llm-claim-grounding",
-  "craton-labs",
-  "konkan-railway-store-and-forward",
-];
-const COURSEWORK = [
-  "ab-testing-framework",
-  "dimensionality-reduction",
-  "ml-from-scratch",
-  "customer-segmentation",
+// Grouped by area, applied ML first.
+const GROUPS = [
+  {
+    label: "Applied ML and deep learning",
+    intro: "Models trained, evaluated and served.",
+    ids: ["recommender-system", "tradr", "ml-from-scratch", "customer-segmentation", "dimensionality-reduction", "ab-testing-framework"],
+  },
+  {
+    label: "LLM systems",
+    intro: "Retrieval, evaluation and AI products.",
+    ids: ["studygrove", "rag-pipeline", "llm-claim-grounding", "cited-extraction-pipeline", "craton-labs"],
+  },
+  {
+    label: "Systems and tools",
+    intro: "Edge hardware, offline apps and build tooling.",
+    ids: ["konkan-railway-store-and-forward", "audiobook-app", "pyresume"],
+  },
 ];
 
 const posts = await getCollection("projects");
-const byDate = (a: (typeof posts)[number], b: (typeof posts)[number]) =>
-  b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
-const pick = (ids: string[]) =>
-  ids.map((id) => posts.find((p) => p.id === id)).filter((p) => p !== undefined);
-
-const groups = [
-  { label: "Case studies", intro: "The write-ups closest to what I do for clients.", items: pick(CASE_STUDIES) },
-  {
-    label: "Side projects",
-    intro: "Things I built for myself or to learn a tool properly.",
-    items: posts.filter((p) => !CASE_STUDIES.includes(p.id) && !COURSEWORK.includes(p.id)).sort(byDate),
-  },
-  { label: "Coursework, 2024", intro: "Statistics and ML exercises from before Craton Labs.", items: pick(COURSEWORK) },
-];
+const grouped = new Set(GROUPS.flatMap((g) => g.ids));
+const groups = GROUPS.map((g) => ({
+  ...g,
+  items: g.ids.map((id) => posts.find((p) => p.id === id)).filter((p) => p !== undefined),
+}));
+const others = posts.filter((p) => !grouped.has(p.id));
+if (others.length) groups.push({ label: "More", intro: "", ids: [], items: others });
 ---
 
-<BaseLayout title="Work" description="Case studies in LLM evaluation and document pipelines for regulated finance, plus side projects and coursework.">
+<BaseLayout title="Projects" description="Projects in applied machine learning and deep learning, LLM systems, and edge and systems engineering.">
   <section class="border-b border-black/10">
     <div class="mx-auto max-w-6xl px-6 md:px-10 py-16 md:py-20">
       <p class="font-mono text-xs uppercase tracking-wider text-orange">Work</p>
       <h1 class="mt-5 max-w-3xl text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
-        Work and writing
+        Projects
       </h1>
       <p class="mt-6 max-w-2xl text-lg text-black/70 leading-relaxed">
-        Systems I've built and tested, written up in enough detail to judge the approach.
+        Write-ups of what I've built, with the design decisions and what I learned.
       </p>
     </div>
   </section>
@@ -52,7 +50,7 @@ const groups = [
       <div class="mx-auto max-w-6xl px-6 md:px-10 py-14 grid gap-8 lg:grid-cols-[240px_1fr]">
         <div>
           <h2 class="text-xl font-bold tracking-tight">{g.label}</h2>
-          <p class="mt-2 text-sm text-black/60 leading-relaxed">{g.intro}</p>
+          {g.intro && <p class="mt-2 text-sm text-black/60 leading-relaxed">{g.intro}</p>}
         </div>
         <ul class="border-t border-black/15">
           {g.items.map((post) => (

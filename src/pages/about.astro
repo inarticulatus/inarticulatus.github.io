@@ -1,80 +1,64 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SectionHead from "../components/assets/SectionHead.astro";
 import Experience from "../components/landing/Experience.astro";
 import Contact from "../components/landing/Contact.astro";
-
-const principles = [
-  {
-    title: "Every finding comes with its evidence.",
-    body: "A failing claim is shown next to the text that should have supported it, so your team can check my work instead of trusting it.",
-  },
-  {
-    title: "I say what a check doesn't cover.",
-    body: "Grounding tells you an answer matches its source. It doesn't tell you the source is right. Reports state those limits plainly.",
-  },
-  {
-    title: "Your team owns what I build.",
-    body: "Harnesses run on your data and come documented, so you can re-run them without me.",
-  },
-  {
-    title: "Engagements are fixed pieces of work.",
-    body: "Each one has a defined scope and an end. The first is always a single system.",
-  },
-];
 ---
 
-<BaseLayout title="About" description="Utkarsh Tripathi, founder and CTO of Craton Labs. LLM evaluation and assurance for banks, insurers and fintechs.">
+<BaseLayout title="About" description="Utkarsh Tripathi, AI engineer and founder of Craton Labs, working on RLHF, AI sandboxing, applied ML and AI optimisation.">
   <section class="border-b border-black/10">
-    <div class="mx-auto max-w-6xl px-6 md:px-10 py-16 md:py-24">
-      <p class="font-mono text-xs uppercase tracking-wider text-orange">About</p>
-      <h1 class="mt-5 max-w-4xl text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
-        I test whether AI in financial services can back up what it says.
-      </h1>
-      <div class="mt-8 max-w-2xl space-y-5 text-lg leading-relaxed text-black/75">
-        <p>
-          I'm Utkarsh Tripathi, founder and CTO of Craton Labs (Manta Solutions Private
-          Limited), built for banks, insurers and fintechs that run LLMs over documents:
-          policy wordings, regulatory circulars, compliance filings.
-        </p>
-        <p>
-          The work is testing and tooling. I check whether each claim an LLM makes is
-          supported by the text it cites, measure how often it isn't, and probe whether text
-          inside a document can steer the system. Where it helps, I build those checks into
-          your pipeline so they keep running.
-        </p>
+    <div class="mx-auto max-w-6xl px-6 md:px-10 py-16 md:py-24 grid gap-12 lg:grid-cols-[1.3fr_1fr]">
+      <div>
+        <p class="font-mono text-xs uppercase tracking-wider text-orange">About</p>
+        <h1 class="mt-5 text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+          I like models that work outside the notebook.
+        </h1>
+        <div class="mt-8 max-w-2xl space-y-5 text-lg leading-relaxed text-black/75">
+          <p>
+            I'm Utkarsh Tripathi, an AI engineer and the founder and CTO of Craton Labs
+            (Manta Solutions Private Limited). I came to ML through rail engineering and data
+            work, which means I care about what happens after training: whether a model fits
+            the hardware, holds up on bad data and keeps working once it ships.
+          </p>
+          <p>
+            At Habitat I put a YOLOv7 licence-plate system onto a low-power ARM board at 15+
+            frames a second, for half the cost of the commercial systems it replaced. Before
+            that I built condition-monitoring and failure-prediction analytics for Siemens
+            rail projects, and later forecasting and data pipelines at RiskPe.
+          </p>
+          <p>
+            Right now I'm going deep on three things: RLHF and post-training, sandboxed
+            environments where agents can run code safely, and making large models cheaper
+            and faster to serve. I publish the study plans I use for each on
+            <a href="/learn/" class="font-semibold text-black underline decoration-black/30 underline-offset-4 hover:decoration-orange">Learn</a>.
+          </p>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <section class="border-b border-black/10">
-    <div class="mx-auto max-w-6xl px-6 md:px-10 py-20">
-      <SectionHead label="How I work">What you can expect.</SectionHead>
-      <ul class="mt-12 grid gap-px bg-black/10 border border-black/10 md:grid-cols-2">
-        {principles.map((p) => (
-          <li class="bg-white p-7">
-            <h3 class="text-lg font-bold tracking-tight">{p.title}</h3>
-            <p class="mt-2 text-black/70 leading-relaxed">{p.body}</p>
-          </li>
-        ))}
-      </ul>
+      <aside class="self-start border border-black/80 bg-[#fdfcfa] shadow-[8px_8px_0_0_rgba(45,45,45,0.85)]">
+        <p class="border-b border-black/15 px-6 py-3 font-mono text-xs uppercase tracking-wider text-black/55">At a glance</p>
+        <dl class="divide-y divide-black/10 text-[15px]">
+          <div class="px-6 py-4"><dt class="text-black/55 text-sm">Now</dt><dd class="mt-1 font-semibold">Founder and CTO, Craton Labs</dd></div>
+          <div class="px-6 py-4"><dt class="text-black/55 text-sm">Focus</dt><dd class="mt-1 font-semibold">RLHF, AI sandboxing, applied ML and deep learning, AI optimisation</dd></div>
+          <div class="px-6 py-4"><dt class="text-black/55 text-sm">Education</dt><dd class="mt-1 font-semibold">Diploma in Data Science, IIT Madras</dd></div>
+          <div class="px-6 py-4"><dt class="text-black/55 text-sm">Based in</dt><dd class="mt-1 font-semibold">Bengaluru, India</dd></div>
+        </dl>
+        <div class="border-t border-black/10 px-6 py-4 flex flex-wrap gap-x-5 gap-y-2 text-[15px]">
+            <a href="mailto:utkarsh@craton-labs.com" class="font-semibold underline decoration-black/30 underline-offset-4 hover:decoration-orange">Email</a>
+            <a href="https://www.linkedin.com/in/utkarshtripathi7" class="font-semibold underline decoration-black/30 underline-offset-4 hover:decoration-orange">LinkedIn</a>
+            <a href="/cv/Utkarsh-Tripathi-Resume.pdf" class="font-semibold underline decoration-black/30 underline-offset-4 hover:decoration-orange">Resume</a>
+        </div>
+      </aside>
     </div>
   </section>
 
   <Experience />
 
   <section class="border-b border-black/10">
-    <div class="mx-auto max-w-6xl px-6 md:px-10 py-16 grid gap-6 md:grid-cols-[1fr_1.2fr]">
-      <p class="font-mono text-xs uppercase tracking-wider text-orange">Also</p>
-      <p class="text-black/70 leading-relaxed">
-        I publish the study trackers I use, currently on AI sandboxing, RLHF and inference
-        optimisation. <a href="/learn/" class="font-semibold text-black underline decoration-black/30 underline-offset-4 hover:decoration-orange">See them on Learn &rarr;</a>
-      </p>
-      <p class="font-mono text-xs uppercase tracking-wider text-orange">Scope</p>
-      <p class="text-sm text-black/60 leading-relaxed">
-        Craton Labs provides advisory work, documentation and technical testing. It is not a
-        legal opinion, a conformity assessment, a certification or an attestation under any
-        regulatory regime.
+    <div class="mx-auto max-w-6xl px-6 md:px-10 py-10">
+      <p class="max-w-3xl text-sm text-black/55 leading-relaxed">
+        Consulting through Craton Labs covers advisory work, documentation and technical
+        testing. It is not a legal opinion, a conformity assessment, a certification or an
+        attestation under any regulatory regime.
       </p>
     </div>
   </section>

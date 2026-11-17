@@ -1,37 +1,67 @@
 ---
 import SectionHead from "../assets/SectionHead.astro";
 
+// Highlights come from the resume; keep them in step with it.
 const roles = [
-  { dates: "Oct 2025 – now", title: "Founder and CTO", company: "Craton Labs", what: "LLM evaluation and assurance for financial services" },
-  { dates: "Jan – Sep 2025", title: "Data Engineer", company: "RiskPe", what: "PySpark pipelines, SQL and Power BI reporting" },
-  { dates: "Jul – Dec 2024", title: "Computer Vision Engineer", company: "Habitat", what: "Models on edge hardware, with CI/CD" },
-  { dates: "2021 – 2023", title: "Systems Engineer", company: "Siemens", what: "ETL and data pipelines in Python" },
+  {
+    dates: "Oct 2025 – now",
+    title: "Founder and CTO",
+    company: "Craton Labs",
+    what: "Building AI systems for banks, insurers and fintechs.",
+  },
+  {
+    dates: "Jan – Sep 2025",
+    title: "Data Engineer",
+    company: "RiskPe",
+    what: "PySpark pipelines over 10K+ daily policy and lead records cut reporting latency by 40%. Prophet forecasting lifted sales forecast precision by 15%.",
+  },
+  {
+    dates: "Jul – Dec 2024",
+    title: "Computer Vision Engineer",
+    company: "Habitat",
+    what: "Put YOLOv7 licence-plate recognition on BeagleY-AI edge boards at 15+ FPS, at half the cost of the commercial systems it replaced. Raised accuracy in poor light by 20% with data augmentation and tuned post-processing.",
+  },
+  {
+    dates: "2021 – 2023",
+    title: "Systems Engineer",
+    company: "Siemens",
+    what: "Condition-monitoring analytics and failure prediction for rolling stock on the Vienna Metro, Sydney Airport Line and Indian Railways projects.",
+  },
+];
+
+const education = [
+  { year: "2025", what: "Diploma in Data Science and Applications, IIT Madras" },
+  { year: "2021", what: "BSc in Transportation Technology, National Rail and Transportation Institute" },
 ];
 ---
 
-<section id="background" class="border-b border-black/10">
-  <div class="mx-auto max-w-6xl px-6 md:px-10 py-20 grid gap-12 lg:grid-cols-[1fr_1.2fr]">
+<section id="experience" class="border-b border-black/10">
+  <div class="mx-auto max-w-6xl px-6 md:px-10 py-20 grid gap-12 lg:grid-cols-[1fr_1.6fr]">
     <div>
-      <SectionHead label="Background">Who you'd be working with.</SectionHead>
-      <p class="mt-5 text-lg text-black/70 leading-relaxed">
-        I came to LLM evaluation from data engineering, so I test the documents, retrieval
-        and pipeline behind an answer as well as the answer itself.
-      </p>
-      <a href="/about/" class="mt-6 inline-block font-semibold underline decoration-black/30 underline-offset-4 hover:decoration-orange">
-        More about me &rarr;
+      <SectionHead label="Experience">Where I've done it.</SectionHead>
+      <ul class="mt-10 space-y-3 text-sm">
+        {education.map((e) => (
+          <li class="grid grid-cols-[48px_1fr] gap-3">
+            <span class="font-mono text-black/45">{e.year}</span>
+            <span class="text-black/70">{e.what}</span>
+          </li>
+        ))}
+      </ul>
+      <a href="/cv/Utkarsh-Tripathi-Resume.pdf" class="mt-8 inline-block font-semibold underline decoration-black/30 underline-offset-4 hover:decoration-orange">
+        Full resume (PDF) &rarr;
       </a>
     </div>
 
     <ol class="border-t border-black/15 self-start">
       {roles.map((r) => (
-        <li class="grid gap-1 border-b border-black/15 py-5 sm:grid-cols-[140px_1fr] sm:gap-6">
+        <li class="grid gap-1 border-b border-black/15 py-6 sm:grid-cols-[130px_1fr] sm:gap-6">
           <span class="font-mono text-sm text-black/50">{r.dates}</span>
-          <span>
-            <span class="font-bold text-black">{r.title}</span>
-            <span class="text-black/50">, </span>
-            <span class="font-semibold text-orange">{r.company}</span>
-            <span class="mt-1 block text-black/65">{r.what}</span>
-          </span>
+          <div>
+            <p>
+              <span class="font-bold text-black">{r.title}</span><span class="text-black/50">, </span><span class="font-semibold text-orange">{r.company}</span>
+            </p>
+            <p class="mt-1.5 text-black/65 leading-relaxed">{r.what}</p>
+          </div>
         </li>
       ))}
     </ol>

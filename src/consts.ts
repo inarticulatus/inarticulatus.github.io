@@ -1,3 +1,3 @@
-export const SITE_TITLE = 'Utkarsh Tripathi · LLM evaluation for regulated finance';
+export const SITE_TITLE = 'Utkarsh Tripathi · AI engineer';
 export const SITE_DESCRIPTION =
-	'I test LLM features for banks, insurers and fintechs one claim at a time: what the cited source supports, what it does not, and what hidden instructions in a document can make the system do. Founder and CTO of Craton Labs.';
+	'AI engineer and founder of Craton Labs. Applied ML and deep learning in production, from real-time computer vision on edge hardware to recommenders, now focused on RLHF and post-training, AI sandboxing and inference optimisation.';

@@ -1,0 +1,28 @@
+---
+import SectionHead from "../assets/SectionHead.astro";
+
+const groups = [
+  { name: "ML and deep learning", items: ["YOLOv7", "OpenCV", "LSTM and Transformer models", "XGBoost", "Prophet", "Two-tower retrieval", "DeepFM", "NumPy"] },
+  { name: "LLMs", items: ["LangChain", "Sentence-Transformers", "Qdrant", "Milvus", "RAGAS", "FastAPI"] },
+  { name: "Data", items: ["Python", "SQL", "Spark", "Kafka", "Flink", "Airflow", "dbt"] },
+  { name: "Infrastructure", items: ["AWS", "Docker", "Kubernetes", "Terraform", "CI/CD", "Rust", "ESP32 and Pico"] },
+];
+---
+
+<section id="toolkit" class="border-b border-black/10">
+  <div class="mx-auto max-w-6xl px-6 md:px-10 py-20">
+    <SectionHead label="Toolkit">What I build with.</SectionHead>
+    <dl class="mt-10 border-t border-black/15">
+      {groups.map((g) => (
+        <div class="grid gap-3 border-b border-black/15 py-5 md:grid-cols-[220px_1fr] md:gap-8">
+          <dt class="font-mono text-xs uppercase tracking-wider text-black/50 md:pt-1.5">{g.name}</dt>
+          <dd class="flex flex-wrap gap-2">
+            {g.items.map((item) => (
+              <span class="border border-black/15 bg-white px-2.5 py-1 text-sm text-black/80">{item}</span>
+            ))}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>

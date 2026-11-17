@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+import SectionHead from "../assets/SectionHead.astro";
+
+// Homepage selection, led by applied ML. Tags name the focus area each one shows.
+const SELECTED: Record<string, string> = {
+  "recommender-system": "Applied ML",
+  "tradr": "ML and RL",
+  "ml-from-scratch": "ML fundamentals",
+  "konkan-railway-store-and-forward": "Edge systems",
+  "studygrove": "AI product",
+  "llm-claim-grounding": "LLM evaluation",
+};
+const posts = await getCollection("projects");
+const selected = Object.keys(SELECTED)
+  .map((id) => posts.find((p) => p.id === id))
+  .filter((p) => p !== undefined);
+---
+
+<section id="work" class="border-b border-black/10 scroll-mt-4">
+  <div class="mx-auto max-w-6xl px-6 md:px-10 py-20">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <SectionHead label="Selected work">Things I've built.</SectionHead>
+      <a href="/projects/" class="font-semibold underline decoration-black/30 underline-offset-4 hover:decoration-orange">
+        All projects &rarr;
+      </a>
+    </div>
+
+    <ul class="mt-12 grid gap-px bg-black/10 border border-black/10 md:grid-cols-2 lg:grid-cols-3">
+      {selected.map((post, i) => (
+        <li class="bg-white">
+          <a href={`/projects/${post.id}/`} class="group flex h-full flex-col p-7 hover:bg-orange/5">
+            <div class="flex items-center justify-between gap-4">
+              <span class="font-mono text-xs uppercase tracking-wider text-cyan">{SELECTED[post.id]}</span>
+              <span class="font-mono text-xs text-black/35">{String(i + 1).padStart(2, "0")}</span>
+            </div>
+            <h3 class="mt-5 text-xl font-bold tracking-tight leading-snug text-black group-hover:text-orange">
+              {post.data.title}
+            </h3>
+            <p class="mt-3 text-[15px] leading-relaxed text-black/65">{post.data.description}</p>
+            <span class="mt-auto pt-6 text-sm font-semibold text-black/80 group-hover:text-orange">Read &rarr;</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
