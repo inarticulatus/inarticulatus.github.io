@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Theory &amp; Ear Training: Daily Practice Tracker</title>
+    <meta name="description" content="A daily 30-minute music theory and ear-training habit for complete beginners: 59 free lessons and drills with spaced review. Progress is saved in your browser.">
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg">
+    <script>
+        // Shared /learn/ theme, applied before first paint.
+        (function () {
+            try {
+                var t = localStorage.getItem("learn_theme");
+                if (t !== "dark" && t !== "light") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+                if (t === "dark") document.documentElement.classList.add("dark");
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/learn/assets/tracker-shell.css?v=2">
+    <link rel="stylesheet" href="/learn/app/app.css?v=5">
+    <script src="/learn/assets/tracker-shell.js?v=2" defer></script>
+    <script src="content.js?v=4" defer></script>
+    <script src="/learn/app/app.js?v=5" defer></script>
+</head>
+<body class="tk-body">
+    <div id="app"></div>
+    <noscript><p style="padding:24px">This tracker needs JavaScript to save your progress in the browser.</p></noscript>
+</body>
+</html>

@@ -651,7 +651,13 @@
 
     // ------------------------------------------------------------------ spaced reviews (modes.review)
     // SM-2-style: again = saw the solution, hard = needed hints, good = solved solo, easy = solo and easy.
-    var GRADES = { again: "Saw solution", hard: "Needed hints", good: "Solved solo", easy: "Easy" };
+    var GRADES = Object.assign({ again: "Saw solution", hard: "Needed hints", good: "Solved solo", easy: "Easy" }, (REVIEW && REVIEW.grades) || {});
+    var GRADE_TIPS = Object.assign({ again: "You needed to read the solution", hard: "You got there with hints or a nudge", good: "You did it yourself", easy: "Yourself, within the target time, and it felt easy" }, (REVIEW && REVIEW.gradeTips) || {});
+    var RT = Object.assign({
+        solved: "Solved solo", dueHint: "re-solve from a blank editor before anything new", note: "Key insight in one line…",
+        first: "Solving from scratch", again: "Re-solving from a blank editor",
+        gradeHint: "Grade honestly: \"Solved solo\" means a working solution with no hints. The grade sets when this comes back for review."
+    }, (REVIEW && REVIEW.text) || {});
     var STATUS = { "new": "New", learning: "Learning", solved: "Solved", mastered: "Mastered" };
     function ymdAdd(days) { return iso(addDays(today(), days)); }
     function dayGap(a, b) { return Math.round((new Date(b + "T00:00:00") - new Date(a + "T00:00:00")) / 864e5); }
@@ -723,11 +729,11 @@
         if (best !== Infinity) meta.push("best " + best + "m" + (target ? " / " + target + "m" : ""));
         if (r && r.due) meta.push(due ? "review today" : "next review " + fmtD(r.due));
         var active = S.active && S.active.id === id;
-        return '<div class="ap-prob' + (active ? " is-active" : "") + (st !== "new" && !due ? " is-" + st : "") + '">' +
-            '<span class="ap-prob-num">' + (it.num != null ? "#" + esc(it.num) : "") + "</span>" +
+        return '<div class="ap-prob' + (it.num == null ? " no-num" : "") + (active ? " is-active" : "") + (st !== "new" && !due ? " is-" + st : "") + '">' +
+            (it.num != null ? '<span class="ap-prob-num">#' + esc(it.num) + "</span>" : "") +
             '<span class="ap-prob-main"><a class="ap-res" href="' + esc(it.href) + '" target="_blank" rel="noopener">' + esc(it.title) + "</a>" +
             (meta.length ? '<span class="ap-sub">' + meta.join(" · ") + "</span>" : "") +
-            (opt.note ? '<input type="text" class="ap-inline-note ap-prob-note" data-note="' + esc(id) + '" placeholder="Key insight in one line…" value="' + esc(S.notes[id] || "") + '" aria-label="Note">' : "") + "</span>" +
+            (opt.note ? '<input type="text" class="ap-inline-note ap-prob-note" data-note="' + esc(id) + '" placeholder="' + esc(RT.note) + '" value="' + esc(S.notes[id] || "") + '" aria-label="Note">' : "") + "</span>" +
             '<span class="ap-prob-chips">' + (it.diff ? '<span class="ap-diff d-' + esc(it.diff) + '"' + (target ? ' title="Target ' + target + ' min"' : "") + ">" + esc((REVIEW.difficulty || {})[it.diff] || it.diff) + "</span>" : "") +
             '<span class="ap-status s-' + (due ? "due" : st) + '">' + (due ? "Review due" : STATUS[st]) + "</span></span>" +
             '<button type="button" class="tk-btn' + (active ? "" : " ap-primary") + '" data-start="' + esc(id) + '"' + (active ? " disabled" : "") + ">" +
@@ -742,13 +748,13 @@
         var mock = S.mock && S.mock.date === iso(today()) ? S.mock : null;
         var wkGroup = wk ? groups[wk - 1] : null;
         var html = '<div class="ap-stats">' +
-            '<div class="ap-stat"><p class="ap-stat-label">Solved solo</p><p class="ap-stat-value">' + solved + " <small>/ " + REVIEW_ITEMS.length + '</small></p><div class="tk-bar"><span style="width:' + pct(solved, REVIEW_ITEMS.length) + '%"></span></div></div>' +
-            '<div class="ap-stat"><p class="ap-stat-label">Mastered</p><p class="ap-stat-value">' + mastered + '</p><p class="ap-sub">3+ solo reviews, 2-week gap</p></div>' +
+            '<div class="ap-stat"><p class="ap-stat-label">' + esc(RT.solved) + '</p><p class="ap-stat-value">' + solved + " <small>/ " + REVIEW_ITEMS.length + '</small></p><div class="tk-bar"><span style="width:' + pct(solved, REVIEW_ITEMS.length) + '%"></span></div></div>' +
+            '<div class="ap-stat"><p class="ap-stat-label">Mastered</p><p class="ap-stat-value">' + mastered + '</p><p class="ap-sub">3+ good reviews, 2-week gap</p></div>' +
             '<div class="ap-stat"><p class="ap-stat-label">Reviews due</p><p class="ap-stat-value' + (due.length ? " ap-late" : "") + '">' + due.length + "</p></div>" +
             '<div class="ap-stat"><p class="ap-stat-label">Streak</p><p class="ap-stat-value">' + st + " <small>day" + (st === 1 ? "" : "s") + "</small></p></div>" +
-            '<div class="ap-stat"><p class="ap-stat-label">Plan week</p><p class="ap-stat-value">' + (wk || "&ndash;") + " <small>/ " + weeks + '</small></p><p class="ap-sub">' + (wkGroup ? esc(wkGroup.sub || wkGroup.label) : "Starts with your first attempt") + "</p></div></div>";
+            (REVIEW.weeks ? '<div class="ap-stat"><p class="ap-stat-label">Plan week</p><p class="ap-stat-value">' + (wk || "&ndash;") + " <small>/ " + weeks + '</small></p><p class="ap-sub">' + (wkGroup ? esc(wkGroup.sub || wkGroup.label) : "Starts with your first attempt") + "</p></div>" : "") + "</div>";
         html += '<div class="ap-today">';
-        html += '<div><section class="ap-block"><h3 class="ap-block-h">1. Reviews due <span class="ap-hint">re-solve from a blank editor before anything new</span></h3>' +
+        html += '<div><section class="ap-block"><h3 class="ap-block-h">1. Reviews due <span class="ap-hint">' + esc(RT.dueHint) + '</span></h3>' +
             (due.length ? '<div class="ap-probs">' + due.map(function (i) { return probRow(i.id, { section: true }); }).join("") + "</div>"
                         : '<p class="ap-empty">Nothing due. Reviews appear 1, 3, then 7+ days after each solve, spaced further apart as you keep getting them right.</p>') + "</section>";
         html += '<section class="ap-block"><h3 class="ap-block-h">2. New ' + esc(labels.items) + ' <span class="ap-hint">' + nt.started.length + " started today · daily target " + S.settings.dailyNew + " (change under Your pace)</span></h3>";
@@ -757,14 +763,14 @@
             : '<p class="ap-empty">' + (REVIEW_ITEMS.every(function (i) { return statusOf(i.id) !== "new"; }) ? "Everything has been attempted. Keep clearing reviews and run mocks." : "Today's allowance of new " + esc(labels.items) + " is used. Clear reviews or run a mock.") + "</p>";
         html += "</section></div><div>";
         var isMockDay = new Date().getDay() === mockCfg.day;
-        html += '<section class="ap-block ap-panel"><h3 class="ap-block-h">3. Interleaved mock <span class="ap-hint">' + (isMockDay ? "today is mock day" : "best on Saturdays") + "</span></h3>" +
+        if (REVIEW.mock !== false) html += '<section class="ap-block ap-panel"><h3 class="ap-block-h">3. Interleaved mock <span class="ap-hint">' + (isMockDay ? "today is mock day" : "best on Saturdays") + "</span></h3>" +
             '<p class="ap-prose">' + mockCfg.count + " " + esc(labels.items) + " you have already solved, from <strong>different " + esc(labels.sections.toLowerCase()) + "</strong>, back to back in about " + mockCfg.minutes +
             " minutes. Mixing them trains you to recognise which one applies, which is the part interviews actually test.</p>" +
             (mock ? '<div class="ap-probs">' + mock.ids.filter(function (id) { return ITEM[id]; }).map(function (id) { return probRow(id, { section: true }); }).join("") + "</div>" : "") +
             '<p><button type="button" class="tk-btn' + (mock ? "" : " ap-primary") + '" data-action="mock"' + (solved < mockCfg.count ? " disabled" : "") + ">" + (mock ? "Draw a new set" : "Draw " + mockCfg.count + " mixed " + esc(labels.items)) + "</button>" +
-            (solved < mockCfg.count ? ' <span class="ap-hint">unlocks after ' + mockCfg.count + " solo solves</span>" : "") + "</p></section>";
+            (solved < mockCfg.count ? ' <span class="ap-hint">unlocks after ' + mockCfg.count + " " + esc(RT.solved.toLowerCase()) + "</span>" : "") + "</p></section>";
         var weak = weakest();
-        html += '<section class="ap-block ap-panel"><h3 class="ap-block-h">Weakest ' + esc(labels.sections.toLowerCase()) + ' <span class="ap-hint">share of attempts needing hints or the solution</span></h3>' +
+        html += '<section class="ap-block ap-panel"><h3 class="ap-block-h">Weakest ' + esc(labels.sections.toLowerCase()) + ' <span class="ap-hint">share of attempts graded ' + esc(GRADES.again.toLowerCase()) + " or " + esc(GRADES.hard.toLowerCase()) + '</span></h3>' +
             (weak.length ? weak.map(function (w) {
                 return '<a class="ap-row" href="#' + esc(w.s.id) + '" style="--ap-c:' + color(w.s) + '"><span class="ap-row-main"><span class="ap-row-title">' + esc(titleOf(w.s)) + '</span><span class="ap-row-sub">' +
                     Math.round(w.rate * 100) + "% of " + w.tot + ' attempts</span></span><span class="ap-row-count">Practise &rarr;</span></a>';
@@ -779,15 +785,12 @@
         if (!S.active || !ITEM[S.active.id]) { bar.hidden = true; document.body.classList.remove("ap-attempting"); return; }
         var it = ITEM[S.active.id].src, r = S.reviews[S.active.id], target = (REVIEW.targetMinutes || {})[it.diff] || 0;
         bar.hidden = false; document.body.classList.add("ap-attempting");
-        bar.innerHTML = '<div class="ap-attempt-inner"><div class="ap-attempt-info"><p class="ap-attempt-label">' + (r && r.attempts.length ? "Re-solving from a blank editor" : "Solving from scratch") + "</p>" +
+        bar.innerHTML = '<div class="ap-attempt-inner"><div class="ap-attempt-info"><p class="ap-attempt-label">' + (r && r.attempts.length ? esc(RT.again) : esc(RT.first)) + "</p>" +
             '<p class="ap-attempt-title">' + (it.num != null ? "#" + esc(it.num) + " " : "") + esc(it.title) + "</p></div>" +
             '<p class="ap-attempt-clock" id="apAttemptClock"></p><div class="ap-grades" role="group" aria-label="Grade this attempt">' +
-            '<button type="button" data-grade="again" title="You needed to read the solution">Saw solution</button>' +
-            '<button type="button" data-grade="hard" title="You solved it with hints or a nudge">Needed hints</button>' +
-            '<button type="button" data-grade="good" class="ap-good" title="You wrote a working solution yourself">Solved solo</button>' +
-            '<button type="button" data-grade="easy" title="Solo, within the target time, felt easy">Easy</button>' +
+            ["again", "hard", "good", "easy"].map(function (g) { return '<button type="button" data-grade="' + g + '"' + (g === "good" ? ' class="ap-good"' : "") + ' title="' + esc(GRADE_TIPS[g]) + '">' + esc(GRADES[g]) + "</button>"; }).join("") +
             '<button type="button" data-grade="cancel" title="Discard this attempt">Cancel</button></div>' +
-            '<p class="ap-attempt-hint">Grade honestly: "Solved solo" means a working solution with no hints. The grade sets when this comes back for review.</p></div>';
+            '<p class="ap-attempt-hint">' + esc(RT.gradeHint) + "</p></div>";
         var tick = function () {
             if (!S.active) return;
             var sec = Math.floor((Date.now() - S.active.start) / 1000), c = $("#apAttemptClock");

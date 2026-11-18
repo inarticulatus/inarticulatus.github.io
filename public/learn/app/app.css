@@ -320,3 +320,8 @@ html.dark .ap-html pre { background: #121110; }
 .ap-file-body { padding: 10px 14px 14px; color: var(--tk-text-2); }
 .ap-file-body p { margin: 0 0 8px; }
 .ap-file-body a { color: var(--tk-teal); font-weight: 600; }
+.ap-prob.no-num { grid-template-columns: minmax(0, 1fr) auto auto; }
+@media (max-width: 760px) {
+    .ap-prob.no-num { grid-template-columns: minmax(0, 1fr); }
+    .ap-prob.no-num .ap-prob-chips, .ap-prob.no-num > .tk-btn { grid-column: 1; }
+}
