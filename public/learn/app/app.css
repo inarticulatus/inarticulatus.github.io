@@ -325,3 +325,14 @@ html.dark .ap-html pre { background: #121110; }
     .ap-prob.no-num { grid-template-columns: minmax(0, 1fr); }
     .ap-prob.no-num .ap-prob-chips, .ap-prob.no-num > .tk-btn { grid-column: 1; }
 }
+
+/* Plan and library scope pickers */
+.ap-plan-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 10px 16px; }
+.ap-plan-head .ap-block-h { margin: 0; }
+.ap-plan-tools, .ap-lib-tools { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; }
+.ap-lib-tools { margin-bottom: 8px; }
+.ap-inline-field { min-width: min(280px, 100%); }
+.ap-inline-field select { width: 100%; }
+.ap-phase-btn { background: none; border: 0; padding: 0; text-align: left; cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
+.ap-phase-btn:hover { color: var(--tk-coral); }
+.ap-lib-count { margin: 0 0 16px; }

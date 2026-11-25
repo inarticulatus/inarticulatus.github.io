@@ -510,14 +510,54 @@
             (p.total ? '<span class="ap-row-bar"><span style="width:' + pct(p.done, p.total) + '%"></span></span>' : "") + "</a>";
     }
 
+    // "All", one phase (term) or one group (course): used by the plan and the library.
+    function scopeOptions(current, extra) {
+        var opts = '<option value="">All ' + esc((PLAN && PLAN.groupNoun ? PLAN.groupNoun + "s" : labels.sections).toLowerCase()) + "</option>" + (extra || "");
+        if (phases.length) opts += '<optgroup label="' + esc(PLAN && PLAN.phaseNoun ? PLAN.phaseNoun + "s" : "Stages") + '">' +
+            phases.filter(function (ph) { return groups.some(function (g) { return g.phase === ph.id; }); })
+                .map(function (ph) { var v = "phase:" + ph.id; return '<option value="' + esc(v) + '"' + (current === v ? " selected" : "") + ">Only " + esc(ph.label) + "</option>"; }).join("") + "</optgroup>";
+        if (groups.length) opts += '<optgroup label="' + esc(PLAN && PLAN.groupNoun ? PLAN.groupNoun + "s" : "Groups") + '">' +
+            groups.map(function (g) { var v = "group:" + g.id; return '<option value="' + esc(v) + '"' + (current === v ? " selected" : "") + ">Only " + esc(gTitle(g)) + "</option>"; }).join("") + "</optgroup>";
+        return opts;
+    }
+    function groupsIn(scope) {
+        if (!scope) return groups.map(function (g) { return g.id; });
+        if (scope === "plan") return groups.filter(function (g) { return S.settings.off.indexOf(g.id) === -1; }).map(function (g) { return g.id; });
+        var k = scope.split(":")[0], v = scope.slice(k.length + 1);
+        return groups.filter(function (g) { return k === "phase" ? g.phase === v : g.id === v; }).map(function (g) { return g.id; });
+    }
+    // Which picker value describes the current plan (so the select shows it), or "custom".
+    function planScope() {
+        var on = groups.filter(function (g) { return S.settings.off.indexOf(g.id) === -1; }).map(function (g) { return g.id; });
+        if (on.length === groups.length) return "";
+        if (on.length === 1) return "group:" + on[0];
+        for (var i = 0; i < phases.length; i++) {
+            var ids = groupsIn("phase:" + phases[i].id);
+            if (ids.length && ids.length === on.length && ids.every(function (id) { return on.indexOf(id) !== -1; })) return "phase:" + phases[i].id;
+        }
+        return "custom";
+    }
+    function setPlanScope(scope) {
+        var keep = groupsIn(scope);
+        S.settings.off = groups.filter(function (g) { return keep.indexOf(g.id) === -1; }).map(function (g) { return g.id; });
+    }
+
     function overviewHtml() {
         var html = statsHtml();
         if (PLAN) {
-            html += '<section class="ap-block ap-plan-groups"><h3 class="ap-block-h">' + esc(PLAN.groupNoun ? PLAN.groupNoun + "s in the plan" : "In the plan") +
-                ' <span class="ap-hint">Turn off any you aren\'t taking</span></h3>';
+            var scope = planScope(), onCount = groups.length - S.settings.off.length;
+            html += '<section class="ap-block ap-plan-groups"><div class="ap-plan-head"><h3 class="ap-block-h">' + esc(PLAN.groupNoun ? PLAN.groupNoun + "s in the plan" : "In the plan") +
+                ' <span class="ap-hint">' + onCount + " of " + groups.length + " · tap one to switch it on or off</span></h3>" +
+                '<div class="ap-plan-tools"><label class="ap-field ap-inline-field"><span>Show</span><select data-plan-focus>' +
+                (scope === "custom" ? '<option value="custom" selected>Your own selection</option>' : "") + scopeOptions(scope) + "</select></label>" +
+                (onCount < groups.length ? '<button type="button" class="tk-btn" data-plan-all>Show all</button>' : "") + "</div></div>";
             var lastPhase = null;
             groups.forEach(function (g) {
-                if (g.phase !== lastPhase) { html += (lastPhase !== null ? "</div>" : "") + '<div class="ap-chip-row"><span class="ap-chip-label">' + esc((PHASE[g.phase] || {}).label || g.phase || "") + "</span>"; lastPhase = g.phase; }
+                if (g.phase !== lastPhase) {
+                    html += (lastPhase !== null ? "</div>" : "") + '<div class="ap-chip-row">' +
+                        (g.phase ? '<button type="button" class="ap-chip-label ap-phase-btn" data-plan-phase="' + esc(g.phase) + '" title="Show only ' + esc((PHASE[g.phase] || {}).label || g.phase) + '">' + esc((PHASE[g.phase] || {}).label || g.phase) + "</button>" : '<span class="ap-chip-label"></span>');
+                    lastPhase = g.phase;
+                }
                 var on = S.settings.off.indexOf(g.id) === -1;
                 html += '<button type="button" class="ap-chip" data-plan-group="' + esc(g.id) + '" aria-pressed="' + on + '" title="' + esc(gTitle(g)) + '" style="--ap-c:' + COLORS[g.color || (PHASE[g.phase] || {}).color] + '">' +
                     '<span class="ap-dot"></span>' + esc(g.short || g.label) + (g.sub ? '<span class="ap-chip-name">' + esc(g.sub) + "</span>" : "") + "</button>";
@@ -569,7 +609,13 @@
 
     function libraryHtml() {
         var seen = {}, uses = {};
+        var scope = S.ui.lib || "", keep = groupsIn(scope);
+        var html = groups.length ? '<div class="ap-lib-tools"><label class="ap-field ap-inline-field"><span>Show resources for</span><select data-lib-filter>' +
+            scopeOptions(scope, PLAN ? '<option value="plan"' + (scope === "plan" ? " selected" : "") + ">" + esc((PLAN.groupNoun || "Group") + "s in my plan") + "</option>" : "") +
+            "</select></label></div>" : "";
         sections.forEach(function (s) {
+            if (scope && s.group && keep.indexOf(s.group) === -1) return;
+            if (scope && !s.group) return;
             (s.blocks || []).forEach(function (b) {
                 if (b.type !== "resources") return;
                 b.items.forEach(function (it) {
@@ -582,7 +628,8 @@
                 });
             });
         });
-        var html = "";
+        var total = Object.keys(seen).length;
+        if (groups.length) html += '<p class="ap-muted ap-lib-count">' + total + " resource" + (total === 1 ? "" : "s") + (scope ? " for this selection" : "") + "</p>";
         KIND_ORDER.forEach(function (k) {
             var keys = Object.keys(seen).filter(function (x) { return seen[x].kind === k[0]; }).sort(function (a, b) { return String(seen[a].title).localeCompare(seen[b].title); });
             if (!keys.length) return;
@@ -593,7 +640,7 @@
                     '<span class="ap-uses">' + esc(Object.keys(uses[x]).join(", ")) + "</span></li>";
             }).join("") + "</ul></section>";
         });
-        return html || '<p class="ap-muted">No resources in this tracker.</p>';
+        return total ? html : html + '<p class="ap-muted">No resources for this selection.</p>';
     }
 
     function searchHtml(q) {
@@ -920,6 +967,8 @@
             if (t.closest(".ap-rubric")) { var yy = window.scrollY; renderMain(); window.scrollTo(0, yy); }
             return;
         }
+        if (t.hasAttribute("data-plan-focus")) { if (t.value !== "custom") { setPlanScope(t.value); save(); renderAll(); } return; }
+        if (t.hasAttribute("data-lib-filter")) { S.ui.lib = t.value; save(); renderMain(); return; }
         if (t.dataset.value) {
             S.values[t.dataset.value] = t.value; save();
             if (t.closest(".ap-quiz") && view === "section") { var y = window.scrollY; renderMain(); window.scrollTo(0, y); } else toast("Saved");
@@ -957,6 +1006,8 @@
     document.addEventListener("click", function (e) {
         var t = e.target.closest("button, a"); if (!t) return;
         if (t.dataset.groupToggle) { var id = t.dataset.groupToggle; S.ui.open[id] = !S.ui.open[id]; save(); renderSide(); return; }
+        if (t.hasAttribute("data-plan-all")) { S.settings.off = []; save(); renderAll(); return; }
+        if (t.dataset.planPhase) { setPlanScope("phase:" + t.dataset.planPhase); save(); renderAll(); return; }
         if (t.dataset.planGroup) {
             var off = S.settings.off, g = t.dataset.planGroup, i = off.indexOf(g);
             if (i === -1) off.push(g); else off.splice(i, 1);
